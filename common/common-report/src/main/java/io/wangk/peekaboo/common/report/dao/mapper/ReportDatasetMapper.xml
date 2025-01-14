@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.common.report.dao.ReportDatasetMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.common.report.model.ReportDataset">
+        <id column="dataset_id" jdbcType="BIGINT" property="datasetId"/>
+        <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
+        <result column="dataset_name" jdbcType="VARCHAR" property="datasetName"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="dblink_id" jdbcType="BIGINT" property="dblinkId"/>
+        <result column="dataset_type" jdbcType="INTEGER" property="datasetType"/>
+        <result column="table_name" jdbcType="VARCHAR" property="tableName"/>
+        <result column="dataset_info" jdbcType="LONGVARCHAR" property="datasetInfo"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+    </resultMap>
+
+    <!-- 如果有逻辑删除字段过滤，请写到这里 -->
+    <sql id="filterRef">
+        <!-- 这里必须加上全包名，否则当filterRef被其他Mapper.xml包含引用的时候，就会调用Mapper.xml中的该SQL片段 -->
+        <include refid="io.wangk.peekaboo.common.report.dao.ReportDatasetMapper.inputFilterRef"/>
+    </sql>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="reportDatasetFilter != null">
+            <if test="reportDatasetFilter.appCode == null">
+                AND zz_report_dataset.app_code IS NULL
+            </if>
+            <if test="reportDatasetFilter.appCode != null">
+                AND zz_report_dataset.app_code = #{reportDatasetFilter.appCode}
+            </if>
+            <if test="reportDatasetFilter.groupId != null">
+                AND zz_report_dataset.group_id = #{reportDatasetFilter.groupId}
+            </if>
+            <if test="reportDatasetFilter.datasetName != null and reportDatasetFilter.datasetName != ''">
+                <bind name= "safeDatasetName" value= "'%' + reportDatasetFilter.datasetName + '%'" />
+                AND zz_report_dataset.dataset_name LIKE #{safeDatasetName}
+            </if>
+            <if test="reportDatasetFilter.dblinkId != null">
+                AND zz_report_dataset.dblink_id = #{reportDatasetFilter.dblinkId}
+            </if>
+            <if test="reportDatasetFilter.datasetType != null">
+                AND zz_report_dataset.dataset_type = #{reportDatasetFilter.datasetType}
+            </if>
+            <if test="reportDatasetFilter.createUserId != null">
+                AND zz_report_dataset.create_user_id = #{reportDatasetFilter.createUserId}
+            </if>
+        </if>
+    </sql>
+
+    <select id="getReportDatasetList" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportDataset">
+        SELECT * FROM zz_report_dataset
+        <where>
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <select id="getReportDatasetListByTenantId" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportDataset">
+        SELECT zz_report_dataset.* FROM zz_report_dataset, zz_report_tenant_dataset
+        <where>
+            zz_report_tenant_dataset.tenant_id = #{tenantId}
+            AND zz_report_tenant_dataset.dataset_id = zz_report_dataset.dataset_id
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <select id="getInListByTenantId" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportDataset">
+        SELECT zz_report_dataset.* FROM zz_report_dataset, zz_report_tenant_dataset
+        <where>
+            zz_report_tenant_dataset.tenant_id = #{tenantId}
+            AND zz_report_tenant_dataset.dataset_id = zz_report_dataset.dataset_id
+            AND zz_report_tenant_dataset.dataset_id IN
+            <foreach collection="datasetIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="getReportDatasetByTenantId" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportDataset">
+        SELECT zz_report_dataset.* FROM zz_report_dataset, zz_report_tenant_dataset
+        <where>
+            zz_report_tenant_dataset.tenant_id = #{tenantId}
+            AND zz_report_tenant_dataset.dataset_id = #{datasetId}
+            AND zz_report_tenant_dataset.dataset_id = zz_report_dataset.dataset_id
+        </where>
+    </select>
+</mapper>

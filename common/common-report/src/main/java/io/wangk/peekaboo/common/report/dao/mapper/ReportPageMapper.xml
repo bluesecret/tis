@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.common.report.dao.ReportPageMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.common.report.model.ReportPage">
+        <id column="page_id" jdbcType="BIGINT" property="pageId"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
+        <result column="page_code" jdbcType="VARCHAR" property="pageCode"/>
+        <result column="page_name" jdbcType="VARCHAR" property="pageName"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="page_json" jdbcType="LONGVARCHAR" property="pageJson"/>
+        <result column="widget_json" jdbcType="LONGVARCHAR" property="widgetJson"/>
+        <result column="param_json" jdbcType="LONGVARCHAR" property="paramJson"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+    </resultMap>
+
+    <!-- 如果有逻辑删除字段过滤，请写到这里 -->
+    <sql id="filterRef">
+        <!-- 这里必须加上全包名，否则当filterRef被其他Mapper.xml包含引用的时候，就会调用Mapper.xml中的该SQL片段 -->
+        <include refid="io.wangk.peekaboo.common.report.dao.ReportPageMapper.inputFilterRef"/>
+    </sql>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="reportPageFilter != null">
+            <if test="reportPageFilter.tenantId == null">
+                AND zz_report_page.tenant_id IS NULL
+            </if>
+            <if test="reportPageFilter.tenantId != null">
+                AND zz_report_page.tenant_id = #{reportPageFilter.tenantId}
+            </if>
+            <if test="reportPageFilter.appCode == null">
+                AND zz_report_page.app_code IS NULL
+            </if>
+            <if test="reportPageFilter.appCode != null">
+                AND zz_report_page.app_code = #{reportPageFilter.appCode}
+            </if>
+            <if test="reportPageFilter.pageCode != null and reportPageFilter.pageCode != ''">
+                AND zz_report_page.page_code = #{reportPageFilter.pageCode}
+            </if>
+            <if test="reportPageFilter.groupId != null">
+                AND zz_report_page.group_id = #{reportPageFilter.groupId}
+            </if>
+        </if>
+    </sql>
+
+    <select id="getReportPageList" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportPage">
+        SELECT page_id, page_code, page_name, group_id, update_time, update_user_id FROM zz_report_page
+        <where>
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+</mapper>

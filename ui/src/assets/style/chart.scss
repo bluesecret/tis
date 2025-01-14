@@ -1,0 +1,60 @@
+$chart-form-item-width: 150px;
+$chart-form-item-textarea-width: 200px;
+
+.axis-item {
+  .el-collapse-item__content {
+    padding-bottom: 0 !important;
+  }
+}
+
+.chart-attribute {
+  .el-divider--horizontal {
+    margin: 6px 0 !important;
+  }
+
+  .el-table__empty-text {
+    line-height: 30px !important;
+  }
+}
+
+.chart-attribute.el-form--label-top,
+.chart-attribute.el-form--label-left {
+  .el-form-item__label {
+    width: 100%;
+    padding-bottom: 0 !important;
+    font-size: 14px;
+    color: #303133;
+    font-weight: 600;
+  }
+}
+
+.view-attribute-item {
+  margin-bottom: 6px !important;
+
+  .el-form-item__content {
+    min-height: 28px !important;
+  }
+
+  .el-slider,
+  .el-select {
+    width: $chart-form-item-width;
+  }
+  .el-textarea {
+    width: $chart-form-item-textarea-width;
+  }
+}
+
+.view-attribute-item.slider-item {
+  .el-form-item__label {
+    line-height: 38px !important;
+  }
+}
+
+.view-attribute-item .el-form-item__label {
+  font-size: 14px;
+  color: #303133;
+}
+
+.luckysheet {
+  border-radius: 5px;
+}

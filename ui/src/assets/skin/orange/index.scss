@@ -1,0 +1,24 @@
+@use 'sass:map';
+
+$color-primary: #409EFF !default;
+$color-white: #fff;
+$color-primary-light-9: color-mix(in srgb, $color-white 90%, $color-primary 10%) !default;
+$color-text-secondary: #909399 !default;
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': $color-primary,
+    ),
+  )
+);
+@use '@/assets/style/base.scss';
+
+:deep(.vxe-table--empty-placeholder) {
+  z-index: 0;
+}
+.el-overlay-message-box {
+  z-index: 2000;
+}
+.rich-input .el-form-item__content {
+  z-index: 1;
+}

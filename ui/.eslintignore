@@ -1,0 +1,7 @@
+node_modules
+dist/
+test
+src/vite-env.d.ts
+/src/pages/workflow/package/*
+/src/components/Verifition/*
+/src/components/SpreadSheet/*

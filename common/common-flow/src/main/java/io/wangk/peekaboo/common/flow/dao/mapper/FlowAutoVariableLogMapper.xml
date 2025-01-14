@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.common.flow.dao.FlowAutoVariableLogMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.common.flow.model.FlowAutoVariableLog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="process_instance_id" jdbcType="VARCHAR" property="processInstanceId"/>
+        <result column="execution_id" jdbcType="VARCHAR" property="executionId"/>
+        <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="task_key" jdbcType="VARCHAR" property="taskKey"/>
+        <result column="trace_id" jdbcType="VARCHAR" property="traceId"/>
+        <result column="variable_data" jdbcType="LONGVARCHAR" property="variableData"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+</mapper>

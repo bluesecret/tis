@@ -1,0 +1,104 @@
+.form-advanced-manager {
+  .advance-filter-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 10px $box-padding-size 15px $box-padding-size;
+    background-color: white;
+  }
+
+  .title-box {
+    z-index: 20;
+    height: $advanced-title-height;
+    padding: 0 20px;
+    background-color: white;
+    border-bottom: 1px solid $border-color;
+
+    .title {
+      line-height: $advanced-title-height;
+      color: #606266;
+    }
+
+    .menu-box {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      height: $advanced-title-height;
+
+      .el-row {
+        height: $advanced-title-height - 20;
+        margin: 10px 0;
+      }
+    }
+  }
+
+  .advanced-right-box {
+    padding: 0;
+    .gutter-box {
+      float: left;
+      width: 3px;
+      height: 16px;
+      margin: (($advanced-title-height - 16)/2) 0;
+      background-color: $--color-primary;
+    }
+  }
+}
+
+.form-dict-manager {
+  .dict-title {
+    height: 50px;
+    font-size: 14px;
+    color: $--color-text-primary;
+    line-height: 50px;
+    border-bottom: 1px solid $--border-color-base;
+
+    span {
+      margin-left: 20px;
+    }
+  }
+
+  .dict-item {
+    width: 100%;
+    height: 40px;
+    padding-left: 20px;
+    color: #606266;
+    line-height: 40px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $--color-primary-light-9;
+    }
+  }
+
+  .active-dict-item {
+    border-left: 3px solid $--color-primary;
+    color: $--color-primary;
+    background-color: $--color-primary-light-9 !important;
+  }
+
+  .el-scrollbar__bar.is-horizontal {
+    display: none !important;
+  }
+}
+
+.form-table-manager {
+  .advance-filter-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    padding: 10px $box-padding-size 15px $box-padding-size;
+    background-color: white;
+  }
+}
+
+.form-config {
+  padding: $box-padding-size;
+}
+
+.advance-query-form {
+  padding: 0 !important;
+  background-color: transparent !important;
+}

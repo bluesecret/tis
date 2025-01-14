@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.common.flow.dao.FlowTaskTimeoutJobMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.common.flow.model.FlowTaskTimeoutJob">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="process_definition_id" jdbcType="VARCHAR" property="processDefinitionId"/>
+        <result column="process_instance_id" jdbcType="VARCHAR" property="processInstanceId"/>
+        <result column="task_key" jdbcType="VARCHAR" property="taskKey"/>
+        <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="timeout_hours" jdbcType="INTEGER" property="timeoutHours"/>
+        <result column="handle_way" jdbcType="VARCHAR" property="handleWay"/>
+        <result column="default_assignee" jdbcType="VARCHAR" property="defaultAssignee"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="error_message" jdbcType="LONGVARCHAR" property="errorMessage"/>
+        <result column="exec_time" jdbcType="TIMESTAMP" property="execTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+</mapper>

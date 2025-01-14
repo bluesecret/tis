@@ -1,0 +1,331 @@
+@font-face {
+  font-family: "online-icon"; /* Project id 3701349 */
+  src: url('iconfont.woff2?t=1706613476403') format('woff2'),
+       url('iconfont.woff?t=1706613476403') format('woff'),
+       url('iconfont.ttf?t=1706613476403') format('truetype');
+}
+
+.online-icon {
+  font-family: "online-icon" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Tabs */
+.icon-tabs2:before {
+  content: "\e6c6";
+}
+/* card */
+.icon-card3:before {
+  content: "\e6c7";
+}
+/* 消息 */
+.icon-message:before {
+  content: "\e6c5";
+}
+/* 刷新 */
+.icon-custom-refresh:before {
+  content: "\e6b3";
+}
+/* 行高设置 */
+.icon-table-row-height:before {
+  content: "\e6bd";
+}
+/* 展开 */
+.icon-expand:before {
+  content: "\e6b9";
+}
+/* 收缩 */
+.icon-unexpand:before {
+  content: "\e6af";
+}
+/* 表格容器 */
+.icon-table-container:before {
+  content: "\e6aa";
+}
+/* 关联选择 */
+.icon-data-select:before {
+  content: "\e6ab";
+}
+
+/* 普通进度条 */
+.icon-progress:before {
+  content: "\e6a6";
+}
+/* 环形进度条 */
+.icon-circle-progress:before {
+  content: "\e6a1";
+}
+/* 进度条卡片 */
+.icon-progress-card:before {
+  content: "\e6a2";
+}
+/* 通用列表 */
+.icon-common-list:before {
+  content: "\e6a3";
+}
+/* 通用卡片 */
+.icon-common-card:before {
+  content: "\e6a5";
+}
+/* 漏斗图 */
+.icon-funnel:before {
+  content: "\e69a";
+}
+/* 报表表格 */
+.icon-dataview:before {
+  content: "\e69b";
+}
+/* 雷达图 */
+.icon-radar:before {
+  content: "\e69c";
+}
+/* 轮播图 */
+.icon-carousel:before {
+  content: "\e69d";
+}/* 报表富文本展示 */
+.icon-richtext:before {
+  content: "\e69e";
+}
+
+.icon-user:before {
+  content: "\e677";
+}
+
+.icon-card:before {
+  content: "\e678";
+}
+
+.icon-orange-icon:before {
+  content: "\e679";
+}
+
+/* 部门选择 */
+.icon-dept:before {
+  content: "\e668";
+}
+/* 分隔线 */
+.icon-divider:before {
+  content: "\e66f";
+}
+/* 文本显示框 */
+.icon-text:before {
+  content: "\e670";
+}
+/* 表格 */
+.icon-table:before {
+  content: "\e671";
+}
+/* 基础块 */
+.icon-block:before {
+  content: "\e672";
+}
+/* 超链接 */
+.icon-link:before {
+  content: "\e673";
+}
+/* 图片 */
+.icon-image:before {
+  content: "\e674";
+}
+/* 上传组件 */
+.icon-upload:before {
+  content: "\e675";
+}
+/* 富文本 */
+.icon-richeditor:before {
+  content: "\e676";
+}
+/* 更多 */
+.icon-more:before {
+  content: "\e65f";
+}
+/* 复选框 */
+.icon-checkbox:before {
+  content: "\e66c";
+}
+/* 文字输入框 */
+.icon-input:before {
+  content: "\e66d";
+}
+/* 数字输入框 */
+.icon-input-number:before {
+  content: "\e66e";
+}
+/* 属性 */
+.icon-props:before {
+  content: "\e66b";
+}
+/* 数据 */
+.icon-data:before {
+  content: "\e661";
+}
+/* 单选框 */
+.icon-radio:before {
+  content: "\e64b";
+}
+/* 关联 */
+.icon-relation:before {
+  content: "\e64c";
+}
+/* 卡片 */
+.icon-card2:before {
+  content: "\e64d";
+}
+/* PC */
+.icon-pc:before {
+  content: "\e64e";
+}
+/* 复制 */
+.icon-copy:before {
+  content: "\e64f";
+}
+/* 操作 */
+.icon-operator:before {
+  content: "\e650";
+}
+/* 表单设计 */
+.icon-form-design:before {
+  content: "\e651";
+}
+/* 基础信息 */
+.icon-basic-info:before {
+  content: "\e653";
+}
+
+.icon-shouqi-01:before {
+  content: "\e654";
+}
+/* PAD */
+.icon-pad:before {
+  content: "\e655";
+}
+/* 组件 */
+.icon-component:before {
+  content: "\e656";
+}
+/* 日期范围选择 */
+.icon-date-range:before {
+  content: "\e657";
+}
+/* close */
+.icon-close:before {
+  content: "\e658";
+}
+/* 日期选择框 */
+.icon-date:before {
+  content: "\e659";
+}
+/* 级联选择框 */
+.icon-cascader:before {
+  content: "\e65a";
+}
+/* 筛选 */
+.icon-filter:before {
+  content: "\e65b";
+}
+/* PHONE */
+.icon-phone:before {
+  content: "\e65c";
+}
+/* 删除 */
+.icon-delete:before {
+  content: "\e65d";
+}
+/* 脚本 */
+.icon-script:before {
+  content: "\e65e";
+}
+
+.icon-shujushi-01:before {
+  content: "\e660";
+}
+
+.icon-shujubiaodanshi-01:before {
+  content: "\e662";
+}
+
+.icon-zhongzhi-01:before {
+  content: "\e663";
+}
+
+.icon-sousuo-01:before {
+  content: "\e664";
+}
+/* 下拉选择 */
+.icon-select:before {
+  content: "\e665";
+}
+/* 数字范围选择 */
+.icon-number-range:before {
+  content: "\e666";
+}
+
+.icon-datasource:before {
+  content: "\e667";
+}
+/* 开关组件 */
+.icon-switch:before {
+  content: "\e669";
+}
+
+.icon-xiala-01:before {
+  content: "\e66a";
+}
+
+/* 折线图 */
+.icon-linechart:before {
+  content: "\e68f";
+}
+
+.icon-scatterchart:before {
+  content: "\e690";
+}
+
+.icon-pivottable:before {
+  content: "\e691";
+}
+
+.icon-barchart:before {
+  content: "\e692";
+}
+
+.icon-piechart:before {
+  content: "\e68e";
+}
+
+.icon-tabs:before {
+  content: "\e67a";
+}
+
+.icon-align-top:before {
+  content: "\e695";
+}
+
+.icon-align-bottom:before {
+  content: "\e696";
+}
+
+.icon-align-middle:before {
+  content: "\e697";
+}
+
+.icon-align-center:before {
+  content: "\e68d";
+}
+
+.icon-align-left:before {
+  content: "\e693";
+}
+
+.icon-align-right:before {
+  content: "\e694";
+}
+
+.icon-flow-stauts:before {
+  content: "\e69f";
+}
+
+.icon-flow-design:before {
+  content: "\e6a0";
+}

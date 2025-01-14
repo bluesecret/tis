@@ -1,0 +1,59 @@
+name: Backend
+
+on:
+  push:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+concurrency:
+  group: backend-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+#  code-style:
+#    name: Code style
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 10
+#    steps:
+#      - uses: actions/checkout@v3
+#        with:
+#          submodules: true
+#      - name: Set up JDK ${{ matrix.java }}
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: 17
+#          distribution: 'temurin'
+#          cache: 'maven'
+#      - name: Check code style
+#        run: ./mvnw --batch-mode --quiet --no-snapshot-updates clean spotless:check
+
+  build:
+    name: Build
+#    needs: [ code-style ]
+    strategy:
+      matrix:
+        java: [ '17' ]
+        os: [ 'ubuntu-latest', 'windows-latest' ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Setup mvnw permissions
+        run: chmod +x ./mvnw
+      - name: Build distribution tar
+        run: >-
+          ./mvnw -B install 
+          -D"maven.test.skip"=true
+          -D"checkstyle.skip"=true
+          -D"http.keepAlive"=false
+          -D"maven.wagon.http.pool"=false
+          -D"maven.wagon.http.retryHandler.count"=3
+          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120

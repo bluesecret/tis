@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.common.report.dao.ReportPrintMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.common.report.model.ReportPrint">
+        <id column="print_id" jdbcType="BIGINT" property="printId"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
+        <result column="print_name" jdbcType="VARCHAR" property="printName"/>
+        <result column="print_variable" jdbcType="VARCHAR" property="printVariable"/>
+        <result column="print_type" jdbcType="INTEGER" property="printType"/>
+        <result column="word_template" jdbcType="VARCHAR" property="wordTemplate"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="print_json" jdbcType="LONGVARCHAR" property="printJson"/>
+        <result column="fragment_json" jdbcType="LONGVARCHAR" property="fragmentJson"/>
+        <result column="sheet_data_json" jdbcType="LONGVARCHAR" property="sheetDataJson"/>
+        <result column="template_data_json" jdbcType="LONGVARCHAR" property="templateDataJson"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+    </resultMap>
+
+    <!-- 如果有逻辑删除字段过滤，请写到这里 -->
+    <sql id="filterRef">
+        <!-- 这里必须加上全包名，否则当filterRef被其他Mapper.xml包含引用的时候，就会调用Mapper.xml中的该SQL片段 -->
+        <include refid="io.wangk.peekaboo.common.report.dao.ReportPrintMapper.inputFilterRef"/>
+    </sql>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="reportPrintFilter != null">
+            <if test="reportPrintFilter.tenantId == null">
+                AND zz_report_print.tenant_id IS NULL
+            </if>
+            <if test="reportPrintFilter.tenantId != null">
+                AND zz_report_print.tenant_id = #{reportPrintFilter.tenantId}
+            </if>
+            <if test="reportPrintFilter.appCode == null">
+                AND zz_report_print.app_code IS NULL
+            </if>
+            <if test="reportPrintFilter.appCode != null">
+                AND zz_report_print.app_code = #{reportPrintFilter.appCode}
+            </if>
+            <if test="reportPrintFilter.groupId != null">
+                AND zz_report_print.group_id = #{reportPrintFilter.groupId}
+            </if>
+            <if test="reportPrintFilter.printVariable != null and reportPrintFilter.printVariable != ''">
+                AND zz_report_print.print_variable = #{reportPrintFilter.printVariable}
+            </if>
+        </if>
+    </sql>
+
+    <select id="getReportPrintList" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.common.report.model.ReportPrint">
+        SELECT print_id, print_name, print_variable, print_type, group_id, print_json, param_json FROM zz_report_print
+        <where>
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+</mapper>

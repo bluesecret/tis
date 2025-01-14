@@ -1,0 +1,12 @@
+@import url('./flow-element-variables.scss');
+@import url('bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css');
+@import url('bpmn-js-token-simulation/assets/css/font-awesome.min.css');
+@import url('bpmn-js-token-simulation/assets/css/normalize.css');
+@import url('bpmn-js/dist/assets/diagram-js.css');
+@import url('bpmn-js/dist/assets/bpmn-font/css/bpmn.css');
+@import url('bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css');
+@import url('./process-designer.scss');
+@import url('./process-panel.scss');
+
+$success-color: #4eb819;
+$current-color: #409eff;

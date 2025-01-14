@@ -1,0 +1,65 @@
+//package io.wangk.peekaboo.common.report.example;
+//
+//import io.wangk.peekaboo.common.core.annotation.NoAuthInterface;
+//import io.wangk.peekaboo.common.core.upload.BaseUpDownloader;
+//import io.wangk.peekaboo.common.core.upload.UpDownloaderFactory;
+//import io.wangk.peekaboo.common.core.upload.UploadStoreTypeEnum;
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import jakarta.servlet.http.HttpServletResponse;
+//
+///**
+// * 这个只是示例代码。请根据自己的实际情况，将所需的接口代码copy到合适的位置。
+// * 这些接口没有任何权限限制，出于安全考虑，推荐在网络层面，限制外部请求对该接口的访问。
+// *
+// * @author wangk
+// * @date 2025-01-14
+// */
+//@Slf4j
+//@RestController
+//@RequestMapping("/admin/report/example")
+//public class ReportExampleController {
+//
+//    @Autowired
+//    private UpDownloaderFactory upDownloaderFactory;
+//
+//    /**
+//     * 在报表的打印功能中，如果配置的字段数据是图片数据，ReportPrintServiceImpl中的代码，会通过
+//     * 调用URL的方式，获取图片数据。调用过程中，不会传递任何用户授权信息。因此该接口也没有Token验证
+//     * 的行为。
+//     * 在将此段模板代码copy到指定位置后，需要修改application-dev.yaml中的以下配置。
+//     * 白名单事项：
+//     * 当前示例为单体架构示例，白名单我们使用了 @NoAuthInterface。而对于微服务架构，有多种实现方式，
+//     * 可以考虑用内部nginx代理，也可以走网关。因为在打印实现的内部，是基于http地址的访问，不适合FeignClient
+//     * 的远程调用，因此不能直接调用具体的微服务。这里我们假设走网关方式，要配置为无需授权即可访问的白名单接口。
+//     * common-report:
+//     *   # 将下面配置参数的url和实际情况对齐。
+//     *   imageDownloadUrl: "http://localhost:8082/admin/report/example/downloadDirectly"
+//     * @param uriPath  该路径为相对于基础根目录的子目录。uploadFileBaseDir配置参数指定的目录，不在其中。
+//     *                 比如本地文件实际存储目录是 /xxxx/image/course/pictureUrl，而基础根目录为 /xxxx，
+//     *                 uriPath的参数值是 /image/course/pictureUrl。如果是分布式存储，则就是指定Bucket
+//     *                 中的存储路径。
+//     * @param filename 下载文件名。
+//     * @param response http应答对象。
+//     */
+//    @NoAuthInterface
+//    @GetMapping("/downloadDirectly")
+//    public void downloadDirectly(
+//            @RequestParam String uriPath, @RequestParam String filename, HttpServletResponse response) {
+//        // 使用try来捕获异常，是为了保证一旦出现异常可以返回500的错误状态，便于调试。
+//        // 否则有可能给前端返回的是200的错误码。
+//        try {
+//            // 这里只是使用MINIO分布式存储作为实例，可按照实际情况修改。
+//            BaseUpDownloader upDownloader = upDownloaderFactory.get(UploadStoreTypeEnum.MINIO_SYSTEM);
+//            upDownloader.doDownload(null, uriPath, filename, response);
+//        } catch (Exception e) {
+//            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            log.error(e.getMessage(), e);
+//        }
+//    }
+//}
