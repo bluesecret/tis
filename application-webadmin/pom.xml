@@ -131,8 +131,17 @@
                                     <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v18.16.1</nodeVersion>
-                                    <npmVersion>9.5.1</npmVersion>
+                                    <nodeVersion>v22.2.0</nodeVersion>
+                                    <npmVersion>10.7.0</npmVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>clean</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>cache clean --force</arguments>
                                 </configuration>
                             </execution>
                             <execution>
@@ -142,7 +151,7 @@
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>install --ignore-scripts</arguments>
+                                    <arguments>install</arguments>
                                 </configuration>
                             </execution>
                             <execution>

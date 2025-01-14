@@ -31,6 +31,8 @@ dist
 node
 .stylelintcache
 .DS_Store
+/ui/package-lock.json
+/ui/components.d.ts
 
 ### Other ###
 /zzlogs
