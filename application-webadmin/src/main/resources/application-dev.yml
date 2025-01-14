@@ -1,7 +1,7 @@
 spring:
   data:
     redis:
-      host: localhost
+      host: 10.10.11.239
       port: 6379
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -128,7 +128,7 @@ common-redis:
     # master-slave:
     #   每个节点逗号分隔，第一个为主节点，其余为从节点。同时每个节点前必须以redis://开头。
     #   address: redis://localhost:6379,redis://localhost:6378,...
-    address: redis://localhost:6379
+    address: redis://10.10.11.239:6379
     # 链接超时，单位毫秒。
     timeout: 6000
     # 单位毫秒。分布式锁的超时检测时长。
@@ -193,7 +193,7 @@ common-social:
     templateVar2: keyword2
 
 minio:
-  enabled: true
+  enabled: false
   endpoint: http://localhost:19000
   accessKey: admin
   secretKey: admin123456
@@ -222,7 +222,7 @@ sa-token:
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器地址
-    host: localhost
+    host: 10.10.11.239
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
