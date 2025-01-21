@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data # 指定 Redis 数据卷目录
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: "admin"
+      MINIO_ROOT_PASSWORD: "hello123"
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./data/minio:/data # 指定 MinIO 数据卷目录
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "hello123" # MySQL root 用户密码
+    volumes:
+      - ./data/mysql:/var/lib/mysql # 指定 MySQL 数据卷目录
+      - ./config/my.cnf:/etc/mysql/my.cnf # 自定义配置文件
+
+  app:
+    build:
+      context: ./boot # Spring Boot 应用的目录
+      dockerfile: Dockerfile # Dockerfile 文件名
+    container_name: app
+    ports:
+      - "8082:8082" # 将容器内部的8080端口映射到主机的8081端口
+    depends_on:
+      - redis
+      - minio
+      - mysql
