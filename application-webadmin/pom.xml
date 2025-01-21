@@ -104,7 +104,7 @@
 		</plugins>
 	</build>
 
-    <profiles>
+    <!--<profiles>
         <profile>
             <id>release</id>
             <activation>
@@ -141,7 +141,7 @@
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>cache clean --force</arguments>
+                                    <arguments>cache clean &#45;&#45;force</arguments>
                                 </configuration>
                             </execution>
                             <execution>
@@ -168,6 +168,6 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+    </profiles>-->
 
 </project>
