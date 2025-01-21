@@ -48,15 +48,15 @@ jobs:
           cache: 'maven'
       - name: Setup mvnw permissions
         run: chmod +x ./mvnw
-      - name: Build distribution tar
-        run: >-
-          ./mvnw -B install 
-          -D"maven.test.skip"=true
-          -D"checkstyle.skip"=true
-          -D"http.keepAlive"=false
-          -D"maven.wagon.http.pool"=false
-          -D"maven.wagon.http.retryHandler.count"=3
-          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+#      - name: Build distribution tar
+#        run: >-
+#          ./mvnw -B install
+#          -D"maven.test.skip"=true
+#          -D"checkstyle.skip"=true
+#          -D"http.keepAlive"=false
+#          -D"maven.wagon.http.pool"=false
+#          -D"maven.wagon.http.retryHandler.count"=3
+#          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: |
-            application-webadmin/target/*.jar
+#            application-webadmin/target/*.jar
             docker-compose.yml
             Dockerfile
           target: ${{ secrets.APP_PATH }}/boot
