@@ -40,6 +40,8 @@ jobs:
 #          -D"maven.wagon.http.pool"=false
 #          -D"maven.wagon.http.retryHandler.count"=3
 #          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+      - name: List files
+        run: ls -al
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
