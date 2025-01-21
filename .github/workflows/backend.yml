@@ -45,7 +45,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: application-webadmin/target/tis-1.0.0.jar
+          source: application-webadmin/target/application-webadmin-1.0.0.jar
           target: ${{ secrets.APP_PATH }}
       - name: Restart application
         uses: appleboy/ssh-action@v1.2.0
