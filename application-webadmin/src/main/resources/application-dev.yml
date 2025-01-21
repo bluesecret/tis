@@ -238,5 +238,5 @@ rocketmq:
   producer:
     group: OrangeFlowMessageQueue
 
-host: 18.233.156.193
+host: 54.164.201.238
 password: hello123

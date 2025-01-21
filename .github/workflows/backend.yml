@@ -13,7 +13,6 @@ concurrency:
 jobs:
   build:
     name: Build
-#    needs: [ code-style ]
     strategy:
       matrix:
         java: [ '17' ]
@@ -40,8 +39,6 @@ jobs:
           -D"maven.wagon.http.pool"=false
           -D"maven.wagon.http.retryHandler.count"=3
           -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
-      - name: List files
-        run: ls -al
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -58,4 +55,4 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             pkill -f 'java -jar' || true
-            nohup java -jar ${{ secrets.APP_PATH }}/app.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
+            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/app.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
