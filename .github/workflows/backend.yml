@@ -51,7 +51,7 @@ jobs:
           source: |
             ./docker-compose.yml
             ./Dockerfile
-          target: ${{ secrets.APP_PATH }}/boot
+          target: ${{ secrets.APP_PATH }}/boot/
 #      - name: Restart application
 #        uses: appleboy/ssh-action@v1.2.0
 #        with:
