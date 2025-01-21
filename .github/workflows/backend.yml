@@ -65,7 +65,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           source: |
 #            application-webadmin/target/*.jar
-            docker-compose.yml
+#            docker-compose.yml
             Dockerfile
           target: ${{ secrets.APP_PATH }}/boot
 #      - name: Restart application
