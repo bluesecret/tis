@@ -5,6 +5,7 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    command: redis-server --requirepass hello123
     volumes:
       - ./data/redis:/data # 指定 Redis 数据卷目录
 
@@ -31,15 +32,3 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql # 指定 MySQL 数据卷目录
       - ./config/my.cnf:/etc/mysql/my.cnf # 自定义配置文件
-
-  app:
-    build:
-      context: ./boot # Spring Boot 应用的目录
-      dockerfile: Dockerfile # Dockerfile 文件名
-    container_name: app
-    ports:
-      - "8082:8082" # 将容器内部的8080端口映射到主机的8081端口
-    depends_on:
-      - redis
-      - minio
-      - mysql

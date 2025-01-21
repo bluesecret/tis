@@ -238,5 +238,5 @@ rocketmq:
   producer:
     group: OrangeFlowMessageQueue
 
-host: ec2-18-206-88-230.compute-1.amazonaws.com
+host: 18.233.156.193
 password: hello123
