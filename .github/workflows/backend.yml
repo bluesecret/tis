@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-        os: [ 'ubuntu-latest', 'windows-latest' ]
+        os: [ 'ubuntu-latest' ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 80
     steps:
@@ -57,3 +57,11 @@ jobs:
           -D"maven.wagon.http.pool"=false
           -D"maven.wagon.http.retryHandler.count"=3
           -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+      - name: Upload to EC2
+        uses: appleboy/scp-action@v0.2.1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: application-webadmin/target/*.jar
+          target: ${{ secrets.APP_PATH }}/app.jar
