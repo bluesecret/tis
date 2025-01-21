@@ -48,14 +48,14 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: "Dockerfile,application-webadmin/target/*.jar"
-          target: ${{ secrets.APP_PATH }}/boot
-#      - name: Restart application
-#        uses: appleboy/ssh-action@v1.2.0
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USER }}
-#          key: ${{ secrets.EC2_KEY }}
-#          script: |
-#            pkill -f 'java -jar' || true
-#            nohup java -jar ${{ secrets.APP_PATH }}/app.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
+          source: application-webadmin/target/*.jar
+          target: ${{ secrets.APP_PATH }}/app.jar
+      - name: Restart application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            pkill -f 'java -jar' || true
+            nohup java -jar ${{ secrets.APP_PATH }}/app.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
