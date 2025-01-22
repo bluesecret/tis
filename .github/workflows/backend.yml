@@ -32,7 +32,7 @@ jobs:
         run: chmod +x ./mvnw
       - name: Build distribution tar
         run: >-
-          ./mvnw -B install
+          ./mvnw -B install -P release
           -D"maven.test.skip"=true
           -D"checkstyle.skip"=true
           -D"http.keepAlive"=false
