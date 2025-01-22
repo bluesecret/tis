@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "EC2_HOST=${{ secrets.PRODUCTION_EC2_HOST }}" >> $GITHUB_ENV
           echo "EC2_USER=${{ secrets.PRODUCTION_EC2_USER }}" >> $GITHUB_ENV
-          echo "EC2_KEY=${{ secrets.PRODUCTION_EC2_KEY }}" >> $GITHUB_ENV
+          printf "EC2_KEY=%s\n" "${{ secrets.PRODUCTION_EC2_KEY }}" >> $GITHUB_ENV
           echo "APP_PATH=${{ secrets.PRODUCTION_APP_PATH }}" >> $GITHUB_ENV
           echo "APP_PORT=${{ secrets.PRODUCTION_APP_PORT }}" >> $GITHUB_ENV
         if: ${{ env.DEPLOY_ENV == 'production' }}
@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "EC2_HOST=${{ secrets.TEST_EC2_HOST }}" >> $GITHUB_ENV
           echo "EC2_USER=${{ secrets.TEST_EC2_USER }}" >> $GITHUB_ENV
-          echo "EC2_KEY=${{ secrets.TEST_EC2_KEY }}" >> $GITHUB_ENV
+          printf "EC2_KEY=%s\n" "${{ secrets.TEST_EC2_KEY }}" >> $GITHUB_ENV
           echo "APP_PATH=${{ secrets.TEST_APP_PATH }}" >> $GITHUB_ENV
           echo "APP_PORT=${{ secrets.TEST_APP_PORT }}" >> $GITHUB_ENV
         if: ${{ env.DEPLOY_ENV == 'test' }}
@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "EC2_HOST=${{ secrets.DEVELOPMENT_EC2_HOST }}" >> $GITHUB_ENV
           echo "EC2_USER=${{ secrets.DEVELOPMENT_EC2_USER }}" >> $GITHUB_ENV
-          echo "EC2_KEY=${{ secrets.DEVELOPMENT_EC2_KEY }}" >> $GITHUB_ENV
+          printf "EC2_KEY=%s\n" "${{ secrets.DEVELOPMENT_EC2_KEY }}" >> $GITHUB_ENV
           echo "APP_PATH=${{ secrets.DEVELOPMENT_APP_PATH }}" >> $GITHUB_ENV
           echo "APP_PORT=${{ secrets.DEVELOPMENT_APP_PORT }}" >> $GITHUB_ENV
         if: ${{ env.DEPLOY_ENV == 'development' }}
