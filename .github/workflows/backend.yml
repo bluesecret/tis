@@ -2,6 +2,10 @@ name: Backend
 
 on:
   push:
+    branches:
+      - develop
+      - test
+      - main
   pull_request:
     paths-ignore:
       - '**/*.md'
@@ -11,26 +15,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build
+  build-and-deploy:
+    name: Build and Deploy
     strategy:
       matrix:
         java: [ '17' ]
         os: [ 'ubuntu-latest' ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 80
+
+    env:
+      DEPLOY_ENV: ${{ github.ref == 'refs/heads/main' && 'PRODUCTION' || github.ref == 'refs/heads/test' && 'TEST' || github.ref == 'refs/heads/develop' && 'DEVELOPMENT' }}
+      SPRING_PROFILE: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/test' && 'test' || github.ref == 'refs/heads/develop' && 'dev' }}
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
+
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
+
       - name: Setup mvnw permissions
         run: chmod +x ./mvnw
-      - name: Build distribution tar
+
+      - name: Build application
         run: >-
           ./mvnw -B install -P release
           -D"maven.test.skip"=true
@@ -39,20 +51,22 @@ jobs:
           -D"maven.wagon.http.pool"=false
           -D"maven.wagon.http.retryHandler.count"=3
           -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets[env.DEPLOY_ENV + '_EC2_HOST'] }}
+          username: ${{ secrets[env.DEPLOY_ENV + '_EC2_USER'] }}
+          key: ${{ secrets[env.DEPLOY_ENV + '_EC2_KEY'] }}
           source: application-webadmin/target/tis-1.0.0.jar
-          target: ${{ secrets.APP_PATH }}
+          target: ${{ secrets[env.DEPLOY_ENV + '_APP_PATH'] }}
+
       - name: Restart application
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets[env.DEPLOY_ENV + '_EC2_HOST'] }}
+          username: ${{ secrets[env.DEPLOY_ENV + '_EC2_USER'] }}
+          key: ${{ secrets[env.DEPLOY_ENV + '_EC2_KEY'] }}
           script: |
-            pkill -f 'java -jar' || true
-            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/application-webadmin/target/tis-1.0.0.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
+            pkill -f 'java --add-opens' || true
+            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets[env.DEPLOY_ENV + '_APP_PATH'] }}/application-webadmin/target/tis-1.0.0.jar --spring.profiles.active=${{ env.SPRING_PROFILE }} --server.port=${{ secrets[env.DEPLOY_ENV + '_APP_PORT'] }} > ${{ secrets[env.DEPLOY_ENV + '_APP_PATH'] }}/app.log 2>&1 &

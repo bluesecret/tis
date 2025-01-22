@@ -76,17 +76,17 @@ application:
 third-party:
   # 第三方系统接入的用户鉴权配置。
   auth:
-  - appCode: orange-forms-default
-    # 访问第三方系统接口的URL前缀，橙单会根据功能添加接口路径的其余部分，
-    # 比如获取用户Token的接口 http://localhost:8083/orangePluginTest/getTokenData
-    baseUrl: http://localhost:8083/orangePlugin
-    # 第三方应用鉴权的HTTP请求令牌头的KEY。
-    tokenHeaderKey: Authorization
-    # 第三方返回的用户Token数据的缓存过期时长，单位秒。
-    # 如果为0，则不缓存，每次涉及第三方的请求，都会发出http请求，交由第三方验证，这样对系统性能会有影响。
-    tokenExpiredSeconds: 60
-    # 第三方返回的权限数据的缓存过期时长，单位秒。
-    permExpiredSeconds: 86400
+    - appCode: orange-forms-default
+      # 访问第三方系统接口的URL前缀，橙单会根据功能添加接口路径的其余部分，
+      # 比如获取用户Token的接口 http://localhost:8083/orangePluginTest/getTokenData
+      baseUrl: http://localhost:8083/orangePlugin
+      # 第三方应用鉴权的HTTP请求令牌头的KEY。
+      tokenHeaderKey: Authorization
+      # 第三方返回的用户Token数据的缓存过期时长，单位秒。
+      # 如果为0，则不缓存，每次涉及第三方的请求，都会发出http请求，交由第三方验证，这样对系统性能会有影响。
+      tokenExpiredSeconds: 60
+      # 第三方返回的权限数据的缓存过期时长，单位秒。
+      permExpiredSeconds: 86400
 
 # 这里仅仅是一个第三方配置的示例，如果没有接入斯三方系统，
 # 这里的配置项也不会影响到系统的行为，如果觉得多余，也可以手动删除。
@@ -95,15 +95,15 @@ common-ext:
   # 这里可以配置多个第三方应用，这里的应用数量，通常会和上面third-party.auth的配置数量一致。
   apps:
     # 应用唯一编码，尽量不要使用中文。
-  - appCode: orange-forms-default
-    # 业务组件的数据源配置。
-    bizWidgetDatasources:
-    # 组件的类型，多个类型之间可以逗号分隔。
-    - types: upms_user,upms_dept
-      # 组件获取列表数据的接口地址。
-      listUrl: http://localhost:8083/orangePlugin/listBizWidgetData
-      # 组件获取详情数据的接口地址。
-      viewUrl: http://localhost:8083/orangePlugin/viewBizWidgetData
+    - appCode: orange-forms-default
+      # 业务组件的数据源配置。
+      bizWidgetDatasources:
+        # 组件的类型，多个类型之间可以逗号分隔。
+        - types: upms_user,upms_dept
+          # 组件获取列表数据的接口地址。
+          listUrl: http://localhost:8083/orangePlugin/listBizWidgetData
+          # 组件获取详情数据的接口地址。
+          viewUrl: http://localhost:8083/orangePlugin/viewBizWidgetData
 
 common-sequence:
   # Snowflake 分布式Id生成算法所需的WorkNode参数值。
@@ -163,7 +163,7 @@ common-report:
   isVisualization: false
   # 下面的url列表，请保持反斜杠(/)结尾。
   viewUrlList:
-  - ${common-report.urlPrefix}/reportOperation/listData/
+    - ${common-report.urlPrefix}/reportOperation/listData/
 
 common-social:
   # 钉钉的第三方应用配置，下面的配置项需要根据自身的实际应用进行修改。
@@ -196,9 +196,9 @@ common-social:
 minio:
   enabled: true
   endpoint: http://${host}:9000
-  accessKey: admin
-  secretKey: admin123456
-  bucketName: application
+  accessKey: nKXq5KoNGsvJzBlYzJLB
+  secretKey: HyP3fo8h7iRYhr6FBiOTYE2xlaMLVrbEE3HweQKY
+  bucketName: savefile
 
 sa-token:
   # token 名称（同时也是 cookie 名称）

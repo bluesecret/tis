@@ -196,9 +196,9 @@ common-social:
 minio:
   enabled: true
   endpoint: http://${host}:9000
-  accessKey: admin
-  secretKey: admin123456
-  bucketName: application
+  accessKey: nKXq5KoNGsvJzBlYzJLB
+  secretKey: HyP3fo8h7iRYhr6FBiOTYE2xlaMLVrbEE3HweQKY
+  bucketName: savefile
 
 sa-token:
   # token 名称（同时也是 cookie 名称）
