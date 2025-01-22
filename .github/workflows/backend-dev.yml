@@ -1,0 +1,63 @@
+name: Backend
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: backend-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    strategy:
+      matrix:
+        java: [ '17' ]
+        os: [ 'ubuntu-latest' ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 80
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+
+      - name: Setup mvnw permissions
+        run: chmod +x ./mvnw
+
+      - name: Build application
+        run: >-
+          ./mvnw -B install -P release
+          -D"maven.test.skip"=true
+          -D"checkstyle.skip"=true
+          -D"http.keepAlive"=false
+          -D"maven.wagon.http.pool"=false
+          -D"maven.wagon.http.retryHandler.count"=3
+          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+
+      - name: Upload to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.DEVELOPMENT_EC2_HOST }}
+          username: ${{ env.DEVELOPMENT_EC2_USER }}
+          key: ${{ env.DEVELOPMENT_EC2_KEY }}
+          source: application-webadmin/target/tis-1.0.0.jar
+          target: ${{ env.DEVELOPMENT_APP_PATH }}
+
+      - name: Restart application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ env.DEVELOPMENT_EC2_HOST }}
+          username: ${{ env.DEVELOPMENT_EC2_USER }}
+          key: ${{ env.DEVELOPMENT_EC2_KEY }}
+          script: |
+            pkill -f 'java --add-opens' || true
+            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ env.DEVELOPMENT_APP_PATH }}/application-webadmin/target/tis-1.0.0.jar --spring.profiles.active=dev --server.port=${{ env.DEVELOPMENT_APP_PORT }} > ${{ env.DEVELOPMENT_APP_PATH }}/app.log 2>&1 &
