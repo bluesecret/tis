@@ -3,12 +3,7 @@ name: Backend
 on:
   push:
     branches:
-      - develop
       - test
-      - main
-  pull_request:
-    paths-ignore:
-      - '**/*.md'
 
 concurrency:
   group: backend-${{ github.event.pull_request.number || github.ref }}
@@ -23,10 +18,6 @@ jobs:
         os: [ 'ubuntu-latest' ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 80
-
-    env:
-      DEPLOY_ENV: ${{ github.ref == 'refs/heads/main' && 'PRODUCTION' || github.ref == 'refs/heads/test' && 'TEST' || github.ref == 'refs/heads/develop' && 'DEVELOPMENT' }}
-      SPRING_PROFILE: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/test' && 'test' || github.ref == 'refs/heads/develop' && 'dev' }}
 
     steps:
       - uses: actions/checkout@v3
@@ -52,48 +43,21 @@ jobs:
           -D"maven.wagon.http.retryHandler.count"=3
           -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
 
-      - name: Set deployment secrets
-        run: |
-          echo "EC2_HOST=${{ secrets.PRODUCTION_EC2_HOST }}" >> $GITHUB_ENV
-          echo "EC2_USER=${{ secrets.PRODUCTION_EC2_USER }}" >> $GITHUB_ENV
-          printf "EC2_KEY=%s\n" "${{ secrets.PRODUCTION_EC2_KEY }}" >> $GITHUB_ENV
-          echo "APP_PATH=${{ secrets.PRODUCTION_APP_PATH }}" >> $GITHUB_ENV
-          echo "APP_PORT=${{ secrets.PRODUCTION_APP_PORT }}" >> $GITHUB_ENV
-        if: ${{ env.DEPLOY_ENV == 'production' }}
-
-      - name: Set deployment secrets
-        run: |
-          echo "EC2_HOST=${{ secrets.TEST_EC2_HOST }}" >> $GITHUB_ENV
-          echo "EC2_USER=${{ secrets.TEST_EC2_USER }}" >> $GITHUB_ENV
-          printf "EC2_KEY=%s\n" "${{ secrets.TEST_EC2_KEY }}" >> $GITHUB_ENV
-          echo "APP_PATH=${{ secrets.TEST_APP_PATH }}" >> $GITHUB_ENV
-          echo "APP_PORT=${{ secrets.TEST_APP_PORT }}" >> $GITHUB_ENV
-        if: ${{ env.DEPLOY_ENV == 'test' }}
-
-      - name: Set deployment secrets
-        run: |
-          echo "EC2_HOST=${{ secrets.DEVELOPMENT_EC2_HOST }}" >> $GITHUB_ENV
-          echo "EC2_USER=${{ secrets.DEVELOPMENT_EC2_USER }}" >> $GITHUB_ENV
-          printf "EC2_KEY=%s\n" "${{ secrets.DEVELOPMENT_EC2_KEY }}" >> $GITHUB_ENV
-          echo "APP_PATH=${{ secrets.DEVELOPMENT_APP_PATH }}" >> $GITHUB_ENV
-          echo "APP_PORT=${{ secrets.DEVELOPMENT_APP_PORT }}" >> $GITHUB_ENV
-        if: ${{ env.DEPLOY_ENV == 'development' }}
-
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ env.EC2_HOST }}
-          username: ${{ env.EC2_USER }}
-          key: ${{ env.EC2_KEY }}
+          host: ${{ env.TEST_EC2_HOST }}
+          username: ${{ env.TEST_EC2_USER }}
+          key: ${{ env.TEST_EC2_KEY }}
           source: application-webadmin/target/tis-1.0.0.jar
-          target: ${{ env.APP_PATH }}
+          target: ${{ env.TEST_APP_PATH }}
 
       - name: Restart application
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ env.EC2_HOST }}
-          username: ${{ env.EC2_USER }}
-          key: ${{ env.EC2_KEY }}
+          host: ${{ env.TEST_EC2_HOST }}
+          username: ${{ env.TEST_EC2_USER }}
+          key: ${{ env.TEST_EC2_KEY }}
           script: |
             pkill -f 'java --add-opens' || true
-            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ env.APP_PATH }}/application-webadmin/target/tis-1.0.0.jar --spring.profiles.active=${{ env.SPRING_PROFILE }} --server.port=${{ env.APP_PORT }} > ${{ env.APP_PATH }}/app.log 2>&1 &
+            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ env.TEST_APP_PATH }}/application-webadmin/target/tis-1.0.0.jar --spring.profiles.active=test --server.port=${{ env.TEST_APP_PORT }} > ${{ env.TEST_APP_PATH }}/app.log 2>&1 &
