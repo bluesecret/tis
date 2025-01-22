@@ -111,7 +111,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <finalName>tis-${project.version}</finalName>
                 <plugins>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
