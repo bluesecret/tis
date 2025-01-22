@@ -35,7 +35,7 @@ jobs:
 
       - name: Build application
         run: >-
-          ./mvnw -B install -P release
+          ./mvnw -B install
           -D"maven.test.skip"=true
           -D"checkstyle.skip"=true
           -D"http.keepAlive"=false
