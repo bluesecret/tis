@@ -34,7 +34,7 @@ jobs:
 
       - name: Build distribution tar
         run: >-
-          ./mvnw -B install
+          ./mvnw -B install -p RELEASE
           -D"maven.test.skip"=true
           -D"checkstyle.skip"=true
           -D"http.keepAlive"=false
@@ -59,4 +59,4 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             pkill -f 'java --add-opens' || true
-            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/app.jar --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
+            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/application-webadmin/target/application-webadmin-1.0.0.jar --spring.profiles.active=dev --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
