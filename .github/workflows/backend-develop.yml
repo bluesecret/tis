@@ -59,10 +59,19 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "Testing SSH connection and running commands"
-            hostname
-            whoami
-            ps aux | grep 'java' | grep -v grep || true
+            echo "Stopping Java processes..."
+            set +e
+            pkill -f 'java'
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 0 ]; then
+              echo "Java process successfully stopped."
+            elif [ $EXIT_CODE -eq 1 ]; then
+              echo "No matching process found, ignoring."
+            else
+              echo "Error occurred in pkill, exit code: $EXIT_CODE"
+              exit $EXIT_CODE
+            fi
+            set -e
 
       - name: Start application
         uses: appleboy/ssh-action@v1.2.0
