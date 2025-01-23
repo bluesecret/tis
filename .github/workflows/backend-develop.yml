@@ -50,6 +50,7 @@ jobs:
 #          key: ${{ secrets.EC2_KEY }}
 #          source: application-webadmin/target/application-webadmin-1.0.0.jar
 #          target: ${{ secrets.APP_PATH }}
+#      pkill -f 'java --add-opens' || true
 
       - name: Restart application
         uses: appleboy/ssh-action@v1.2.0
@@ -57,6 +58,4 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          script: |
-            pkill -f 'java --add-opens' || true
-            nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/application-webadmin/target/application-webadmin-1.0.0.jar --spring.profiles.active=dev --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
+          script: nohup java --add-opens java.base/java.lang.reflect=ALL-UNNAMED -jar ${{ secrets.APP_PATH }}/application-webadmin/target/application-webadmin-1.0.0.jar --spring.profiles.active=dev --server.port=${{ secrets.APP_PORT }} > ${{ secrets.APP_PATH }}/app.log 2>&1 &
