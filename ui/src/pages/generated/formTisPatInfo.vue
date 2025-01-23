@@ -81,6 +81,7 @@
         <el-button
           type="primary"
           :size="layoutStore.defaultFormItemSize"
+          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:addTisPatInfo')"
           @click="onAddTisPatInfoClick()"
           >
           新建
@@ -88,6 +89,7 @@
         <el-button
           type="primary"
           :size="layoutStore.defaultFormItemSize"
+          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:exportTisPatInfo')"
           @click="onExportTisPatInfoClick()"
           >
           导出
@@ -99,12 +101,14 @@
           :show-file-list="false"
           accept=".xls,.xlsx"
           style="display: inline-block;"
+          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:importTisPatInfo')"
           :on-change="onImportTisPatInfoClick"
         >
           <template #trigger>
             <el-button
               type="primary"
               :size="layoutStore.defaultFormItemSize"
+              :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:importTisPatInfo')"
             >
               导入
             </el-button>
@@ -126,6 +130,7 @@
             type="primary"
             :size="layoutStore.defaultFormItemSize"
             @click.stop="onListTisPatResultClick(scope.row)"
+            :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:listTisPatResult')"
           >
             患者检测结果
           </el-button>
@@ -134,6 +139,7 @@
             type="primary"
             :size="layoutStore.defaultFormItemSize"
             @click.stop="onEditTisPatInfoClick(scope.row)"
+            :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:editTisPatInfo')"
           >
             编辑
           </el-button>
@@ -142,6 +148,7 @@
             type="primary"
             :size="layoutStore.defaultFormItemSize"
             @click.stop="onDeleteTisPatInfoClick(scope.row)"
+            :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:deleteTisPatInfo')"
           >
             删除
           </el-button>
