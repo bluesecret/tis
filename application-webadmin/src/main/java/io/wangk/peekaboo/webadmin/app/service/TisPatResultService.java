@@ -1,7 +1,6 @@
 package io.wangk.peekaboo.webadmin.app.service;
 
 import io.wangk.peekaboo.webadmin.app.model.*;
-import io.wangk.peekaboo.common.core.object.CallResult;
 import io.wangk.peekaboo.common.core.base.service.IBaseService;
 
 import java.util.*;
@@ -28,14 +27,6 @@ public interface TisPatResultService extends IBaseService<TisPatResult, Long> {
      * @param tisPatResultList 新增对象列表。
      */
     void saveNewBatch(List<TisPatResult> tisPatResultList);
-
-    /**
-     * 利用数据库的insertList语法，批量插入对象列表。通常适用于更大的插入数据量，如批量导入。
-     *
-     * @param tisPatResultList 新增对象列表。
-     * @param batchSize  每批插入的数量。如果该值小于等于0，则使用缺省值10000。
-     */
-    void saveNewBatch(List<TisPatResult> tisPatResultList, int batchSize);
 
     /**
      * 更新数据对象。
@@ -90,15 +81,4 @@ public interface TisPatResultService extends IBaseService<TisPatResult, Long> {
      * @return 查询结果集。
      */
     List<TisPatResult> getTisPatResultListWithRelation(TisPatResult filter, String orderBy);
-
-    /**
-     * 对批量导入数据列表进行数据合法性验证。
-     * 验证逻辑主要覆盖主表的常量字典字段、字典表字典字段、数据源字段和一对一关联数据是否存在。
-     *
-     * @param dataList 主表的数据列表。
-     * @param ignoreFieldSet 需要忽略校验的字典字段集合。通常对于字典反向翻译过来的字段适用，
-     *                       避免了二次验证，以提升效率。
-     * @return 验证结果。如果失败，包含具体的错误信息和导致错误的数据对象。
-     */
-    CallResult verifyImportList(List<TisPatResult> dataList, Set<String> ignoreFieldSet);
 }

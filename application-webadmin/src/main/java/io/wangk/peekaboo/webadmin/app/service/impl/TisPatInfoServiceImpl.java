@@ -64,31 +64,6 @@ public class TisPatInfoServiceImpl extends BaseService<TisPatInfo, Long> impleme
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveNewBatch(List<TisPatInfo> tisPatInfoList, int batchSize) {
-        if (CollUtil.isEmpty(tisPatInfoList)) {
-            return;
-        }
-        if (batchSize <= 0) {
-            batchSize = 10000;
-        }
-        int start = 0;
-        do {
-            int end = Math.min(tisPatInfoList.size(), start + batchSize);
-            List<TisPatInfo> subList = tisPatInfoList.subList(start, end);
-            // 如果数据量过大，同时当前表中存在createTime或updateTime等字段，可以考虑在外部创建一次 new Date()，
-            // 然后传入buildDefaultValue，这样可以减少对象的创建次数，降低GC，提升效率。橙单之所以没有这样生成，是因为
-            // 有些业务场景下需要按照这两个日期字段排序，因此我们只是在这里给出优化建议。
-            subList.forEach(this::buildDefaultValue);
-            tisPatInfoMapper.insertList(subList);
-            if (end == tisPatInfoList.size()) {
-                break;
-            }
-            start += batchSize;
-        } while (true);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
     public TisPatInfo saveNewWithRelation(TisPatInfo tisPatInfo, JSONObject relationData) {
         this.saveNew(tisPatInfo);
         this.saveOrUpdateRelationData(tisPatInfo, relationData);

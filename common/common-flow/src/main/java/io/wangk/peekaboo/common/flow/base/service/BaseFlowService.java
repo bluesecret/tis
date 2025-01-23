@@ -263,7 +263,7 @@ public abstract class BaseFlowService<M, K extends Serializable> extends BaseSer
         if (slaveData == null) {
             return;
         }
-        for (RelationStruct relationStruct : super.localRelationOneToOneStructList) {
+        for (BaseService.RelationStruct relationStruct : super.localRelationOneToOneStructList) {
             Field relationField = relationStruct.getRelationField();
             JSONObject slaveObject = slaveData.getJSONObject(relationField.getName());
             if (slaveObject != null) {

@@ -576,7 +576,7 @@ public class AutoFlowHelper {
         HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(req.getUrl());
         if (CollUtil.isNotEmpty(req.getUrlParamList())) {
-            for (ValueInfo valueInfo : req.getUrlParamList()) {
+            for (AutoTaskConfig.ValueInfo valueInfo : req.getUrlParamList()) {
                 String paramValue = this.calculateValue(valueInfo.getType(), valueInfo.getSrcValue(), variableData);
                 uriBuilder.queryParam(valueInfo.getKey(), paramValue);
             }
@@ -756,7 +756,7 @@ public class AutoFlowHelper {
     private HttpHeaders buildHttpHeaders(AutoHttpRequestInfo req, JSONObject variableData) {
         HttpHeaders headers = new HttpHeaders();
         if (CollUtil.isNotEmpty(req.getHeaderList())) {
-            for (ValueInfo valueInfo : req.getHeaderList()) {
+            for (AutoTaskConfig.ValueInfo valueInfo : req.getHeaderList()) {
                 String value = this.calculateValue(valueInfo.getType(), valueInfo.getSrcValue(), variableData);
                 headers.add(valueInfo.getKey(), value);
             }

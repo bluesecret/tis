@@ -12,15 +12,12 @@ import io.wangk.peekaboo.common.core.object.*;
 import io.wangk.peekaboo.common.core.util.*;
 import io.wangk.peekaboo.common.core.constant.*;
 import io.wangk.peekaboo.common.core.annotation.MyRequestBody;
-import io.wangk.peekaboo.webadmin.config.ApplicationConfig;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -35,8 +32,6 @@ import java.util.*;
 @RequestMapping("/admin/app/tisPatResult")
 public class TisPatResultController {
 
-    @Autowired
-    private ApplicationConfig appConfig;
     @Autowired
     private TisPatResultService tisPatResultService;
 
@@ -147,64 +142,6 @@ public class TisPatResultController {
         List<TisPatResult> tisPatResultList =
                 tisPatResultService.getTisPatResultListWithRelation(tisPatResultFilter, orderBy);
         return ResponseResult.success(MyPageUtil.makeResponseData(tisPatResultList, TisPatResultVo.class));
-    }
-
-    /**
-     * 导入主表数据列表。
-     *
-     * @param importFile 上传的文件，目前仅仅支持xlsx和xls两种格式。
-     * @return 应答结果对象。
-     */
-    @SaCheckPermission("tisPatResult.import")
-    @OperationLog(type = SysOperationLogType.IMPORT)
-    @PostMapping("/import")
-    public ResponseResult<Void> importBatch(
-            @RequestParam Boolean skipHeader,
-            @RequestParam("importFile") MultipartFile importFile) throws IOException {
-        String filename = ImportUtil.saveImportFile(appConfig.getUploadFileBaseDir(), null, importFile);
-        List<ImportUtil.ImportHeaderInfo> headerInfoList = ImportUtil.makeHeaderInfoList(TisPatResult.class, null);
-        // 下面是导入时需要注意的地方，如果我们缺省生成的代码，与实际情况存在差异，请手动修改。
-        // 1. 头信息数据字段，我们只是根据当前的主表实体对象生成了缺省数组，开发者可根据实际情况，对headerInfoList进行修改。
-        ImportUtil.ImportHeaderInfo[] headerInfos = headerInfoList.toArray(new ImportUtil.ImportHeaderInfo[]{});
-        // 2. 这里需要根据实际情况决定，导入文件中第一行是否为中文头信息，如果是可以跳过。这里我们默认为true。
-        // 这里根据自己的实际需求，为doImport的最后一个参数，传递需要进行字典转换的字段集合。
-        // 注意，集合中包含需要翻译的Java字段名，如: gradeId。
-        Set<String> translatedDictFieldSet = new HashSet<>();
-        List<TisPatResult> dataList =
-                ImportUtil.doImport(headerInfos, skipHeader, filename, TisPatResult.class, translatedDictFieldSet);
-        tisPatResultService.saveNewBatch(dataList, -1);
-        return ResponseResult.success();
-    }
-
-    /**
-     * 导出符合过滤条件的患者检测结果列表。
-     *
-     * @param tisPatResultDtoFilter 过滤对象。
-     * @param orderParam 排序参数。
-     * @throws IOException 文件读写失败。
-     */
-    @SaCheckPermission("tisPatResult.export")
-    @OperationLog(type = SysOperationLogType.EXPORT, saveResponse = false)
-    @PostMapping("/export")
-    public void export(
-            @MyRequestBody TisPatResultDto tisPatResultDtoFilter,
-            @MyRequestBody MyOrderParam orderParam) throws IOException {
-        TisPatResult tisPatResultFilter = MyModelUtil.copyTo(tisPatResultDtoFilter, TisPatResult.class);
-        String orderBy = MyOrderParam.buildOrderBy(orderParam, TisPatResult.class);
-        List<TisPatResult> resultList =
-                tisPatResultService.getTisPatResultListWithRelation(tisPatResultFilter, orderBy);
-        // 导出文件的标题数组
-        // NOTE: 下面的代码中仅仅导出了主表数据，主表聚合计算数据和主表关联字典的数据。
-        // 一对一从表数据的导出，可根据需要自行添加。如：headerMap.put("slaveFieldName.xxxField", "标题名称")
-        Map<String, String> headerMap = new LinkedHashMap<>(7);
-        headerMap.put("id", "主键Id");
-        headerMap.put("patId", "患者ID");
-        headerMap.put("projectName", "检测项目");
-        headerMap.put("result", "检测结果");
-        headerMap.put("remark1", "备用字段1");
-        headerMap.put("remark2", "备用字段2");
-        headerMap.put("remark3", "备用字段3");
-        ExportUtil.doExport(resultList, headerMap, "tisPatResult.xlsx");
     }
 
     /**

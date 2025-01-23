@@ -30,14 +30,6 @@ public interface TisPatInfoService extends IBaseService<TisPatInfo, Long> {
     void saveNewBatch(List<TisPatInfo> tisPatInfoList);
 
     /**
-     * 利用数据库的insertList语法，批量插入对象列表。通常适用于更大的插入数据量，如批量导入。
-     *
-     * @param tisPatInfoList 新增对象列表。
-     * @param batchSize  每批插入的数量。如果该值小于等于0，则使用缺省值10000。
-     */
-    void saveNewBatch(List<TisPatInfo> tisPatInfoList, int batchSize);
-
-    /**
      * 保存新增主表对象及关联对象。
      *
      * @param tisPatInfo 新增主表对象。
