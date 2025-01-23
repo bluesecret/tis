@@ -271,13 +271,6 @@ export const routers: Array<RouteRecordRaw> = [
         props: getProps,
         meta: {title: '患者信息管理', keepalive: true}
       },
-      {
-        path: 'formTisPatResult',
-        component: () => import('@/pages/generated/formTisPatResult.vue'),
-        name: 'formTisPatResult',
-        props: getProps,
-        meta: {title: '患者检测结果管理', keepalive: true}
-      },
     ],
   },
   // TODO 第三方接入路由

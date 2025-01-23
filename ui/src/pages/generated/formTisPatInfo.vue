@@ -73,48 +73,10 @@
       :row-config="{isCurrent: false, isHover: true}"
       :seq-config="{startIndex: ((formTisPatInfoTableWidgetCurrentPage - 1) * formTisPatInfoTableWidgetPageSize)}"
       :sort-config="{remote: true}"
-      :hasExtend="true"
+      :hasExtend="false"
       @sort-change="formTisPatInfoTableWidget.onSortChange"
       @refresh="formTisPatInfoTableWidget.refreshTable()"
     >
-      <template #operator>
-        <el-button
-          type="primary"
-          :size="layoutStore.defaultFormItemSize"
-          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:addTisPatInfo')"
-          @click="onAddTisPatInfoClick()"
-          >
-          新建
-        </el-button>
-        <el-button
-          type="primary"
-          :size="layoutStore.defaultFormItemSize"
-          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:exportTisPatInfo')"
-          @click="onExportTisPatInfoClick()"
-          >
-          导出
-        </el-button>
-        <el-upload
-          class="btn-import"
-          :auto-upload="false"
-          action=""
-          :show-file-list="false"
-          accept=".xls,.xlsx"
-          style="display: inline-block;"
-          :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:importTisPatInfo')"
-          :on-change="onImportTisPatInfoClick"
-        >
-          <template #trigger>
-            <el-button
-              type="primary"
-              :size="layoutStore.defaultFormItemSize"
-              :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:importTisPatInfo')"
-            >
-              导入
-            </el-button>
-          </template>
-        </el-upload>
-      </template>
       <vxe-column title="序号" type="seq" :index="formTisPatInfoTableWidget.getTableIndex" :width="80" />
       <vxe-column title="姓名" field="patName" />
       <vxe-column title="检测项目" field="projectId" />
@@ -129,19 +91,10 @@
             link
             type="primary"
             :size="layoutStore.defaultFormItemSize"
-            @click.stop="onListTisPatResultClick(scope.row)"
-            :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:listTisPatResult')"
-          >
-            患者检测结果
-          </el-button>
-          <el-button
-            link
-            type="primary"
-            :size="layoutStore.defaultFormItemSize"
             @click.stop="onEditTisPatInfoClick(scope.row)"
             :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:editTisPatInfo')"
           >
-            编辑
+            检测结果
           </el-button>
           <el-button
             link
@@ -209,7 +162,6 @@ import { TisPatInfoData } from '@/api/generated/tisPatInfoController';
 import { TisPatResultData } from '@/api/generated/tisPatResultController';
 import { TisPatInfoController, TisPatResultController } from '@/api/generated';
 import FormEditTisPatInfo from '@/pages/generated/formEditTisPatInfo.vue';
-import FormTisPatResult from '@/pages/generated/formTisPatResult.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -317,36 +269,7 @@ const loadFormTisPatInfoTableVerify = () => {
   return true;
 };
 /**
- * 新建
- */
-const onAddTisPatInfoClick = (row?: TisPatInfoData) => {
-  let params: ANY_OBJECT = {
-  };
-
-  Dialog
-    .show('新建', FormEditTisPatInfo, { area: '900px' }, { ...params, subPage: true })
-    .then(res => {
-      formTisPatInfoTableWidget.refreshTable();
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-};
-/**
- * 患者检测结果
- */
-const onListTisPatResultClick = (row?: TisPatInfoData) => {
-  let params: ANY_OBJECT = {
-    id: row?.id,
-  };
-
-  router.push({
-    name: 'formTisPatResult',
-    query: { ...params, subPage: true }
-  });
-};
-/**
- * 编辑
+ * 检测结果
  */
 const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   let params: ANY_OBJECT = {
@@ -354,44 +277,13 @@ const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   };
 
   Dialog
-    .show('编辑', FormEditTisPatInfo, { area: '900px' }, { ...params, subPage: true })
+    .show('检测结果', FormEditTisPatInfo, { area: '900px' }, { ...params, subPage: true })
     .then(res => {
       formTisPatInfoTableWidget.refreshTable();
     }).catch(e => {
       // TODO: 异常处理
       console.error(e);
     });
-};
-/**
- * 导出
- */
-const onExportTisPatInfoClick = (row?: TisPatInfoData) => {
-  let params: ANY_OBJECT = {
-  };
-
-  TisPatInfoController.export(params, '表格组件.xlsx').then(res => {
-    ElMessage.success('导出成功');
-  }).catch(e => {
-    ElMessage.error(e.errorMessage);
-  });
-};
-/**
- * 导入
- */
-const onImportTisPatInfoClick = (file) => {
-  let params: ANY_OBJECT = {
-    importFile: file.raw,
-    // 是否忽略表头
-    skipHeader: false
-  };
-
-  TisPatInfoController.import(params).then(res => {
-    ElMessage.success('导入成功');
-    formTisPatInfoTableWidget.refreshTable();
-  }).catch(e => {
-    // TODO: 异常处理
-    console.error(e);
-  });
 };
 /**
  * 删除

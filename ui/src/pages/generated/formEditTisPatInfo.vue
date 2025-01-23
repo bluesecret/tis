@@ -21,6 +21,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -34,6 +35,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -47,6 +49,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -60,6 +63,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -73,6 +77,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -86,6 +91,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -99,6 +105,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -112,6 +119,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -125,6 +133,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -138,6 +147,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -151,6 +161,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -164,6 +175,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -177,6 +189,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -190,6 +203,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -258,12 +272,32 @@
               />
             </el-form-item>
           </el-col>
+          <el-col :span="24">
+            <table-box
+              ref="tisPatResult"
+              :data="tisPatResultWidgetDataList"
+              style="height: 300px"
+              :size="layoutStore.defaultFormItemSize"
+              :row-config="{isCurrent: false, isHover: true}"
+              :seq-config="{startIndex: ((tisPatResultWidgetCurrentPage - 1) * tisPatResultWidgetPageSize)}"
+              :sort-config="{remote: false}"
+              :hasExtend="false"
+              @refresh="tisPatResultWidget.refreshTable()"
+            >
+              <vxe-column title="序号" type="seq" :index="tisPatResultWidget.getTableIndex" :width="80" />
+              <template slot="empty">
+                <div class="table-empty unified-font">
+                  <img src="@/assets/img/empty.png">
+                  <span>暂无数据</span>
+                </div>
+              </template>
+            </table-box>
+          </el-col>
         </el-row>
       </el-form>
     </el-scrollbar>
     <el-row class="footer-box" type="flex" justify="end" align="middle">
       <el-button :size="layoutStore.defaultFormItemSize" @click="onCancel()">取消</el-button>
-      <el-button :size="layoutStore.defaultFormItemSize" type="primary" @click="onSubmitTisPatInfoClick()">保存</el-button>
     </el-row>
   </div>
 </template>
@@ -461,12 +495,69 @@ const loadTisPatInfoData = () => {
     };
     TisPatInfoController.view(params).then(res => {
       formData.TisPatInfo = { ...res.data };
+      tisPatResultWidget.refreshTable();
       resolve();
     }).catch(e => {
       reject(e);
     });
   });
 };
+/**
+ * 患者检测结果数据获取函数，返回Promise
+ */
+const loadTisPatResultWidgetData = (params: ANY_OBJECT) => {
+  if (params == null) params = {};
+  params = {
+    ...params,
+    tisPatResultDtoFilter: {
+      patId: props.id ||formData.TisPatInfo.id
+    }
+  };
+  return new Promise((resolve, reject) => {
+    TisPatResultController.list(params).then(res => {
+      // 级联更新设置临时唯一id
+      let tempTime = new Date().getTime();
+      nextTick(() => {
+        formData.TisPatInfo.tisPatResultList = tisPatResultWidgetDataList.value;
+      });
+      resolve({
+        dataList: res.data.dataList.map((item, index) => {
+          return {
+            __cascade_add_temp_id__: tempTime + index,
+            ...item
+          }
+        }),
+        totalCount: res.data.totalCount
+      });
+    }).catch(e => {
+      reject(e);
+    });
+  });
+};
+/**
+ * 患者检测结果数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ */
+const loadTisPatResultVerify = () => {
+  return true;
+};
+// 患者检测结果表格组件参数
+const tisPatResultOptions: TableOptions<TisPatResultData> = {
+  loadTableData: loadTisPatResultWidgetData,
+  verifyTableParameter: loadTisPatResultVerify,
+  paged: false,
+  rowSelection: false,
+  orderFieldName: undefined,
+  ascending: true,
+};
+// 患者检测结果表格组件
+const tisPatResult = ref();
+const tisPatResultWidget = useTable(tisPatResultOptions);
+const {
+  dataList: tisPatResultWidgetDataList,
+  currentPage: tisPatResultWidgetCurrentPage,
+  pageSize: tisPatResultWidgetPageSize,
+  totalCount: tisPatResultWidgetTotalCount,
+} = tisPatResultWidget;
 const onUploadError = () => {
   ElMessage.error('文件上传失败');
 };
@@ -475,6 +566,7 @@ const onUploadLimit = () => {
 };
 const refreshFormEditTisPatInfo = () => {
   // 刷新段落
+  tisPatResultWidget.refreshTable();
 };
 /**
  * 重置过滤值
@@ -487,55 +579,6 @@ const resetFormEditTisPatInfo = () => {
  */
 const resetFilter = () => {
   resetFormEditTisPatInfo();
-};
-/**
- * 保存
- */
-const onSubmitTisPatInfoClick = () => {
-  formEditTisPatInfoRef.value.validate((valid) => {
-    if (!valid) return;
-    // 级联操作
-    if (!props.saveOnSubmit) {
-      let retFormData = {
-        ...formData.TisPatInfo
-      };
-  props.dialog?.submit(retFormData);
-      return;
-    }
-    let params: ANY_OBJECT = {
-      tisPatInfoDto: {
-        id: formData.TisPatInfo.id,
-        patName: formData.TisPatInfo.patName,
-        batchNo: formData.TisPatInfo.batchNo,
-        age: formData.TisPatInfo.age,
-        projectId: formData.TisPatInfo.projectId,
-        sex: formData.TisPatInfo.sex,
-        sampleNo: formData.TisPatInfo.sampleNo,
-        patNo: formData.TisPatInfo.patNo,
-        sampleType: formData.TisPatInfo.sampleType,
-        operator: formData.TisPatInfo.operator,
-        cutoffVal: formData.TisPatInfo.cutoffVal,
-        rangeVal: formData.TisPatInfo.rangeVal,
-        picPath: formData.TisPatInfo.picPath,
-        testTime: formData.TisPatInfo.testTime,
-        testUnit: formData.TisPatInfo.testUnit,
-        testStat: formData.TisPatInfo.testStat,
-        filePath: formData.TisPatInfo.filePath,
-        remark1: formData.TisPatInfo.remark1,
-        remark2: formData.TisPatInfo.remark2,
-        remark3: formData.TisPatInfo.remark3,
-      }
-    };
-
-    let httpCall = isEdit.value ? TisPatInfoController.update : TisPatInfoController.add;
-    httpCall(params).then(res => {
-      ElMessage.success('保存成功');
-      props.dialog?.submit();
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-  });
 };
 const formInit = () => {
   loadTisPatInfoData().then(res => {
