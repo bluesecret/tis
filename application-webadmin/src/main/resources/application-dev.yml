@@ -238,5 +238,5 @@ rocketmq:
   producer:
     group: OrangeFlowMessageQueue
 
-host: 127.0.0.1
+host: 34.228.152.214
 password: Hero2025!
