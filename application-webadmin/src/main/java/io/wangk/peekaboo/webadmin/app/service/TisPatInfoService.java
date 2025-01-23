@@ -7,7 +7,7 @@ import io.wangk.peekaboo.common.core.base.service.IBaseService;
 import java.util.*;
 
 /**
- * 患者信息数据操作服务接口。
+ * 患者数据操作服务接口。
  *
  * @author wangk
  * @date 2025-01-14

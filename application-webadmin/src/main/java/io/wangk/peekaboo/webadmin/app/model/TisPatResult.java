@@ -1,17 +1,20 @@
 package io.wangk.peekaboo.webadmin.app.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.wangk.peekaboo.common.core.base.model.BaseModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 患者检测结果实体对象。
+ * 检查结果实体对象。
  *
  * @author wangk
  * @date 2025-01-14
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "tis_pat_result")
-public class TisPatResult {
+public class TisPatResult extends BaseModel {
 
     /**
      * 主键Id。

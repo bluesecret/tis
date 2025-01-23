@@ -269,7 +269,14 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/generated/formTisPatInfo.vue'),
         name: 'formTisPatInfo',
         props: getProps,
-        meta: {title: '患者信息管理', keepalive: true}
+        meta: {title: '患者管理', keepalive: true}
+      },
+      {
+        path: 'formTisPatResult',
+        component: () => import('@/pages/generated/formTisPatResult.vue'),
+        name: 'formTisPatResult',
+        props: getProps,
+        meta: {title: '检查结果管理', keepalive: true}
       },
     ],
   },

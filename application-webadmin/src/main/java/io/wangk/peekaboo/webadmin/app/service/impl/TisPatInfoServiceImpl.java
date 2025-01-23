@@ -8,6 +8,7 @@ import io.wangk.peekaboo.webadmin.app.service.*;
 import io.wangk.peekaboo.webadmin.app.dao.*;
 import io.wangk.peekaboo.webadmin.app.model.*;
 import io.wangk.peekaboo.common.core.base.dao.BaseDaoMapper;
+import io.wangk.peekaboo.common.core.object.TokenData;
 import io.wangk.peekaboo.common.core.object.MyRelationParam;
 import io.wangk.peekaboo.common.core.base.service.BaseService;
 import io.wangk.peekaboo.common.sequence.wrapper.IdGeneratorWrapper;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * 患者信息数据操作服务类。
+ * 患者数据操作服务类。
  *
  * @author wangk
  * @date 2025-01-14
@@ -73,6 +74,9 @@ public class TisPatInfoServiceImpl extends BaseService<TisPatInfo, Long> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean update(TisPatInfo tisPatInfo, TisPatInfo originalTisPatInfo) {
+        tisPatInfo.setUpdateUserId(TokenData.takeFromRequest().getUserId());
+        tisPatInfo.setCreateTime(originalTisPatInfo.getCreateTime());
+        tisPatInfo.setUpdateTime(new Date());
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
         UpdateWrapper<TisPatInfo> uw = this.createUpdateQueryForNullValue(tisPatInfo, tisPatInfo.getId());
         return tisPatInfoMapper.update(tisPatInfo, uw) == 1;
@@ -132,6 +136,11 @@ public class TisPatInfoServiceImpl extends BaseService<TisPatInfo, Long> impleme
         if (tisPatInfo.getId() == null) {
             tisPatInfo.setId(idGenerator.nextLongId());
         }
+        TokenData tokenData = TokenData.takeFromRequest();
+        tisPatInfo.setUpdateUserId(tokenData.getUserId());
+        Date now = new Date();
+        tisPatInfo.setCreateTime(now);
+        tisPatInfo.setUpdateTime(now);
         return tisPatInfo;
     }
 }

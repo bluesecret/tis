@@ -2,16 +2,18 @@ package io.wangk.peekaboo.webadmin.app.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 
 /**
- * 患者信息VO视图对象。
+ * 患者VO视图对象。
  *
  * @author wangk
  * @date 2025-01-14
  */
-@Schema(description = "患者信息VO视图对象")
+@Schema(description = "患者VO视图对象")
 @Data
 public class TisPatInfoVo {
 
@@ -112,7 +114,7 @@ public class TisPatInfoVo {
     private String testStat;
 
     /**
-     * 文件。
+     * txt文件路径。
      */
     @Schema(description = "txt文件路径")
     private String filePath;
@@ -134,6 +136,30 @@ public class TisPatInfoVo {
      */
     @Schema(description = "备用字段3")
     private String remark3;
+
+    /**
+     * 创建时间。
+     */
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    /**
+     * 创建用户。
+     */
+    @Schema(description = "创建用户")
+    private Long createdUserId;
+
+    /**
+     * 修改时间。
+     */
+    @Schema(description = "修改时间")
+    private Date updateTime;
+
+    /**
+     * 修改用户。
+     */
+    @Schema(description = "修改用户")
+    private Long updateUserId;
 
     /**
      * TisPatResult 的一对多关联表数据对象。数据对应类型为TisPatResult。

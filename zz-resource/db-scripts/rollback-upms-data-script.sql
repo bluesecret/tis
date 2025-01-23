@@ -71,9 +71,8 @@ DELETE FROM `sys_menu` WHERE menu_id = 1879052428909744279;
 DELETE FROM `sys_menu` WHERE menu_id = 1879052428909744280;
 DELETE FROM `sys_menu` WHERE menu_id = 1882320660345131008;
 DELETE FROM `sys_menu` WHERE menu_id = 1882320825722343424;
-DELETE FROM `sys_menu` WHERE menu_id = 1882320959277371475;
-DELETE FROM `sys_menu` WHERE menu_id = 1882320959277371478;
-DELETE FROM `sys_menu` WHERE menu_id = 1882320959277371481;
+DELETE FROM `sys_menu` WHERE menu_id = 1882452385217908813;
+DELETE FROM `sys_menu` WHERE menu_id = 1882452385217908814;
 
 -- ----------------------------
 -- 以下记录用于移动端，这里的注释，是为了便于老用户进行手动数据补偿。

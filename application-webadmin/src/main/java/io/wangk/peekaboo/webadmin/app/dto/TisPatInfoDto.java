@@ -8,12 +8,12 @@ import lombok.Data;
 import jakarta.validation.constraints.*;
 
 /**
- * 患者信息Dto对象。
+ * 患者Dto对象。
  *
  * @author wangk
  * @date 2025-01-14
  */
-@Schema(description = "患者信息Dto对象")
+@Schema(description = "患者Dto对象")
 @Data
 public class TisPatInfoDto {
 
@@ -65,8 +65,9 @@ public class TisPatInfoDto {
 
     /**
      * 患者编号。
+     * NOTE: 可支持等于操作符的列表数据过滤。
      */
-    @Schema(description = "患者编号。")
+    @Schema(description = "患者编号。可支持等于操作符的列表数据过滤。")
     private String patNo;
 
     /**
@@ -120,7 +121,7 @@ public class TisPatInfoDto {
     private String testStat;
 
     /**
-     * 文件。
+     * txt文件路径。
      */
     @Schema(description = "txt文件路径。")
     private String filePath;
@@ -142,4 +143,10 @@ public class TisPatInfoDto {
      */
     @Schema(description = "备用字段3。")
     private String remark3;
+
+    /**
+     * 创建用户。
+     */
+    @Schema(description = "创建用户。")
+    private Long createdUserId;
 }

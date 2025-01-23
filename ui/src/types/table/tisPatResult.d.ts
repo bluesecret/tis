@@ -15,6 +15,14 @@ interface TisPatResult {
   remark2?: string | undefined;
   // 备用字段3
   remark3?: string | undefined;
+  // 创建时间
+  createTime?: string | undefined;
+  // 创建用户
+  createUserId?: number | undefined;
+  // 修改时间
+  updateTime?: string | undefined;
+  // 修改用户
+  updateUserId?: number | undefined;
 }
 
 export default TisPatResult;

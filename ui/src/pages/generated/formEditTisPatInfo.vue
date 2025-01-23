@@ -21,7 +21,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -35,7 +34,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -49,7 +47,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -63,7 +60,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -77,7 +73,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -91,7 +86,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -105,7 +99,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -119,7 +112,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -133,7 +125,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -147,7 +138,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -161,21 +151,21 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="患者卡条" prop="TisPatInfo.picPath">
-              <el-input
-                class="input-item"
-                v-model="formData.TisPatInfo.picPath"
-                type="text"
-                placeholder=""
-                :clearable="true"
-                :show-word-limit="false"
-                maxlength=""
-                :readonly="true"
+              <custom-upload
+                v-model="picPathWidgetFileList"
+                name="uploadFile"
+                :size="layoutStore.defaultFormItemSize"
+                type="expand"
+                :headers="getUploadHeaders"
+                :action="getUploadActionUrl('/admin/app/tisPatInfo/upload')"
+                :data="{fieldName: 'picPath', asImage: true}"
+                :limit="picPathWidgetMaxCount"
+                @change="onPicPathChange"
               />
             </el-form-item>
           </el-col>
@@ -189,7 +179,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -203,7 +192,6 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
-                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -221,49 +209,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="文件" prop="TisPatInfo.filePath">
+            <el-form-item label="txt文件路径" prop="TisPatInfo.filePath">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.filePath"
-                type="text"
-                placeholder=""
-                :clearable="true"
-                :show-word-limit="false"
-                maxlength=""
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="备用字段1" prop="TisPatInfo.remark1">
-              <el-input
-                class="input-item"
-                v-model="formData.TisPatInfo.remark1"
-                type="text"
-                placeholder=""
-                :clearable="true"
-                :show-word-limit="false"
-                maxlength=""
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="备用字段2" prop="TisPatInfo.remark2">
-              <el-input
-                class="input-item"
-                v-model="formData.TisPatInfo.remark2"
-                type="text"
-                placeholder=""
-                :clearable="true"
-                :show-word-limit="false"
-                maxlength=""
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="备用字段3" prop="TisPatInfo.remark3">
-              <el-input
-                class="input-item"
-                v-model="formData.TisPatInfo.remark3"
                 type="text"
                 placeholder=""
                 :clearable="true"
@@ -278,13 +227,16 @@
               :data="tisPatResultWidgetDataList"
               style="height: 300px"
               :size="layoutStore.defaultFormItemSize"
-              :row-config="{isCurrent: false, isHover: true}"
+              :row-config="{isCurrent: true, isHover: true}"
               :seq-config="{startIndex: ((tisPatResultWidgetCurrentPage - 1) * tisPatResultWidgetPageSize)}"
               :sort-config="{remote: false}"
               :hasExtend="false"
               @refresh="tisPatResultWidget.refreshTable()"
+              @radio-select-change="onTisPatResultRadioSelectChange"
             >
-              <vxe-column title="序号" type="seq" :index="tisPatResultWidget.getTableIndex" :width="80" />
+              <vxe-column title="" type="radio" align="center" :width="80" />
+              <vxe-column title="检测项目" field="projectName" />
+              <vxe-column title="检测结果" field="result" />
               <template slot="empty">
                 <div class="table-empty unified-font">
                   <img src="@/assets/img/empty.png">
@@ -413,7 +365,7 @@ const formData = reactive<FormEditTisPatInfoData>({
     testUnit: undefined,
     // 检测状态
     testStat: undefined,
-    // 文件
+    // txt文件路径
     filePath: undefined,
     // 备用字段1
     remark1: undefined,
@@ -421,50 +373,52 @@ const formData = reactive<FormEditTisPatInfoData>({
     remark2: undefined,
     // 备用字段3
     remark3: undefined,
-    // 患者检测结果数据
+    // 创建时间
+    createTime: undefined,
+    // 创建用户
+    createdUserId: undefined,
+    // 修改时间
+    updateTime: undefined,
+    // 修改用户
+    updateUserId: undefined,
+    // 检查结果数据
     tisPatResultList: [],
   },
 },
 );
 // 表单验证规则
 const rules = reactive({
-  'TisPatInfo.operator': [
-  ],
-  'TisPatInfo.cutoffVal': [
-  ],
   'TisPatInfo.rangeVal': [
   ],
-  'TisPatInfo.patName': [
+  'TisPatInfo.projectId': [
   ],
-  'TisPatInfo.sex': [
-  ],
-  'TisPatInfo.filePath': [
-  ],
-  'TisPatInfo.sampleNo': [
-  ],
-  'TisPatInfo.remark1': [
-  ],
-  'TisPatInfo.patNo': [
-  ],
-  'TisPatInfo.remark2': [
-  ],
-  'TisPatInfo.sampleType': [
-  ],
-  'TisPatInfo.remark3': [
-  ],
-  'TisPatInfo.picPath': [
-  ],
-  'TisPatInfo.batchNo': [
-  ],
-  'TisPatInfo.testTime': [
+  'TisPatInfo.testStat': [
   ],
   'TisPatInfo.age': [
   ],
   'TisPatInfo.testUnit': [
   ],
-  'TisPatInfo.projectId': [
+  'TisPatInfo.batchNo': [
   ],
-  'TisPatInfo.testStat': [
+  'TisPatInfo.testTime': [
+  ],
+  'TisPatInfo.patName': [
+  ],
+  'TisPatInfo.picPath': [
+  ],
+  'TisPatInfo.sampleType': [
+  ],
+  'TisPatInfo.patNo': [
+  ],
+  'TisPatInfo.sampleNo': [
+  ],
+  'TisPatInfo.sex': [
+  ],
+  'TisPatInfo.filePath': [
+  ],
+  'TisPatInfo.cutoffVal': [
+  ],
+  'TisPatInfo.operator': [
   ],
 });
 
@@ -503,7 +457,16 @@ const loadTisPatInfoData = () => {
   });
 };
 /**
- * 患者检测结果数据获取函数，返回Promise
+ * 患者卡条上传文件改变
+ */
+const onPicPathChange = val => {
+  formData.TisPatInfo.picPath = fileListToJson(val);
+};
+// 患者卡条上传文件组件
+const picPathWidget = useUploadWidget(1);
+const { fileList: picPathWidgetFileList, maxCount: picPathWidgetMaxCount } = picPathWidget;
+/**
+ * 检查结果数据获取函数，返回Promise
  */
 const loadTisPatResultWidgetData = (params: ANY_OBJECT) => {
   if (params == null) params = {};
@@ -529,27 +492,42 @@ const loadTisPatResultWidgetData = (params: ANY_OBJECT) => {
         }),
         totalCount: res.data.totalCount
       });
+      // 恢复当选择行
+      if (tisPatResultSelectRow.value != null) {
+        nextTick(() => {
+          let currentRow = findItemFromList(tisPatResultWidgetDataList.value, tisPatResultSelectRow.value.id, 'id');
+          tisPatResult.value.getTableImpl().setRadioRow(currentRow);
+        });
+      }
     }).catch(e => {
       reject(e);
     });
   });
 };
 /**
- * 患者检测结果数据获取检测函数，返回true正常获取数据，返回false停止获取数据
+ * 检查结果数据获取检测函数，返回true正常获取数据，返回false停止获取数据
  */
 const loadTisPatResultVerify = () => {
   return true;
 };
-// 患者检测结果表格组件参数
+/**
+ * 检查结果表格选中行改变
+ */
+const onTisPatResultRadioSelectChange = (row?: TisPatResultData) => {
+  tisPatResultSelectRow.value = row;
+};
+// 检查结果表格组件参数
 const tisPatResultOptions: TableOptions<TisPatResultData> = {
   loadTableData: loadTisPatResultWidgetData,
   verifyTableParameter: loadTisPatResultVerify,
   paged: false,
-  rowSelection: false,
+  rowSelection: true,
   orderFieldName: undefined,
   ascending: true,
 };
-// 患者检测结果表格组件
+// 检查结果选中数据
+const tisPatResultSelectRow = ref<TisPatResultData>();
+// 检查结果表格组件
 const tisPatResult = ref();
 const tisPatResultWidget = useTable(tisPatResultOptions);
 const {
@@ -582,6 +560,12 @@ const resetFilter = () => {
 };
 const formInit = () => {
   loadTisPatInfoData().then(res => {
+    let picPathDownloadParams = {
+      id: formData.TisPatInfo.id,
+      fieldName: 'picPath',
+      asImage: true
+    };
+    picPathWidgetFileList.value = parseUploadData(formData.TisPatInfo.picPath, picPathDownloadParams);
     if (isEdit.value) refreshFormEditTisPatInfo();
   }).catch(e => {
     // TODO: 异常处理

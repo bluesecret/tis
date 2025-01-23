@@ -1,12 +1,15 @@
 package io.wangk.peekaboo.webadmin.app.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.wangk.peekaboo.common.core.upload.UploadStoreTypeEnum;
 import io.wangk.peekaboo.common.core.annotation.*;
 import lombok.Data;
+
+import java.util.Date;
 import java.util.List;
 
 /**
- * 患者信息实体对象。
+ * 患者实体对象。
  *
  * @author wangk
  * @date 2025-01-14
@@ -90,6 +93,7 @@ public class TisPatInfo {
     /**
      * 患者卡条图片路径。
      */
+    @UploadFlagColumn(storeType = UploadStoreTypeEnum.MINIO_SYSTEM)
     @TableField(value = "pic_path")
     private String picPath;
 
@@ -112,7 +116,7 @@ public class TisPatInfo {
     private String testStat;
 
     /**
-     * 文件。
+     * txt文件路径。
      */
     @TableField(value = "file_path")
     private String filePath;
@@ -134,6 +138,30 @@ public class TisPatInfo {
      */
     @TableField(value = "remark3")
     private String remark3;
+
+    /**
+     * 创建时间。
+     */
+    @TableField(value = "create_time")
+    private Date createTime;
+
+    /**
+     * 创建用户。
+     */
+    @TableField(value = "created_user_id")
+    private Long createdUserId;
+
+    /**
+     * 修改时间。
+     */
+    @TableField(value = "update_time")
+    private Date updateTime;
+
+    /**
+     * 修改用户。
+     */
+    @TableField(value = "update_user_id")
+    private Long updateUserId;
 
     /**
      * TisPatResult 的一对多关联表数据对象。

@@ -9,6 +9,10 @@
         <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
         <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
         <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
     </resultMap>
 
     <insert id="insertList">
@@ -19,7 +23,11 @@
             result,
             remark1,
             remark2,
-            remark3)
+            remark3,
+            create_time,
+            create_user_id,
+            update_time,
+            update_user_id)
         VALUES
         <foreach collection="list" index="index" item="item" separator="," >
             (#{item.id},
@@ -28,7 +36,11 @@
             #{item.result},
             #{item.remark1},
             #{item.remark2},
-            #{item.remark3})
+            #{item.remark3},
+            #{item.createTime},
+            #{item.createUserId},
+            #{item.updateTime},
+            #{item.updateUserId})
         </foreach>
     </insert>
 

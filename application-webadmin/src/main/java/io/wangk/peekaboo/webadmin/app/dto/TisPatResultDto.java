@@ -8,12 +8,12 @@ import lombok.Data;
 import jakarta.validation.constraints.*;
 
 /**
- * 患者检测结果Dto对象。
+ * 检查结果Dto对象。
  *
  * @author wangk
  * @date 2025-01-14
  */
-@Schema(description = "患者检测结果Dto对象")
+@Schema(description = "检查结果Dto对象")
 @Data
 public class TisPatResultDto {
 

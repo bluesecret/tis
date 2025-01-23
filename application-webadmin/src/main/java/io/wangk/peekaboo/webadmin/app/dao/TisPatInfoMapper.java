@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.*;
 
 /**
- * 患者信息数据操作访问接口。
+ * 患者数据操作访问接口。
  *
  * @author wangk
  * @date 2025-01-14

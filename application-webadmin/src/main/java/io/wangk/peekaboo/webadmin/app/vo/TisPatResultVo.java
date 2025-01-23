@@ -1,17 +1,20 @@
 package io.wangk.peekaboo.webadmin.app.vo;
 
+import io.wangk.peekaboo.common.core.base.vo.BaseVo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 患者检测结果VO视图对象。
+ * 检查结果VO视图对象。
  *
  * @author wangk
  * @date 2025-01-14
  */
-@Schema(description = "患者检测结果VO视图对象")
+@Schema(description = "检查结果VO视图对象")
 @Data
-public class TisPatResultVo {
+@EqualsAndHashCode(callSuper = true)
+public class TisPatResultVo extends BaseVo {
 
     /**
      * 主键Id。

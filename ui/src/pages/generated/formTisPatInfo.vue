@@ -41,6 +41,17 @@
             maxlength=""
           />
         </el-form-item>
+        <el-form-item label="患者编号">
+          <el-input
+            class="filter-item"
+            v-model="formFilter.patNoFilter"
+            type="text"
+            placeholder=""
+            :clearable="true"
+            :show-word-limit="false"
+            maxlength=""
+          />
+        </el-form-item>
         <el-form-item label="操作人员">
           <el-input
             class="filter-item"
@@ -79,10 +90,28 @@
     >
       <vxe-column title="序号" type="seq" :index="formTisPatInfoTableWidget.getTableIndex" :width="80" />
       <vxe-column title="姓名" field="patName" />
+      <vxe-column title="年龄" field="age" />
       <vxe-column title="检测项目" field="projectId" />
+      <vxe-column title="性别" field="sex" />
+      <vxe-column title="患者编号" field="patNo" />
       <vxe-column title="操作人员" field="operator" />
       <vxe-column title="cotful值" field="cutoffVal" />
-      <vxe-column title="范围" field="rangeVal" />
+      <vxe-column title="患者卡条">
+        <template v-slot="scope">
+          <upload-file-list
+            :file-list="
+              parseUploadData(scope.row.picPath, {
+                id: scope.row.id,
+                fieldName: 'picPath',
+                asImage: true
+              })
+            "
+            type="card"
+            direction="horizontal"
+            :readonly="true"
+          />
+        </template>
+      </vxe-column>
       <vxe-column title="检测时间" field="testTime" />
       <vxe-column title="检测状态" field="testStat" />
       <vxe-column title="操作" fixed="right">
@@ -94,16 +123,7 @@
             @click.stop="onEditTisPatInfoClick(scope.row)"
             :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:editTisPatInfo')"
           >
-            检测结果
-          </el-button>
-          <el-button
-            link
-            type="primary"
-            :size="layoutStore.defaultFormItemSize"
-            @click.stop="onDeleteTisPatInfoClick(scope.row)"
-            :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:deleteTisPatInfo')"
-          >
-            删除
+            检查结果
           </el-button>
         </template>
       </vxe-column>
@@ -203,6 +223,8 @@ const formFilter = reactive({
   projectIdFilter: undefined,
   // 样本编号
   sampleNoFilter: undefined,
+  // 患者编号
+  patNoFilter: undefined,
   // 操作人员
   operatorFilter: undefined,
   // 检测状态
@@ -215,6 +237,8 @@ const formFilterCopy = reactive({
   projectIdFilter: undefined,
   // 样本编号
   sampleNoFilter: undefined,
+  // 患者编号
+  patNoFilter: undefined,
   // 操作人员
   operatorFilter: undefined,
   // 检测状态
@@ -242,6 +266,7 @@ const loadFormTisPatInfoTableWidgetData = (params: ANY_OBJECT) => {
       patName: formFilter.patNameFilter,
       projectId: formFilter.projectIdFilter,
       sampleNo: formFilter.sampleNoFilter,
+      patNo: formFilter.patNoFilter,
       operator: formFilter.operatorFilter,
       testStat: formFilter.testStatFilter,
     }
@@ -264,12 +289,13 @@ const loadFormTisPatInfoTableVerify = () => {
   formFilterCopy.patNameFilter = formFilter.patNameFilter;
   formFilterCopy.projectIdFilter = formFilter.projectIdFilter;
   formFilterCopy.sampleNoFilter = formFilter.sampleNoFilter;
+  formFilterCopy.patNoFilter = formFilter.patNoFilter;
   formFilterCopy.operatorFilter = formFilter.operatorFilter;
   formFilterCopy.testStatFilter = formFilter.testStatFilter;
   return true;
 };
 /**
- * 检测结果
+ * 检查结果
  */
 const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   let params: ANY_OBJECT = {
@@ -277,34 +303,13 @@ const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   };
 
   Dialog
-    .show('检测结果', FormEditTisPatInfo, { area: '900px' }, { ...params, subPage: true })
+    .show('检查结果', FormEditTisPatInfo, { area: '900px' }, { ...params, subPage: true })
     .then(res => {
       formTisPatInfoTableWidget.refreshTable();
     }).catch(e => {
       // TODO: 异常处理
       console.error(e);
     });
-};
-/**
- * 删除
- */
-const onDeleteTisPatInfoClick = (row?: TisPatInfoData) => {
-  let params: ANY_OBJECT = {
-    id: row?.id,
-  };
-
-  ElMessageBox.confirm('是否删除此记录？').then(res => {
-    TisPatInfoController.delete(params).then(res => {
-      ElMessage.success('删除成功');
-      formTisPatInfoTableWidget.refreshTable(false, 1);
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-  }).catch(e => {
-    // TODO: 异常处理
-    console.error(e);
-  });
 };
 // 表格组件表格组件参数
 const formTisPatInfoTableOptions: TableOptions<TisPatInfoData> = {
@@ -338,6 +343,8 @@ const resetFormTisPatInfo = () => {
   formFilterCopy.projectIdFilter = undefined;
   formFilter.sampleNoFilter = undefined;
   formFilterCopy.sampleNoFilter = undefined;
+  formFilter.patNoFilter = undefined;
+  formFilterCopy.patNoFilter = undefined;
   formFilter.operatorFilter = undefined;
   formFilterCopy.operatorFilter = undefined;
   formFilter.testStatFilter = undefined;

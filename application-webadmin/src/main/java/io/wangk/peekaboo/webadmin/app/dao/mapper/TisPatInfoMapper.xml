@@ -22,6 +22,10 @@
         <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
         <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
         <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="created_user_id" jdbcType="BIGINT" property="createdUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
     </resultMap>
 
     <insert id="insertList">
@@ -45,7 +49,11 @@
             file_path,
             remark1,
             remark2,
-            remark3)
+            remark3,
+            create_time,
+            created_user_id,
+            update_time,
+            update_user_id)
         VALUES
         <foreach collection="list" index="index" item="item" separator="," >
             (#{item.id},
@@ -67,7 +75,11 @@
             #{item.filePath},
             #{item.remark1},
             #{item.remark2},
-            #{item.remark3})
+            #{item.remark3},
+            #{item.createTime},
+            #{item.createdUserId},
+            #{item.updateTime},
+            #{item.updateUserId})
         </foreach>
     </insert>
 
@@ -91,6 +103,10 @@
             <if test="tisPatInfoFilter.sampleNo != null and tisPatInfoFilter.sampleNo != ''">
                 <bind name = "safeTisPatInfoSampleNo" value = "'%' + tisPatInfoFilter.sampleNo + '%'" />
                 AND tis_pat_info.sample_no LIKE #{safeTisPatInfoSampleNo}
+            </if>
+            <if test="tisPatInfoFilter.patNo != null and tisPatInfoFilter.patNo != ''">
+                <bind name = "safeTisPatInfoPatNo" value = "'%' + tisPatInfoFilter.patNo + '%'" />
+                AND tis_pat_info.pat_no LIKE #{safeTisPatInfoPatNo}
             </if>
             <if test="tisPatInfoFilter.operator != null and tisPatInfoFilter.operator != ''">
                 <bind name = "safeTisPatInfoOperator" value = "'%' + tisPatInfoFilter.operator + '%'" />

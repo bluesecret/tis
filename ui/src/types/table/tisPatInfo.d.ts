@@ -33,7 +33,7 @@ interface TisPatInfo {
   testUnit?: string | undefined;
   // 检测状态
   testStat?: string | undefined;
-  // 文件
+  // txt文件路径
   filePath?: string | undefined;
   // 备用字段1
   remark1?: string | undefined;
@@ -41,6 +41,14 @@ interface TisPatInfo {
   remark2?: string | undefined;
   // 备用字段3
   remark3?: string | undefined;
+  // 创建时间
+  createTime?: string | undefined;
+  // 创建用户
+  createdUserId?: number | undefined;
+  // 修改时间
+  updateTime?: string | undefined;
+  // 修改用户
+  updateUserId?: number | undefined;
 }
 
 export default TisPatInfo;
