@@ -103,4 +103,97 @@
             </plugin>
 		</plugins>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.15.0</version>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/../ui</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v22.2.0</nodeVersion>
+                                    <npmVersion>10.7.0</npmVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>clean</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>cache clean --force</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src/main/resources/static</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy ui frontend content</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>src/main/resources/static</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/../ui/dist</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
