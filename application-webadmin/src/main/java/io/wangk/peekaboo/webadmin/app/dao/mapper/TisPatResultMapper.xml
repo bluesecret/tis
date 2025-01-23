@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.webadmin.app.dao.TisPatResultMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.webadmin.app.model.TisPatResult">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="pat_id" jdbcType="BIGINT" property="patId"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="result" jdbcType="VARCHAR" property="result"/>
+        <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
+        <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
+        <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
+    </resultMap>
+
+    <insert id="insertList">
+        INSERT INTO tis_pat_result
+            (id,
+            pat_id,
+            project_name,
+            result,
+            remark1,
+            remark2,
+            remark3)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator="," >
+            (#{item.id},
+            #{item.patId},
+            #{item.projectName},
+            #{item.result},
+            #{item.remark1},
+            #{item.remark2},
+            #{item.remark3})
+        </foreach>
+    </insert>
+
+    <!-- 如果有逻辑删除字段过滤，请写到这里 -->
+    <sql id="filterRef">
+        <!-- 这里必须加上全包名，否则当filterRef被其他Mapper.xml包含引用的时候，就会调用Mapper.xml中的该SQL片段 -->
+        <include refid="io.wangk.peekaboo.webadmin.app.dao.TisPatResultMapper.inputFilterRef"/>
+    </sql>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="tisPatResultFilter != null">
+            <if test="tisPatResultFilter.patId != null">
+                AND tis_pat_result.pat_id = #{tisPatResultFilter.patId}
+            </if>
+            <if test="tisPatResultFilter.projectName != null and tisPatResultFilter.projectName != ''">
+                <bind name = "safeTisPatResultProjectName" value = "'%' + tisPatResultFilter.projectName + '%'" />
+                AND tis_pat_result.project_name LIKE #{safeTisPatResultProjectName}
+            </if>
+            <if test="tisPatResultFilter.result != null and tisPatResultFilter.result != ''">
+                <bind name = "safeTisPatResultResult" value = "'%' + tisPatResultFilter.result + '%'" />
+                AND tis_pat_result.result LIKE #{safeTisPatResultResult}
+            </if>
+        </if>
+    </sql>
+
+    <select id="getTisPatResultList" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.webadmin.app.model.TisPatResult">
+        SELECT * FROM tis_pat_result
+        <where>
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+</mapper>

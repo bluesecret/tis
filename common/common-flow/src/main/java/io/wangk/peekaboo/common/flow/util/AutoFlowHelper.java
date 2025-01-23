@@ -34,6 +34,7 @@ import com.ql.util.express.ExpressRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
+import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.flowable.bpmn.model.BpmnModel;
@@ -42,6 +43,7 @@ import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.*;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -66,6 +68,7 @@ import static io.wangk.peekaboo.common.flow.object.AutoTaskConfig.*;
  */
 @Slf4j
 @Component
+@Import(RocketMQAutoConfiguration.class)
 public class AutoFlowHelper {
 
     @Autowired

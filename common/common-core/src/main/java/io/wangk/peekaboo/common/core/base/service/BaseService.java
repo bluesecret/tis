@@ -3,6 +3,7 @@ package io.wangk.peekaboo.common.core.base.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.StrFormatter;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -2274,9 +2275,11 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
                 relationStruct.service = ApplicationContextHolder.getBean(
                         this.getNormalizedSlaveServiceName(relationDict.slaveServiceName(), relationDict.slaveModelClass()));
             }
-            Field slaveIdField = ReflectUtil.getField(relationDict.slaveModelClass(), relationDict.slaveIdField());
-            Assert.isTrue(slaveIdField.getType().equals(relationStruct.masterIdField.getType()),
-                    "THe Class Types of masterId and slaveId must be equal within RelationDict.");
+            if (BooleanUtil.isFalse(relationDict.multiSelect())) {
+                Field slaveIdField = ReflectUtil.getField(relationDict.slaveModelClass(), relationDict.slaveIdField());
+                Assert.isTrue(slaveIdField.getType().equals(relationStruct.masterIdField.getType()),
+                        "THe Class Types of masterId and slaveId must be equal within RelationDict.");
+            }
             localRelationDictStructList.add(relationStruct);
         }
     }

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.webadmin.app.dao.TisPatInfoMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.webadmin.app.model.TisPatInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="pat_name" jdbcType="VARCHAR" property="patName"/>
+        <result column="batch_no" jdbcType="VARCHAR" property="batchNo"/>
+        <result column="age" jdbcType="VARCHAR" property="age"/>
+        <result column="project_id" jdbcType="VARCHAR" property="projectId"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="sample_no" jdbcType="VARCHAR" property="sampleNo"/>
+        <result column="pat_no" jdbcType="VARCHAR" property="patNo"/>
+        <result column="sample_type" jdbcType="VARCHAR" property="sampleType"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="cutoff_val" jdbcType="VARCHAR" property="cutoffVal"/>
+        <result column="range_val" jdbcType="VARCHAR" property="rangeVal"/>
+        <result column="pic_path" jdbcType="VARCHAR" property="picPath"/>
+        <result column="test_time" jdbcType="VARCHAR" property="testTime"/>
+        <result column="test_unit" jdbcType="VARCHAR" property="testUnit"/>
+        <result column="test_stat" jdbcType="VARCHAR" property="testStat"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
+        <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
+        <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
+    </resultMap>
+
+    <insert id="insertList">
+        INSERT INTO tis_pat_info
+            (id,
+            pat_name,
+            batch_no,
+            age,
+            project_id,
+            sex,
+            sample_no,
+            pat_no,
+            sample_type,
+            operator,
+            cutoff_val,
+            range_val,
+            pic_path,
+            test_time,
+            test_unit,
+            test_stat,
+            file_path,
+            remark1,
+            remark2,
+            remark3)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator="," >
+            (#{item.id},
+            #{item.patName},
+            #{item.batchNo},
+            #{item.age},
+            #{item.projectId},
+            #{item.sex},
+            #{item.sampleNo},
+            #{item.patNo},
+            #{item.sampleType},
+            #{item.operator},
+            #{item.cutoffVal},
+            #{item.rangeVal},
+            #{item.picPath},
+            #{item.testTime},
+            #{item.testUnit},
+            #{item.testStat},
+            #{item.filePath},
+            #{item.remark1},
+            #{item.remark2},
+            #{item.remark3})
+        </foreach>
+    </insert>
+
+    <!-- 如果有逻辑删除字段过滤，请写到这里 -->
+    <sql id="filterRef">
+        <!-- 这里必须加上全包名，否则当filterRef被其他Mapper.xml包含引用的时候，就会调用Mapper.xml中的该SQL片段 -->
+        <include refid="io.wangk.peekaboo.webadmin.app.dao.TisPatInfoMapper.inputFilterRef"/>
+    </sql>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="tisPatInfoFilter != null">
+            <if test="tisPatInfoFilter.patName != null and tisPatInfoFilter.patName != ''">
+                <bind name = "safeTisPatInfoPatName" value = "'%' + tisPatInfoFilter.patName + '%'" />
+                AND tis_pat_info.pat_name LIKE #{safeTisPatInfoPatName}
+            </if>
+            <if test="tisPatInfoFilter.projectId != null and tisPatInfoFilter.projectId != ''">
+                <bind name = "safeTisPatInfoProjectId" value = "'%' + tisPatInfoFilter.projectId + '%'" />
+                AND tis_pat_info.project_id LIKE #{safeTisPatInfoProjectId}
+            </if>
+            <if test="tisPatInfoFilter.sampleNo != null and tisPatInfoFilter.sampleNo != ''">
+                <bind name = "safeTisPatInfoSampleNo" value = "'%' + tisPatInfoFilter.sampleNo + '%'" />
+                AND tis_pat_info.sample_no LIKE #{safeTisPatInfoSampleNo}
+            </if>
+            <if test="tisPatInfoFilter.operator != null and tisPatInfoFilter.operator != ''">
+                <bind name = "safeTisPatInfoOperator" value = "'%' + tisPatInfoFilter.operator + '%'" />
+                AND tis_pat_info.operator LIKE #{safeTisPatInfoOperator}
+            </if>
+            <if test="tisPatInfoFilter.testStat != null and tisPatInfoFilter.testStat != ''">
+                <bind name = "safeTisPatInfoTestStat" value = "'%' + tisPatInfoFilter.testStat + '%'" />
+                AND tis_pat_info.test_stat LIKE #{safeTisPatInfoTestStat}
+            </if>
+        </if>
+    </sql>
+
+    <select id="getTisPatInfoList" resultMap="BaseResultMap" parameterType="io.wangk.peekaboo.webadmin.app.model.TisPatInfo">
+        SELECT * FROM tis_pat_info
+        <where>
+            <include refid="filterRef"/>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <!-- 支持基于一对一或者一对多从表字段过滤的SQL_ID -->
+    <select id="getTisPatInfoListEx" resultMap="BaseResultMap" >
+        SELECT
+            tis_pat_info.*
+        FROM
+            tis_pat_info
+        <where>
+            <include refid="filterRef"/>
+            <if test="tisPatResultFilter != null">
+                AND EXISTS (SELECT * FROM tis_pat_result
+                <where>
+                    tis_pat_info.id = tis_pat_result.pat_id
+                    <include refid="io.wangk.peekaboo.webadmin.app.dao.TisPatResultMapper.filterRef"/>
+                </where>)
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+</mapper>
