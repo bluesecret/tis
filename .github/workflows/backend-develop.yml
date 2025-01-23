@@ -59,11 +59,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            echo "Stopping application..."
-            pkill -f 'java'
-            if [ $? -ne 0 ]; then
-              echo "No Java process found, ignoring error."
-            fi
+            echo "Testing SSH connection and running commands"
+            hostname
+            whoami
+            ps aux | grep 'java' | grep -v grep || true
 
       - name: Start application
         uses: appleboy/ssh-action@v1.2.0
