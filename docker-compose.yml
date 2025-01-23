@@ -5,7 +5,7 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    command: redis-server --requirepass hello123
+    command: redis-server --requirepass Hero2025!
     volumes:
       - ./data/redis:/data # 指定 Redis 数据卷目录
 
@@ -17,7 +17,7 @@ services:
       - "9001:9001"
     environment:
       MINIO_ROOT_USER: "admin"
-      MINIO_ROOT_PASSWORD: "hello123"
+      MINIO_ROOT_PASSWORD: "Hero2025!"
     command: server /data --console-address ":9001"
     volumes:
       - ./data/minio:/data # 指定 MinIO 数据卷目录
@@ -28,7 +28,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: "hello123" # MySQL root 用户密码
+      MYSQL_ROOT_PASSWORD: "Hero2025!" # MySQL root 用户密码
     volumes:
       - ./data/mysql:/var/lib/mysql # 指定 MySQL 数据卷目录
       - ./config/my.cnf:/etc/mysql/my.cnf # 自定义配置文件
