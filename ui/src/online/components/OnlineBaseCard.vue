@@ -36,6 +36,9 @@
                 v-for="subWidget in childWidgetList"
                 :key="subWidget.variableName"
                 :span="subWidget.props.span"
+                :style="{
+                  display: isEdit || form().getWidgetVisible(subWidget) ? undefined : 'none',
+                }"
               >
                 <div class="widget-item" :class="{ active: isEdit && form().isActive(subWidget) }">
                   <div

@@ -279,6 +279,9 @@ const bgColor = () => {
         case AutoTaskActionType.FORMULA:
           return '67, 92, 216';
         case AutoTaskActionType.HTTP:
+        case AutoTaskActionType.LOAD_CACHE:
+        case AutoTaskActionType.DELETE_CACHE:
+        case AutoTaskActionType.SEND_MQ:
           return '126, 91, 191';
         default:
           return ['144, 145, 150', '98, 168, 252', '255, 164, 85'][props.nodeConfig.type];

@@ -361,10 +361,10 @@ const getFormDataImpl = (variableList: ANY_OBJECT[] | null = null) => {
           if (tempObj.taskVariableData == null) tempObj.taskVariableData = {};
           if (relation == null) {
             tempObj.taskVariableData[variable.variableName] =
-              formData[masterTable.value.datasource.variableName][column.columnName] || '';
+              formData[masterTable.value.datasource.variableName][column.columnName];
           } else {
             tempObj.taskVariableData[variable.variableName] =
-              formData[relation.variableName][column.columnName] || '';
+              formData[relation.variableName][column.columnName];
           }
         }
       }

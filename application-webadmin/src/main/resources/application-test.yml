@@ -1,36 +1,37 @@
 spring:
   data:
     redis:
-      host: localhost
+      host: ${host}
       port: 6379
+      password: ${password}
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # 数据库链接 [主数据源]
       main:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${host}:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
-        password: root123
+        password: ${password}
       # 默认生成的操作日志数据源配置。
       operation-log:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${host}:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
-        password: root123
+        password: ${password}
       # 默认生成的全局编码字典数据源配置。
       global-dict:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${host}:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
-        password: root123
+        password: ${password}
       # 默认生成的工作流及在线表单数据源配置。
       common-flow-online:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${host}:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
-        password: root123
+        password: ${password}
       # 默认生成的统计打印模块的数据源配置。
       common-report:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${host}:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
-        password: root123
+        password: ${password}
       driverClassName: com.mysql.cj.jdbc.Driver
       name: application-webadmin
       initialSize: 10
@@ -128,14 +129,14 @@ common-redis:
     # master-slave:
     #   每个节点逗号分隔，第一个为主节点，其余为从节点。同时每个节点前必须以redis://开头。
     #   address: redis://localhost:6379,redis://localhost:6378,...
-    address: redis://localhost:6379
+    address: redis://${host}:6379
     # 链接超时，单位毫秒。
     timeout: 6000
     # 单位毫秒。分布式锁的超时检测时长。
     # 如果一次锁内操作超该毫秒数，或在释放锁之前异常退出，Redis会在该时长之后主动删除该锁使用的key。
     lockWatchdogTimeout: 60000
     # redis 密码，空可以不填。
-    password:
+    password: ${password}
     pool:
       # 连接池数量。
       poolSize: 20
@@ -194,10 +195,10 @@ common-social:
 
 minio:
   enabled: true
-  endpoint: http://localhost:19000
-  accessKey: admin
-  secretKey: admin123456
-  bucketName: application
+  endpoint: http://${host}:9000
+  accessKey: 28cIbUtfDxdXIzf4biz8
+  secretKey: 3KxFIG3x3bIlIQhAIfEJL6nG687KYh23qgQVB4T8
+  bucketName: savefile
 
 sa-token:
   # token 名称（同时也是 cookie 名称）
@@ -222,11 +223,11 @@ sa-token:
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器地址
-    host: localhost
+    host: ${host}
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
-    password:
+    password: ${password}
     # 连接超时时间
     timeout: 10s
   is-read-header: true
@@ -236,3 +237,6 @@ rocketmq:
   name-server: 127.0.0.1:9876
   producer:
     group: OrangeFlowMessageQueue
+
+host: 34.228.152.214
+password: Hero2025!
