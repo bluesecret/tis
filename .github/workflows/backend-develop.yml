@@ -19,38 +19,37 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 80
     steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          submodules: true
-#
-#      - uses: actions/setup-java@v3
-#        with:
-#          distribution: 'temurin'
-#          java-version: ${{ matrix.java }}
-#          cache: 'maven'
-#
-#      - name: Setup mvnw permissions
-#        run: chmod +x ./mvnw
-#
-#      - name: Build distribution tar
-#        run: >-
-#          ./mvnw -B install -P release
-#          -D"maven.test.skip"=true
-#          -D"checkstyle.skip"=true
-#          -D"http.keepAlive"=false
-#          -D"maven.wagon.http.pool"=false
-#          -D"maven.wagon.http.retryHandler.count"=3
-#          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
-#
-#      - name: Upload to EC2
-#        uses: appleboy/scp-action@v0.1.7
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USER }}
-#          key: ${{ secrets.EC2_KEY }}
-#          source: application-webadmin/target/application-webadmin-1.0.0.jar
-#          target: ${{ secrets.APP_PATH }}
-#      pkill -f 'java --add-opens' || true
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+
+      - name: Setup mvnw permissions
+        run: chmod +x ./mvnw
+
+      - name: Build distribution tar
+        run: >-
+          ./mvnw -B install -P release
+          -D"maven.test.skip"=true
+          -D"checkstyle.skip"=true
+          -D"http.keepAlive"=false
+          -D"maven.wagon.http.pool"=false
+          -D"maven.wagon.http.retryHandler.count"=3
+          -D"maven.wagon.httpconnectionManager.ttlSeconds"=120
+
+      - name: Upload to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: application-webadmin/target/application-webadmin-1.0.0.jar
+          target: ${{ secrets.APP_PATH }}
 
       - name: Stop application
         uses: appleboy/ssh-action@v1.2.0
