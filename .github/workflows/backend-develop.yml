@@ -58,7 +58,13 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          script: pkill -f 'java --add-opens' || true
+          script: |
+            if pgrep -f 'java --add-opens' > /dev/null; then
+              echo "Stopping Java process..."
+              pkill -f 'java --add-opens'
+            else
+              echo "No Java process found to stop."
+            fi
 
       - name: Start application
         uses: appleboy/ssh-action@v1.2.0
