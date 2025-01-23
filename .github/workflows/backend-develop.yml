@@ -59,11 +59,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            if pgrep -f 'java --add-opens' > /dev/null; then
-              echo "Stopping Java process..."
-              pkill -f 'java --add-opens'
-            else
-              echo "No Java process found to stop."
+            echo "Stopping application..."
+            pkill -f 'java'
+            if [ $? -ne 0 ]; then
+              echo "No Java process found, ignoring error."
             fi
 
       - name: Start application
