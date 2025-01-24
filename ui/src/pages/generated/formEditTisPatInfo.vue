@@ -252,7 +252,6 @@
     </el-scrollbar>
     <el-row class="footer-box" type="flex" justify="end" align="middle">
       <el-button :size="layoutStore.defaultFormItemSize" @click="onCancel()">取消</el-button>
-      <el-button :size="layoutStore.defaultFormItemSize" type="primary" @click="onSubmitTisPatInfoClick()">保存</el-button>
     </el-row>
   </div>
 </template>
@@ -569,59 +568,6 @@ const resetFormEditTisPatInfo = () => {
  */
 const resetFilter = () => {
   resetFormEditTisPatInfo();
-};
-/**
- * 保存
- */
-const onSubmitTisPatInfoClick = () => {
-  formEditTisPatInfoRef.value.validate((valid) => {
-    if (!valid) return;
-    // 级联操作
-    if (!props.saveOnSubmit) {
-      let retFormData = {
-        ...formData.TisPatInfo
-      };
-  props.dialog?.submit(retFormData);
-      return;
-    }
-    let params: ANY_OBJECT = {
-      tisPatInfoDto: {
-        id: formData.TisPatInfo.id,
-        patName: formData.TisPatInfo.patName,
-        batchNo: formData.TisPatInfo.batchNo,
-        age: formData.TisPatInfo.age,
-        projectId: formData.TisPatInfo.projectId,
-        sex: formData.TisPatInfo.sex,
-        sampleNo: formData.TisPatInfo.sampleNo,
-        patNo: formData.TisPatInfo.patNo,
-        sampleType: formData.TisPatInfo.sampleType,
-        operator: formData.TisPatInfo.operator,
-        cutoffVal: formData.TisPatInfo.cutoffVal,
-        rangeVal: formData.TisPatInfo.rangeVal,
-        picPath: formData.TisPatInfo.picPath,
-        testTime: formData.TisPatInfo.testTime,
-        testUnit: formData.TisPatInfo.testUnit,
-        testStat: formData.TisPatInfo.testStat,
-        filePath: formData.TisPatInfo.filePath,
-        remark1: formData.TisPatInfo.remark1,
-        remark2: formData.TisPatInfo.remark2,
-        remark3: formData.TisPatInfo.remark3,
-        createTime: formData.TisPatInfo.createTime,
-        createdUserId: formData.TisPatInfo.createdUserId,
-        updateTime: formData.TisPatInfo.updateTime,
-        updateUserId: formData.TisPatInfo.updateUserId,
-      }
-    };
-
-    let httpCall = isEdit.value ? TisPatInfoController.update : TisPatInfoController.add;
-    httpCall(params).then(res => {
-      ElMessage.success('保存成功');
-      props.dialog?.submit();
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-  });
 };
 const formInit = () => {
   loadTisPatInfoData().then(res => {
