@@ -1,6 +1,7 @@
 package io.wangk.peekaboo.webadmin.app.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import cn.hutool.core.util.ReflectUtil;
 import io.wangk.peekaboo.common.core.upload.BaseUpDownloader;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -55,7 +57,7 @@ public class TisPatInfoController {
     /**
      * 新增患者数据，及其关联的从表数据。
      *
-     * @param tisPatInfoDto 新增主表对象。
+     * @param tisPatInfoDto       新增主表对象。
      * @param tisPatResultDtoList 一对多检查结果从表列表。
      * @return 应答结果对象，包含新增对象主键Id。
      */
@@ -80,7 +82,7 @@ public class TisPatInfoController {
     /**
      * 修改患者数据，及其关联的从表数据。
      *
-     * @param tisPatInfoDto 修改后的对象。
+     * @param tisPatInfoDto       修改后的对象。
      * @param tisPatResultDtoList 一对多检查结果从表列表。
      * @return 应答结果对象，包含新增对象主键Id。
      */
@@ -148,10 +150,10 @@ public class TisPatInfoController {
     /**
      * 列出符合过滤条件的患者列表。
      *
-     * @param tisPatInfoDtoFilter 过滤对象。
+     * @param tisPatInfoDtoFilter   过滤对象。
      * @param tisPatResultDtoFilter 一对多从表过滤对象。
-     * @param orderParam 排序参数。
-     * @param pageParam 分页参数。
+     * @param orderParam            排序参数。
+     * @param pageParam             分页参数。
      * @return 应答结果对象，包含查询结果集。
      */
     @SaCheckPermission("tisPatInfo.view")
@@ -193,7 +195,7 @@ public class TisPatInfoController {
      * 附件文件下载。
      * 这里将图片和其他类型的附件文件放到不同的父目录下，主要为了便于今后图片文件的迁移。
      *
-     * @param id 附件所在记录的主键Id。
+     * @param id        附件所在记录的主键Id。
      * @param fieldName 附件所属的字段名。
      * @param filename  文件名。如果没有提供该参数，就从当前记录的指定字段中读取。
      * @param asImage   下载文件是否为图片。
@@ -215,6 +217,7 @@ public class TisPatInfoController {
         // 使用try来捕获异常，是为了保证一旦出现异常可以返回500的错误状态，便于调试。
         // 否则有可能给前端返回的是200的错误码。
         try {
+            String path = null;
             // 如果请求参数中没有包含主键Id，就判断该文件是否为当前session上传的。
             if (id == null) {
                 if (!cacheHelper.existSessionUploadFile(filename)) {
@@ -237,6 +240,11 @@ public class TisPatInfoController {
                     ResponseResult.output(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
+                List<Map> maps = JSONUtil.toList(fieldJsonData, Map.class);
+                if (!maps.isEmpty()) {
+                    Map map = maps.get(0);
+                    path = map.get("uploadPath").toString();
+                }
             }
             UploadStoreInfo storeInfo = MyModelUtil.getUploadStoreInfo(TisPatInfo.class, fieldName);
             if (!storeInfo.isSupportUpload()) {
@@ -245,8 +253,13 @@ public class TisPatInfoController {
                 return;
             }
             BaseUpDownloader upDownloader = upDownloaderFactory.get(storeInfo.getStoreType());
-            upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
-                    TisPatInfo.class.getSimpleName(), fieldName, filename, asImage, response);
+            if(path!=null){
+                upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
+                        path, filename, response);
+            } else {
+                upDownloader.doDownload(appConfig.getUploadFileBaseDir(),
+                        TisPatInfo.class.getSimpleName(), fieldName, filename, asImage, response);
+            }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error(e.getMessage(), e);
