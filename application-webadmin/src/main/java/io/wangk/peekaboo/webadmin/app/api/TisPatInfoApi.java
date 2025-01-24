@@ -1,6 +1,8 @@
 package io.wangk.peekaboo.webadmin.app.api;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import io.wangk.peekaboo.common.core.object.ResponseResult;
 import io.wangk.peekaboo.common.sequence.wrapper.IdGeneratorWrapper;
 import io.wangk.peekaboo.webadmin.app.dto.TisPatInfoApiDto;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Tag(name = "患者信息管理接口")
@@ -35,6 +37,7 @@ public class TisPatInfoApi {
 
     @Autowired
     private IdGeneratorWrapper idGeneratorWrapper;
+
     @SaIgnore
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
@@ -53,15 +56,16 @@ public class TisPatInfoApi {
         tisPatInfo.setOperator(tisPatInfoApiDto.getOperator());
         tisPatInfo.setCutoffVal(tisPatInfoApiDto.getCutoffval());
         tisPatInfo.setRangeVal(tisPatInfoApiDto.getRangeval());
-        tisPatInfo.setPicPath(tisPatInfoApiDto.getPicpath());
-        tisPatInfo.setFilePath(tisPatInfoApiDto.getFilepath());
+        tisPatInfo.setPicPath(wrapperStore(tisPatInfoApiDto.getPicpath()));
+        tisPatInfo.setFilePath(wrapperStore(tisPatInfoApiDto.getFilepath()));
         tisPatInfo.setTestTime(tisPatInfoApiDto.getTesttime());
         tisPatInfo.setTestUnit(tisPatInfoApiDto.getTestunit());
         tisPatInfo.setTestStat(tisPatInfoApiDto.getTeststat());
+        tisPatInfo.setCreateTime(new Date());
         tisPatInfoService.save(tisPatInfo);
 
         List<TisPatResultInfoApiDto> result = tisPatInfoApiDto.getResult();
-        if(result != null && result.size() > 0) {
+        if (result != null && result.size() > 0) {
             List<TisPatResult> details = result.stream().map(tisPatResultInfoApiDto -> {
                 TisPatResult tisPatResult = new TisPatResult();
                 tisPatResult.setId(idGeneratorWrapper.nextLongId());
@@ -73,5 +77,28 @@ public class TisPatInfoApi {
             tisPatResultService.saveBatch(details);
         }
         return ResponseResult.success();
+    }
+
+    private static String wrapperStore(String path) {
+        if (StrUtil.isEmpty(path)) {
+            return path;
+        }
+        String uploadPath = "";
+        String name = "";
+        int i = path.lastIndexOf("/");
+        if (i > 0) {
+            uploadPath = path.substring(0, i);
+            name = path.substring(i + 1);
+        } else {
+            name = path;
+        }
+        List<Map<String, String>> ret = new ArrayList<>();
+        Map<String, String> data = new HashMap<>();
+        data.put("name", name);
+        data.put("downloadUri", "/admin/app/tisPatInfo/download");
+        data.put("filename", name);
+        data.put("uploadPath", uploadPath);
+        ret.add(data);
+        return JSONUtil.toJsonStr(ret);
     }
 }
