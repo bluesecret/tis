@@ -209,15 +209,17 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="txt文件路径" prop="TisPatInfo.filePath">
-              <el-input
-                class="input-item"
-                v-model="formData.TisPatInfo.filePath"
-                type="text"
-                placeholder=""
-                :clearable="true"
-                :show-word-limit="false"
-                maxlength=""
+            <el-form-item label="附件" prop="TisPatInfo.filePath">
+              <custom-upload
+                v-model="filePathWidgetFileList"
+                name="uploadFile"
+                :size="layoutStore.defaultFormItemSize"
+                type="dropdown"
+                :headers="getUploadHeaders"
+                :action="getUploadActionUrl('/admin/app/tisPatInfo/upload')"
+                :data="{fieldName: 'filePath', asImage: false}"
+                :limit="filePathWidgetMaxCount"
+                @change="onFilePathChange"
               />
             </el-form-item>
           </el-col>
@@ -467,6 +469,15 @@ const onPicPathChange = val => {
 const picPathWidget = useUploadWidget(1);
 const { fileList: picPathWidgetFileList, maxCount: picPathWidgetMaxCount } = picPathWidget;
 /**
+ * 附件上传文件改变
+ */
+const onFilePathChange = val => {
+  formData.TisPatInfo.filePath = fileListToJson(val);
+};
+// 附件上传文件组件
+const filePathWidget = useUploadWidget(1);
+const { fileList: filePathWidgetFileList, maxCount: filePathWidgetMaxCount } = filePathWidget;
+/**
  * 检查结果数据获取函数，返回Promise
  */
 const loadTisPatResultWidgetData = (params: ANY_OBJECT) => {
@@ -620,6 +631,12 @@ const formInit = () => {
       asImage: true
     };
     picPathWidgetFileList.value = parseUploadData(formData.TisPatInfo.picPath, picPathDownloadParams);
+    let filePathDownloadParams = {
+      id: formData.TisPatInfo.id,
+      fieldName: 'filePath',
+      asImage: false
+    };
+    filePathWidgetFileList.value = parseUploadData(formData.TisPatInfo.filePath, filePathDownloadParams);
     if (isEdit.value) refreshFormEditTisPatInfo();
   }).catch(e => {
     // TODO: 异常处理

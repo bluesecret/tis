@@ -118,6 +118,7 @@ public class TisPatInfo {
     /**
      * txt文件路径。
      */
+    @UploadFlagColumn(storeType = UploadStoreTypeEnum.MINIO_SYSTEM)
     @TableField(value = "file_path")
     private String filePath;
 
