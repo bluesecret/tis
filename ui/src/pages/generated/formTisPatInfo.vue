@@ -113,7 +113,27 @@
         </template>
       </vxe-column>
       <vxe-column title="检测时间" field="testTime" />
-      <vxe-column title="检测状态" field="testStat" />
+      <vxe-column title="检测状态" field="testStat">
+        <template v-slot="scope">
+          <el-tag size="default" type="primary">{{ scope.row.testStat }}</el-tag>
+        </template>
+      </vxe-column>
+      <vxe-column title="附件">
+        <template v-slot="scope">
+          <upload-file-list
+            :file-list="
+              parseUploadData(scope.row.filePath, {
+                id: scope.row.id,
+                fieldName: 'filePath',
+                asImage: false
+              })
+            "
+            type="text"
+            direction="horizontal"
+            :readonly="true"
+          />
+        </template>
+      </vxe-column>
       <vxe-column title="操作" fixed="right">
         <template v-slot="scope">
           <el-button
