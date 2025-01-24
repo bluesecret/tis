@@ -43,6 +43,7 @@ public class TisPatInfoApi {
     @Transactional(rollbackFor = Exception.class)
     public ResponseResult<Void> save(
             @RequestBody TisPatInfoApiDto tisPatInfoApiDto) {
+        log.info("save tisPatInfoApiDto:{}", tisPatInfoApiDto);
         TisPatInfo tisPatInfo = new TisPatInfo();
         tisPatInfo.setId(idGeneratorWrapper.nextLongId());
         tisPatInfo.setPatName(tisPatInfoApiDto.getPatname());
