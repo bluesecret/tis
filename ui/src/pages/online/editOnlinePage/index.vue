@@ -311,6 +311,7 @@ const initPageFormList = (pageId: string | undefined) => {
             }
             mergeWidget(config[mode].tableWidget);
             mergeWidget(config[mode].leftWidget);
+            mergeWidget(config[mode].groupWidget, mode);
           });
           return {
             ...item,
@@ -623,6 +624,7 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       labelPosition: tempFormConfig.labelPosition,
       tableWidget: buildSaveWidget(tempFormConfig.tableWidget),
       leftWidget: buildSaveWidget(tempFormConfig.leftWidget),
+      groupWidget: buildSaveWidget(tempFormConfig.groupWidget),
       operationList: tempFormConfig.operationList,
       customFieldList: tempFormConfig.customFieldList,
       widgetList: tempFormConfig.widgetList.map((widget: ANY_OBJECT) => {
@@ -634,6 +636,7 @@ const updateFormInfo = (currentForm: ANY_OBJECT | undefined | null) => {
       height: tempFormConfig.height,
       fullscreen: tempFormConfig.fullscreen,
       advanceQuery: tempFormConfig.advanceQuery,
+      groupQuery: tempFormConfig.groupQuery,
     };
     return formConfig;
   }, {});

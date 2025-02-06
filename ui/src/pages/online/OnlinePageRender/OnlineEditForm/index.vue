@@ -163,9 +163,6 @@
 import { Close } from '@element-plus/icons-vue';
 import { ElForm, ElMessage } from 'element-plus';
 import { Form as VanForm } from 'vant';
-import { useDict } from '../../hooks/useDict';
-import { useForm } from '../hooks/useForm';
-import { useFormExpose } from '../hooks/useFormExpose';
 import { ANY_OBJECT } from '@/types/generic';
 import { OnlineFormEventType, SysCustomWidgetOperationType } from '@/common/staticDict';
 import {
@@ -182,6 +179,9 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import widgetData from '@/online/config/index';
 import { useLayoutStore, useLoginStore } from '@/store';
+import { useDict } from '../../hooks/useDict';
+import { useForm } from '../hooks/useForm';
+import { useFormExpose } from '../hooks/useFormExpose';
 
 const loginStore = useLoginStore();
 
@@ -618,6 +618,10 @@ const initFormData = () => {
             if (dialogParams.value.rowData[key]) {
               Object.keys(dialogParams.value.rowData[key]).forEach(subKey => {
                 formData[key][subKey] = dialogParams.value.rowData[key][subKey];
+                if (dialogParams.value.rowData[key][subKey + 'DictMapList']) {
+                  formData[key][subKey + 'DictMapList'] =
+                    dialogParams.value.rowData[key][subKey + 'DictMapList'];
+                }
               });
             }
           }

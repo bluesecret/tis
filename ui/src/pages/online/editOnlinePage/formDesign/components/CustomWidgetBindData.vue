@@ -228,6 +228,7 @@ const getValidColumnList = computed(() => {
             [
               SysOnlineFormType.QUERY,
               SysOnlineFormType.ADVANCE_QUERY,
+              SysOnlineFormType.GROUP_QUERY,
               SysOnlineFormType.ONE_TO_ONE_QUERY,
               SysOnlineFormType.WORK_ORDER,
             ].indexOf(formType.value) !== -1

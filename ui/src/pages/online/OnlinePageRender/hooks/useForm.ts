@@ -1,5 +1,4 @@
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus';
-import { useFormExpose } from './useFormExpose';
 import { OnlineFormController, OnlineDictController } from '@/api/online';
 import { usePermissions } from '@/common/hooks/usePermission';
 import {
@@ -21,6 +20,8 @@ import { Dialog } from '@/components/Dialog';
 import { useLoginStore } from '@/store';
 import { ANY_OBJECT } from '@/types/generic';
 import OnlineQueryForm from '@/pages/online/OnlinePageRender/OnlineQueryForm/index.vue';
+import OnlineAdcanceQueryForm from '@/pages/online/OnlinePageRender/OnlineAdvanceQueryForm/index.vue';
+import OnlineGroupQueryForm from '@/pages/online/OnlinePageRender/OnlineGroupQueryForm/index.vue';
 import OnlineEditForm from '@/pages/online/OnlinePageRender/OnlineEditForm/index.vue';
 import { useFormConfig } from '@/pages/online/hooks/useFormConfig';
 import widgetData from '@/online/config/index';
@@ -31,6 +32,7 @@ import { post, download } from '@/common/http/request';
 import { API_CONTEXT } from '@/api/config';
 import { useThirdParty } from '@/components/thirdParty/hooks';
 import { buildRuleItem } from '@/online/utils/index.js';
+import { useFormExpose } from './useFormExpose';
 
 const StaticDict = { ...combinedDict };
 
@@ -371,6 +373,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
             width: formConfigData.width,
             fullscreen: formConfigData.fullscreen,
             advanceQuery: formConfigData.advanceQuery,
+            groupQuery: formConfigData.groupQuery,
             widgetList: formConfigData.widgetList,
             operationList: (formConfigData.operationList || []).sort(
               (value1: ANY_OBJECT, value2: ANY_OBJECT) => {
@@ -379,6 +382,7 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
             ),
             tableWidget: formConfigData.tableWidget,
             leftWidget: formConfigData.leftWidget,
+            groupWidget: formConfigData.groupWidget,
             customFieldList: formConfigData.customFieldList,
             formEventList: formConfigData.formEventList,
             maskFieldList: formConfigData.maskFieldList,
@@ -393,8 +397,10 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
   };
   const getCompoment = (formConfig: ANY_OBJECT, widget: ANY_OBJECT) => {
     if (widget != null && widget.widgetType === SysCustomWidgetType.Table) return OnlineEditForm;
-
-    return formConfig.formType === SysOnlineFormType.QUERY ? OnlineQueryForm : OnlineEditForm;
+    if (formConfig.formType === SysOnlineFormType.QUERY) return OnlineQueryForm;
+    if (formConfig.formKind === SysOnlineFormType.ADVANCE_QUERY) return OnlineAdcanceQueryForm;
+    if (formConfig.formKind === SysOnlineFormType.GROUP_QUERY) return OnlineGroupQueryForm;
+    return OnlineEditForm;
   };
   /**
    * 执行操作
@@ -735,6 +741,8 @@ export const useForm = (props: ANY_OBJECT, formRef: Ref<FormInstance> | null = n
       initWidget(dialogParams.value.formConfig.tableWidget);
     if (dialogParams.value.formConfig.leftWidget)
       initWidget(dialogParams.value.formConfig.leftWidget);
+    if (dialogParams.value.formConfig.groupWidget)
+      initWidget(dialogParams.value.formConfig.groupWidget);
     if (errorMessage.length > 0) {
       console.error(errorMessage);
     }

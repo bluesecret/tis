@@ -417,7 +417,8 @@ const loadPageAndForms = () => {
               form.pageId === page.pageId &&
               form.formKind === SysOnlineFormKind.PAGE &&
               (form.formType === SysOnlineFormType.QUERY ||
-                form.formType === SysOnlineFormType.ADVANCE_QUERY)
+                form.formType === SysOnlineFormType.ADVANCE_QUERY ||
+                form.formType === SysOnlineFormType.GROUP_QUERY)
             );
           })
           .map((form: ANY_OBJECT) => {

@@ -9,6 +9,7 @@ import { findItemFromList } from '@/common/utils';
 import widgetData from '@/online/config/index';
 import tableConfig from '@/online/config/table';
 import treeConfig from '@/online/config/tree';
+import radioButtonGroupConfig from '@/online/config/radioButtonGroup';
 import queryListConfig from '@/online/config/queryList';
 import workOrderListConfig from '@/online/config/workOrderList';
 
@@ -23,6 +24,9 @@ export const useFormConfig = () => {
     },
     leftWidget: {
       ...widgetData.getWidgetObject(treeConfig),
+    },
+    groupWidget: {
+      ...widgetData.getWidgetObject(radioButtonGroupConfig),
     },
     operationList: [
       {
@@ -132,6 +136,7 @@ export const useFormConfig = () => {
     allowEventList: [OnlineFormEventType.AFTER_CREATE_FORM],
     fullscreen: true,
     advanceQuery: false,
+    groupQuery: false,
     supportOperation: true,
     width: 800,
   };
@@ -278,12 +283,14 @@ export const useFormConfig = () => {
     switch (formType) {
       case SysOnlineFormType.QUERY:
       case SysOnlineFormType.ADVANCE_QUERY:
+      case SysOnlineFormType.GROUP_QUERY:
       case SysOnlineFormType.ONE_TO_ONE_QUERY:
         return JSON.parse(
           JSON.stringify({
             pc: {
               ...baseQueryForm,
               advanceQuery: formType === SysOnlineFormType.ADVANCE_QUERY,
+              groupQuery: formType === SysOnlineFormType.GROUP_QUERY,
               supportOperation: formType !== SysOnlineFormType.ONE_TO_ONE_QUERY,
             },
             mobile: {

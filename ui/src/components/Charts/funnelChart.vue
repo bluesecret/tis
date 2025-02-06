@@ -114,7 +114,7 @@ const series = computed(() => {
     let arr = [];
     arr = props.valueColumnList.map((valueItem, index) => {
       let lineData = props.data.map(dataItem => {
-        let xx = getRowDataByColumnName(dataItem, valueItem.columnName);
+        let xx = getRowDataByColumnName(dataItem, valueItem.columnName, valueItem.fixed);
         return {
           value: fixedValue(xx, valueItem.fixed),
           name: getCategoryColumnValue(dataItem, props.categrayColumnList),

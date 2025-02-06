@@ -21,6 +21,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -34,6 +35,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -47,6 +49,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -60,6 +63,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -73,6 +77,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -86,6 +91,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -99,6 +105,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -112,6 +119,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -125,6 +133,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -138,6 +147,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -151,6 +161,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -179,6 +190,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -192,6 +204,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>
@@ -205,6 +218,7 @@
                 :clearable="true"
                 :show-word-limit="false"
                 maxlength=""
+                :readonly="true"
               />
             </el-form-item>
           </el-col>

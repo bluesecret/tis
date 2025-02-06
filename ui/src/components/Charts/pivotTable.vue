@@ -654,6 +654,10 @@ watch(
   border: none;
 }
 
+.pivot-table :deep(.vxe-table--render-default .vxe-body--x-space) {
+  margin-top: 1px;
+}
+
 .pivot-table :deep(.vxe-table--border-line) {
   border: none;
 }

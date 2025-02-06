@@ -140,14 +140,14 @@
 <script setup lang="ts">
 import { Plus, Close } from '@element-plus/icons-vue';
 import { defineProps, defineEmits, withDefaults } from 'vue';
-import PdfPreview from './Pdf.vue';
-import WordPreview from './Word.vue';
-import ExcelPreview from './Excel.vue';
-import VideoPreview from './Video.vue';
 import { EnumFileType } from '@/common/staticDict/index';
 import fileErrorImg from '@/assets/img/file-error.png';
 import { useDownload } from '@/common/hooks/useDownload';
 import { getFileType } from '@/common/utils';
+import PdfPreview from './Pdf.vue';
+import WordPreview from './Word.vue';
+import ExcelPreview from './Excel.vue';
+import VideoPreview from './Video.vue';
 
 const props = withDefaults(
   defineProps<{

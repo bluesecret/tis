@@ -691,7 +691,7 @@ const customQueryFieldList = computed(() => {
       {
         id: props.widget.relation.slaveTable.tableName,
         name: props.widget.relation.relationName,
-        children: props.widget.relation.slaveTable.columnList.map(column => {
+        children: (props.widget.relation.slaveTable.columnList || []).map(column => {
           return {
             tableName: props.widget.relation.slaveTable.tableName,
             id: column.columnName,
@@ -709,7 +709,7 @@ const customQueryFieldList = computed(() => {
         const temp = {
           id: relation.slaveTable.tableName,
           name: relation.relationName,
-          children: relation.slaveTable.columnList.map(column => {
+          children: (relation.slaveTable.columnList || []).map(column => {
             return {
               tableName: relation.slaveTable.tableName,
               id: column.columnName,

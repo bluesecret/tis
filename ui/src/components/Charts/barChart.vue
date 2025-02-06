@@ -147,7 +147,7 @@ const series = computed(() => {
   if (Array.isArray(props.valueColumnList) && Array.isArray(props.data)) {
     arr = props.valueColumnList.map((valueItem, index) => {
       let serieData = props.data.map(dataItem => {
-        return getRowDataByColumnName(dataItem, valueItem.columnName);
+        return getRowDataByColumnName(dataItem, valueItem.columnName, valueItem.fixed);
       });
       return {
         name: legendData.value[index],

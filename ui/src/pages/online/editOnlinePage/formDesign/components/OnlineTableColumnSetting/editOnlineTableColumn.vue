@@ -173,7 +173,6 @@
 
 <script setup lang="ts">
 import { ElMessageBox } from 'element-plus';
-import EditDictParamValue from '../CustomWidgetDictSetting/EditDictParamValue.vue';
 import { SysCustomWidgetType } from '@/common/staticDict/index';
 import { SysOnlineFieldKind } from '@/common/staticDict/online';
 import { findItemFromList } from '@/common/utils';
@@ -184,6 +183,7 @@ import { useThirdParty } from '@/components/thirdParty/hooks';
 import { ThirdProps } from '@/components/thirdParty/types';
 import { useLayoutStore } from '@/store';
 import MultiItemBox from '@/components/MultiItemBox/index.vue';
+import EditDictParamValue from '../CustomWidgetDictSetting/EditDictParamValue.vue';
 
 const layoutStore = useLayoutStore();
 

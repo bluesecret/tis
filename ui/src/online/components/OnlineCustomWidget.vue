@@ -179,6 +179,7 @@ import OnlineCustomChart from './OnlineCustomChart.vue';
 import OnlineCustomDataSelect from './OnlineCustomDataSelect/index.vue';
 import OnlineCustomText from './OnlineCustomText.vue';
 import OnlineCustomImage from './OnlineCustomImage.vue';
+import OnlineCustomRadioGroup from './OnlineCustomRadioGroup.vue';
 import OnlineMobileSelectFilter from './mobile/MobileSelectFilter.vue';
 import OnlineMobileInputFilter from './mobile/MobileInputFilter.vue';
 import OnlineMobileSwitchFilter from './mobile/MobileSwitchFilter.vue';
@@ -372,6 +373,8 @@ const getComponent = computed(() => {
       return OnlineCustomText;
     case SysCustomWidgetType.Image:
       return OnlineCustomImage;
+    case SysCustomWidgetType.RadioButtonGroup:
+      return OnlineCustomRadioGroup;
     case SysCustomWidgetType.MobileRadioFilter:
     case SysCustomWidgetType.MobileCheckBoxFilter:
       return OnlineMobileSelectFilter;
@@ -410,6 +413,7 @@ const isDictWidget = computed(() => {
       SysCustomWidgetType.Radio,
       SysCustomWidgetType.Cascader,
       SysCustomWidgetType.Tree,
+      SysCustomWidgetType.RadioButtonGroup,
       SysCustomWidgetType.MobileCheckBoxFilter,
       SysCustomWidgetType.MobileRadioFilter,
     ].indexOf(pps.widget.widgetType) !== -1
@@ -593,7 +597,11 @@ const getWidgetProps = computed(() => {
     operationList: pps.widget.operationList,
     multiple: multiSelect.value,
     'collapse-tags': multiSelect.value,
-    dataList: pps.widget.widgetType === SysCustomWidgetType.Tree ? dictDataList.value : undefined,
+    dataList:
+      pps.widget.widgetType === SysCustomWidgetType.Tree ||
+      pps.widget.widgetType === SysCustomWidgetType.RadioButtonGroup
+        ? dictDataList.value
+        : undefined,
     dictDataList: isMobileFilter.value ? getAllDropdownData.value : undefined,
     href: getLinkHerf.value,
     label:
@@ -810,10 +818,15 @@ const refresh = () => {
   }
 };
 
+const getRef = () => {
+  return getWidgetRef(pps.widget.variableName);
+};
+
 defineExpose({
   getHtml,
   reset,
   refresh,
+  getRef,
 });
 
 watch(
