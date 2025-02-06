@@ -65,31 +65,6 @@ public class TisPatResultServiceImpl extends BaseService<TisPatResult, Long> imp
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveNewBatch(List<TisPatResult> tisPatResultList, int batchSize) {
-        if (CollUtil.isEmpty(tisPatResultList)) {
-            return;
-        }
-        if (batchSize <= 0) {
-            batchSize = 10000;
-        }
-        int start = 0;
-        do {
-            int end = Math.min(tisPatResultList.size(), start + batchSize);
-            List<TisPatResult> subList = tisPatResultList.subList(start, end);
-            // 如果数据量过大，同时当前表中存在createTime或updateTime等字段，可以考虑在外部创建一次 new Date()，
-            // 然后传入buildDefaultValue，这样可以减少对象的创建次数，降低GC，提升效率。橙单之所以没有这样生成，是因为
-            // 有些业务场景下需要按照这两个日期字段排序，因此我们只是在这里给出优化建议。
-            subList.forEach(this::buildDefaultValue);
-            tisPatResultMapper.insertList(subList);
-            if (end == tisPatResultList.size()) {
-                break;
-            }
-            start += batchSize;
-        } while (true);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
     public boolean update(TisPatResult tisPatResult, TisPatResult originalTisPatResult) {
         MyModelUtil.fillCommonsForUpdate(tisPatResult, originalTisPatResult);
         // 这里重点提示，在执行主表数据更新之前，如果有哪些字段不支持修改操作，请用原有数据对象字段替换当前数据字段。
@@ -131,12 +106,6 @@ public class TisPatResultServiceImpl extends BaseService<TisPatResult, Long> imp
         int batchSize = resultList instanceof Page ? 0 : 1000;
         this.buildRelationForDataList(resultList, MyRelationParam.normal(), batchSize);
         return resultList;
-    }
-
-    @Override
-    public CallResult verifyImportList(List<TisPatResult> dataList, Set<String> ignoreFieldSet) {
-        CallResult callResult;
-        return CallResult.ok();
     }
 
     @Override
