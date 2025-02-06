@@ -24,6 +24,10 @@ public final class FormType {
      */
     public static final int ONE_TO_ONE_QUERY = 3;
     /**
+     * 多视图查询表单。
+     */
+    public static final int MULTI_VIEW_QUERY = 4;
+    /**
      * 编辑表单。
      */
     public static final int EDIT_FORM = 5;
@@ -41,6 +45,7 @@ public final class FormType {
         DICT_MAP.put(QUERY, "查询表单");
         DICT_MAP.put(ADVANCED_QUERY, "左树右表表单");
         DICT_MAP.put(ONE_TO_ONE_QUERY, "一对一关联数据查询");
+        DICT_MAP.put(MULTI_VIEW_QUERY, "多视图查询表单");
         DICT_MAP.put(EDIT_FORM, "编辑表单");
         DICT_MAP.put(FLOW, "流程表单");
         DICT_MAP.put(FLOW_WORK_ORDER, "流程工单表单");

@@ -193,7 +193,7 @@ public class FlowApiServiceImpl implements FlowApiService {
     @Override
     public ProcessInstance revive(String processInstanceId, List<String> taskKeys, String taskComment) {
         FlowTaskComment comment = new FlowTaskComment();
-        comment.setTargetTaskKey(StrUtil.join(",", taskKeys));
+        comment.setTargetTaskKey(StrUtil.join(StrUtil.COMMA, taskKeys));
         comment.setProcessInstanceId(processInstanceId);
         comment.setApprovalType(FlowApprovalType.REVIVE);
         comment.setTaskComment(taskComment);
@@ -237,7 +237,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 multiInstanceActiveTask.getExecutionId(), FlowConstant.MULTI_SIGN_TASK_EXECUTION_ID_VAR);
         FlowMultiInstanceTrans trans =
                 flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
-        Set<String> assigneeSet = new HashSet<>(StrUtil.split(trans.getAssigneeList(), ","));
+        Set<String> assigneeSet = new HashSet<>(StrUtil.split(trans.getAssigneeList(), StrUtil.COMMA));
         Task runtimeTask = null;
         for (int i = 0; i < assigneeArray.size(); i++) {
             String assignee = assigneeArray.getString(i);
@@ -267,7 +267,7 @@ public class FlowApiServiceImpl implements FlowApiService {
         if (!isAdd && runtimeTask != null) {
             this.doChangeTask(runtimeTask);
         }
-        trans.setAssigneeList(StrUtil.join(",", assigneeSet));
+        trans.setAssigneeList(StrUtil.join(StrUtil.COMMA, assigneeSet));
         flowMultiInstanceTransService.updateById(trans);
         FlowTaskComment flowTaskComment = new FlowTaskComment();
         flowTaskComment.fillWith(startTaskInstance);
@@ -292,7 +292,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
         List<String> updatedAssignees = managementService.executeCommand(
                 new AddSequenceMultiInstanceCmd(trans.getAssigneeList(), multiInstanceActiveTask.getId(), newAssigneeList, before));
-        trans.setAssigneeList(StrUtil.join(",", updatedAssignees));
+        trans.setAssigneeList(StrUtil.join(StrUtil.COMMA, updatedAssignees));
         flowMultiInstanceTransService.updateById(trans);
         FlowTaskComment flowTaskComment = new FlowTaskComment();
         flowTaskComment.fillWith(multiInstanceActiveTask);
@@ -450,7 +450,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 taskVariableData.put(FlowConstant.MULTI_ASSIGNEE_LIST_VAR, StrUtil.split(assigneeList, ','));
             }
         } else {
-            assigneeList = CollUtil.join(assigneeArray, ",");
+            assigneeList = CollUtil.join(assigneeArray, StrUtil.COMMA);
         }
         return assigneeList;
     }
@@ -467,11 +467,11 @@ public class FlowApiServiceImpl implements FlowApiService {
                 if (value == null) {
                     resultCopyDataJson.put(entry.getKey(), entry.getValue());
                 } else {
-                    List<String> list1 = StrUtil.split(value, ",");
-                    List<String> list2 = StrUtil.split(entry.getValue().toString(), ",");
+                    List<String> list1 = StrUtil.split(value, StrUtil.COMMA);
+                    List<String> list2 = StrUtil.split(entry.getValue().toString(), StrUtil.COMMA);
                     Set<String> valueSet = new HashSet<>(list1);
                     valueSet.addAll(list2);
-                    resultCopyDataJson.put(entry.getKey(), StrUtil.join(",", valueSet));
+                    resultCopyDataJson.put(entry.getKey(), StrUtil.join(StrUtil.COMMA, valueSet));
                 }
             }
         }
@@ -499,32 +499,32 @@ public class FlowApiServiceImpl implements FlowApiService {
                     entry.setValue(leaderDeptPostId);
                     break;
                 case FlowConstant.GROUP_TYPE_SELF_DEPT_POST_VAR:
-                    Set<String> selfPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), ","));
+                    Set<String> selfPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), StrUtil.COMMA));
                     Map<String, String> deptPostIdMap =
                             flowIdentityExtHelper.getDeptPostIdMap(tokenData.getDeptId(), selfPostIdSet);
                     String deptPostIdValues = "";
                     if (deptPostIdMap != null) {
-                        deptPostIdValues = StrUtil.join(",", deptPostIdMap.values());
+                        deptPostIdValues = StrUtil.join(StrUtil.COMMA, deptPostIdMap.values());
                     }
                     entry.setValue(deptPostIdValues);
                     break;
                 case FlowConstant.GROUP_TYPE_SIBLING_DEPT_POST_VAR:
-                    Set<String> siblingPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), ","));
+                    Set<String> siblingPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), StrUtil.COMMA));
                     Map<String, String> siblingDeptPostIdMap =
                             flowIdentityExtHelper.getSiblingDeptPostIdMap(tokenData.getDeptId(), siblingPostIdSet);
                     String siblingDeptPostIdValues = "";
                     if (siblingDeptPostIdMap != null) {
-                        siblingDeptPostIdValues = StrUtil.join(",", siblingDeptPostIdMap.values());
+                        siblingDeptPostIdValues = StrUtil.join(StrUtil.COMMA, siblingDeptPostIdMap.values());
                     }
                     entry.setValue(siblingDeptPostIdValues);
                     break;
                 case FlowConstant.GROUP_TYPE_UP_DEPT_POST_VAR:
-                    Set<String> upPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), ","));
+                    Set<String> upPostIdSet = new HashSet<>(StrUtil.split(entry.getValue().toString(), StrUtil.COMMA));
                     Map<String, String> upDeptPostIdMap =
                             flowIdentityExtHelper.getUpDeptPostIdMap(tokenData.getDeptId(), upPostIdSet);
                     String upDeptPostIdValues = "";
                     if (upDeptPostIdMap != null) {
-                        upDeptPostIdValues = StrUtil.join(",", upDeptPostIdMap.values());
+                        upDeptPostIdValues = StrUtil.join(StrUtil.COMMA, upDeptPostIdMap.values());
                     }
                     entry.setValue(upDeptPostIdValues);
                     break;
@@ -535,7 +535,7 @@ public class FlowApiServiceImpl implements FlowApiService {
     }
     
     private String replaceUserVariable(String taskId, String userNames) {
-        Set<String> users = new HashSet<>(StrUtil.split(userNames, ","));
+        Set<String> users = new HashSet<>(StrUtil.split(userNames, StrUtil.COMMA));
         Set<String> resultUsers = new HashSet<>();
         users.forEach(user -> {
             if (this.isVariableString(user)) {
@@ -547,7 +547,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 resultUsers.add(user);
             }
         });
-        return CollUtil.join(resultUsers, ",");
+        return CollUtil.join(resultUsers, StrUtil.COMMA);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -1517,7 +1517,7 @@ public class FlowApiServiceImpl implements FlowApiService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void transferTo(Task task, FlowTaskComment flowTaskComment) {
-        List<String> transferUserList = StrUtil.split(flowTaskComment.getDelegateAssignee(), ",");
+        List<String> transferUserList = StrUtil.split(flowTaskComment.getDelegateAssignee(), StrUtil.COMMA);
         for (String transferUser : transferUserList) {
             if (transferUser.equals(FlowConstant.START_USER_NAME_VAR)) {
                 String startUser = this.getProcessInstanceVariable(
@@ -1525,7 +1525,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 String newDelegateAssignee = StrUtil.replace(
                         flowTaskComment.getDelegateAssignee(), FlowConstant.START_USER_NAME_VAR, startUser);
                 flowTaskComment.setDelegateAssignee(newDelegateAssignee);
-                transferUserList = StrUtil.split(flowTaskComment.getDelegateAssignee(), ",");
+                transferUserList = StrUtil.split(flowTaskComment.getDelegateAssignee(), StrUtil.COMMA);
                 break;
             }
         }
@@ -1558,10 +1558,10 @@ public class FlowApiServiceImpl implements FlowApiService {
             return Collections.emptyList();
         }
         if (!StrUtil.equals(flowTaskExt.getCandidateUsernames(), "${" + FlowConstant.TASK_APPOINTED_ASSIGNEE_VAR + "}")) {
-            return StrUtil.split(flowTaskExt.getCandidateUsernames(), ",");
+            return StrUtil.split(flowTaskExt.getCandidateUsernames(), StrUtil.COMMA);
         }
         Object candidateUsernames = getTaskVariableStringWithSafe(taskId, FlowConstant.TASK_APPOINTED_ASSIGNEE_VAR);
-        return candidateUsernames == null ? null : StrUtil.split(candidateUsernames.toString(), ",");
+        return candidateUsernames == null ? null : StrUtil.split(candidateUsernames.toString(), StrUtil.COMMA);
     }
 
     @Override
@@ -1914,7 +1914,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 FlowMultiInstanceTrans trans =
                         flowMultiInstanceTransService.getWithAssigneeListByMultiInstanceExecId(multiInstanceExecId);
                 runtimeService.setVariable(
-                        task.getExecutionId(), FlowConstant.MULTI_ASSIGNEE_LIST_VAR, StrUtil.split(trans.getAssigneeList(), ","));
+                        task.getExecutionId(), FlowConstant.MULTI_ASSIGNEE_LIST_VAR, StrUtil.split(trans.getAssigneeList(), StrUtil.COMMA));
             }
         }
     }
@@ -2063,12 +2063,12 @@ public class FlowApiServiceImpl implements FlowApiService {
 
     private void removeCandidateGroup(FlowTaskExt taskExt, Task task) {
         if (StrUtil.isNotBlank(taskExt.getDeptIds())) {
-            for (String deptId : StrUtil.split(taskExt.getDeptIds(), ",")) {
+            for (String deptId : StrUtil.split(taskExt.getDeptIds(), StrUtil.COMMA)) {
                 taskService.deleteCandidateGroup(task.getId(), deptId);
             }
         }
         if (StrUtil.isNotBlank(taskExt.getRoleIds())) {
-            for (String roleId : StrUtil.split(taskExt.getRoleIds(), ",")) {
+            for (String roleId : StrUtil.split(taskExt.getRoleIds(), StrUtil.COMMA)) {
                 taskService.deleteCandidateGroup(task.getId(), roleId);
             }
         }
@@ -2120,7 +2120,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                     Object v3 = this.getProcessInstanceVariable(
                             processInstanceId, FlowConstant.SIBLING_DEPT_POST_PREFIX + groupData.getPostId(), historic);
                     if (ObjectUtil.isNotEmpty(v3)) {
-                        deptPostIdSet.addAll(StrUtil.split(v3.toString(), ",")
+                        deptPostIdSet.addAll(StrUtil.split(v3.toString(), StrUtil.COMMA)
                                 .stream().filter(StrUtil::isNotBlank).collect(Collectors.toList()));
                     }
                     break;
@@ -2173,7 +2173,7 @@ public class FlowApiServiceImpl implements FlowApiService {
                 for (String el : node.getAllUserTasks()) {
                     String prefix = "road" + i + "---";
                     if (StrUtil.startWith(el, prefix)) {
-                        sb.append(StrUtil.removePrefix(el, prefix)).append(",");
+                        sb.append(StrUtil.removePrefix(el, prefix)).append(StrUtil.COMMA);
                     }
                 }
                 set.add(sb.toString());
@@ -2181,7 +2181,7 @@ public class FlowApiServiceImpl implements FlowApiService {
             set = set.stream().filter(StrUtil::isNotBlank).collect(Collectors.toSet());
             int index = 0;
             for (String s : set) {
-                List<String> idList = StrUtil.split(s, ",")
+                List<String> idList = StrUtil.split(s, StrUtil.COMMA)
                         .stream().filter(StrUtil::isNotBlank).collect(Collectors.toList());
                 List<UserTaskInfo> userTaskRoad = new LinkedList<>();
                 for (String id : idList) {
@@ -2528,15 +2528,15 @@ public class FlowApiServiceImpl implements FlowApiService {
         }
         String roleIds = tokenData.getRoleIds();
         if (StrUtil.isNotBlank(tokenData.getRoleIds())) {
-            groupIdSet.addAll(StrUtil.split(roleIds, ","));
+            groupIdSet.addAll(StrUtil.split(roleIds, StrUtil.COMMA));
         }
         String postIds = tokenData.getPostIds();
         if (StrUtil.isNotBlank(tokenData.getPostIds())) {
-            groupIdSet.addAll(StrUtil.split(postIds, ","));
+            groupIdSet.addAll(StrUtil.split(postIds, StrUtil.COMMA));
         }
         String deptPostIds = tokenData.getDeptPostIds();
         if (StrUtil.isNotBlank(deptPostIds)) {
-            groupIdSet.addAll(StrUtil.split(deptPostIds, ","));
+            groupIdSet.addAll(StrUtil.split(deptPostIds, StrUtil.COMMA));
         }
         if (CollUtil.isNotEmpty(groupIdSet)) {
             query.or().taskCandidateGroupIn(groupIdSet).taskCandidateOrAssigned(loginName).endOr();
@@ -2560,7 +2560,7 @@ public class FlowApiServiceImpl implements FlowApiService {
         }
         Set<String> usernameSet = null;
         BaseFlowIdentityExtHelper extHelper = flowCustomExtFactory.getFlowIdentityExtHelper();
-        Set<String> idSet = CollUtil.newHashSet(StrUtil.split(multiSignAssignee.getAssigneeList(), ","));
+        Set<String> idSet = CollUtil.newHashSet(StrUtil.split(multiSignAssignee.getAssigneeList(), StrUtil.COMMA));
         switch (multiSignAssignee.getAssigneeType()) {
             case UserFilterGroup.ROLE:
                 usernameSet = extHelper.getUsernameListByRoleIds(idSet);
@@ -2577,7 +2577,7 @@ public class FlowApiServiceImpl implements FlowApiService {
             default:
                 break;
         }
-        return CollUtil.isEmpty(usernameSet) ? null : CollUtil.join(usernameSet, ",");
+        return CollUtil.isEmpty(usernameSet) ? null : CollUtil.join(usernameSet, StrUtil.COMMA);
     }
 
     private Collection<FlowElement> getAllElements(Collection<FlowElement> flowElements, Collection<FlowElement> allElements) {

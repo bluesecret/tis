@@ -409,7 +409,7 @@ public class FlowTaskExtServiceImpl extends BaseService<FlowTaskExt, String> imp
         }
         return propertiesData;
     }
-    
+
     private List<FlowUserInfoVo> reorderSequenceMultiInstanceUserList(
             FlowTaskExt flowTaskExt, Set<String> usernameSet, List<FlowUserInfoVo> resultUserMapList) {
         if (CollUtil.isEmpty(resultUserMapList) || StrUtil.isBlank(flowTaskExt.getExtraDataJson())) {
@@ -618,11 +618,11 @@ public class FlowTaskExtServiceImpl extends BaseService<FlowTaskExt, String> imp
     }
 
     private JSONObject buildFlowTaskExtensionData(UserTask userTask) {
-        JSONObject extraDataJson = this.buildFlowElementExtToJson(userTask);
         Map<String, List<ExtensionAttribute>> attributeMap = userTask.getAttributes();
-        if (MapUtil.isEmpty(attributeMap)) {
-            return extraDataJson;
+        if (attributeMap == null) {
+            attributeMap = new HashMap<>();
         }
+        JSONObject extraDataJson = this.buildFlowElementExtToJson(userTask);
         if (extraDataJson == null) {
             extraDataJson = new JSONObject();
         }

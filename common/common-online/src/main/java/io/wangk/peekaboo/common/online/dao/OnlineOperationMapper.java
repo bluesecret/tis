@@ -183,7 +183,7 @@ public interface OnlineOperationMapper {
             + "        </foreach>"
             + "    </if>"
             + "    <if test=\"customFilterSql != null and customFilterSql != ''\">"
-            + "        AND ${customFilterSql{r'}'} "
+            + "        AND ${customFilterSql} "
             + "    </if>"
             + "</where>"
             + "<if test=\"orderBy != null and orderBy != ''\">"
@@ -259,4 +259,73 @@ public interface OnlineOperationMapper {
             @Param("selectFields") String selectFields,
             @Param("whereClause") String whereClause,
             @Param("groupBy") String groupBy);
+
+    /**
+     * 根据指定的表名、显示字段列表、过滤条件字符串和分组字段，返回聚合计算后的查询结果。
+     *
+     * @param masterTableName 主表名称。
+     * @param joinInfoList    关联表信息列表。
+     * @param filterList      SQL过滤条件列表。
+     * @param customFilterSql 自定义过滤SQL。
+     * @param groupByField    分组字段。
+     * @return 分组计数统计的Map列表。
+     */
+    @Select("<script>"
+            + "SELECT ${groupByField} \"GROUP_KEY\", COUNT(1) \"GROUP_COUNT\" FROM ${masterTableName} "
+            + "<if test=\"joinInfoList != null\">"
+            + "    <foreach collection=\"joinInfoList\" item=\"joinInfo\">"
+            + "        <if test=\"joinInfo.leftJoin\">"
+            + "            LEFT JOIN ${joinInfo.joinTableName} ON ${joinInfo.joinCondition}"
+            + "        </if>"
+            + "        <if test=\"!joinInfo.leftJoin\">"
+            + "            INNER JOIN ${joinInfo.joinTableName} ON ${joinInfo.joinCondition}"
+            + "        </if>"
+            + "    </foreach>"
+            + "</if>"
+            + "<where>"
+            + "    <if test=\"filterList != null\">"
+            + "        <foreach collection=\"filterList\" item=\"filter\">"
+            + "            <if test=\"filter.filterType == 1\">"
+            + "                AND ${filter.tableName}.${filter.columnName} = #{filter.columnValue} "
+            + "            </if>"
+            + "            <if test=\"filter.filterType == 9\">"
+            + "                AND ${filter.tableName}.${filter.columnName} &lt;&gt; #{filter.columnValue} "
+            + "            </if>"
+            + "            <if test=\"filter.filterType == 2\">"
+            + "                <if test=\"filter.columnValueStart != null and filter.columnValueStart != ''\">"
+            + "                    AND ${filter.tableName}.${filter.columnName} &gt;= #{filter.columnValueStart} "
+            + "                </if>"
+            + "                <if test=\"filter.columnValueEnd != null and filter.columnValueEnd != ''\">"
+            + "                    AND ${filter.tableName}.${filter.columnName} &lt;= #{filter.columnValueEnd} "
+            + "                </if>"
+            + "            </if>"
+            + "            <if test=\"filter.filterType == 3\">"
+            + "                AND ${filter.tableName}.${filter.columnName} LIKE #{filter.columnValue} "
+            + "            </if>"
+            + "            <if test=\"filter.filterType == 4\">"
+            + "                AND ${filter.tableName}.${filter.columnName} IN "
+            + "                <foreach collection=\"filter.columnValueList\" item=\"columnValue\" separator=\",\" open=\"(\" close=\")\">"
+            + "                    #{columnValue} "
+            + "                </foreach>"
+            + "            </if>"
+            + "            <if test=\"filter.filterType == 5\">"
+            + "                AND "
+            + "                <foreach collection=\"filter.columnValueList\" item=\"columnValue\" separator=\" OR \" open=\"(\" close=\")\">"
+            + "                    ${filter.tableName}.${filter.columnName} LIKE #{columnValue} "
+            + "                </foreach>"
+            + "            </if>"
+            + "        </foreach>"
+            + "    </if>"
+            + "    <if test=\"customFilterSql != null and customFilterSql != ''\">"
+            + "        AND ${customFilterSql} "
+            + "    </if>"
+            + "</where>"
+            + " GROUP BY ${groupByField} "
+            + "</script>")
+    List<Map<String, Object>> getGroupCountList(
+            @Param("masterTableName") String masterTableName,
+            @Param("joinInfoList") List<JoinTableInfo> joinInfoList,
+            @Param("filterList") List<OnlineFilterDto> filterList,
+            @Param("customFilterSql") String customFilterSql,
+            @Param("groupByField") String groupByField);
 }

@@ -75,4 +75,10 @@ public class OnlineFilterDto {
      * 是否为Oracle的日期类型。
      */
     private Boolean isOracleDate = false;
+
+    /**
+     * 是否执行分组计数统计。
+     */
+    @Schema(description = "是否执行分组计数统计")
+    private Boolean groupCount = false;
 }

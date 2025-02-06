@@ -186,7 +186,6 @@ public class MobileEntryController {
      * @param filename 文件名。
      * @param response Http 应答对象。
      */
-    @SaCheckPermission("mobileEntry.all")
     @GetMapping("/downloadImage")
     public void downloadImage(@RequestParam String filename, HttpServletResponse response) {
         mobileEntryHelper.downloadImage(filename, response);

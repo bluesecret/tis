@@ -539,6 +539,18 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
         }
         this.reformatResultListWithOneToOneRelation(resultList, oneToOneRelationList);
         onlineExtendExecutorUtil.doAfterSelectList(table, resultList);
+        if (CollUtil.isNotEmpty(filterList)) {
+            OnlineFilterDto filter = filterList.stream()
+                    .filter(f -> f.getGroupCount().equals(Boolean.TRUE)).findFirst().orElse(null);
+            if (filter != null) {
+                filterList = filterList.stream()
+                        .filter(f -> !f.getGroupCount().equals(Boolean.TRUE)).collect(Collectors.toList());
+                customFilterSql = this.mergeToCustomSql(oneToOneRelationList, null, dataPermFilter);
+                List<Map<String, Object>> groupCountList = this.getGroupCountList(
+                        table, joinInfoList, filterList, customFilterSql, filter.getColumnName());
+                pageData.setExtra(groupCountList);
+            }
+        }
         return pageData;
     }
 
@@ -901,6 +913,40 @@ public class OnlineOperationServiceImpl implements OnlineOperationService {
                     data.put(entry.getKey(), MyDateUtil.toDateTimeString(new DateTime(entry.getValue())));
                 }
             }
+        }
+    }
+
+    private List<Map<String, Object>> getGroupCountList(
+            OnlineTable table,
+            List<JoinTableInfo> joinInfoList,
+            List<OnlineFilterDto> filterList,
+            String customFilterSql,
+            String groupByField) {
+        this.makeTenantFiler(table, filterList);
+        if (BooleanUtil.isFalse(onlineProperties.getEnabledMultiDatabaseWrite())) {
+            return onlineOperationMapper.getGroupCountList(
+                    table.getTableName(), joinInfoList, filterList, customFilterSql, groupByField);
+        }
+        StringBuilder sql = new StringBuilder(512);
+        sql.append(SELECT).append(groupByField).append(" \"GROUP_KEY\", COUNT(1) \"GROUP_COUNT\" ").append(FROM).append(table.getTableName());
+        if (CollUtil.isNotEmpty(joinInfoList)) {
+            for (JoinTableInfo joinInfo : joinInfoList) {
+                if (BooleanUtil.isTrue(joinInfo.getLeftJoin())) {
+                    sql.append(" LEFT JOIN ");
+                } else {
+                    sql.append(" INNER JOIN ");
+                }
+                sql.append(joinInfo.getJoinTableName()).append(" ON ").append(joinInfo.getJoinCondition());
+            }
+        }
+        List<Object> paramList = new LinkedList<>();
+        sql.append(this.makeWhereClause(filterList, customFilterSql, paramList));
+        sql.append(" GROUP BY ").append(groupByField);
+        try {
+            return dataSourceUtil.query(table.getDblinkId(), sql.toString(), paramList);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new OnlineRuntimeException(e.getMessage());
         }
     }
 
