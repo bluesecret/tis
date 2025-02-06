@@ -68,6 +68,7 @@ export const useWidgetToolkit = () => {
         [
           SysOnlineFormType.QUERY,
           SysOnlineFormType.ADVANCE_QUERY,
+          SysOnlineFormType.GROUP_QUERY,
           SysOnlineFormType.ONE_TO_ONE_QUERY,
         ].indexOf(formType) === -1;
       warningMsg = SysOnlineFieldKind.getValue(column.fieldKind);
@@ -105,6 +106,7 @@ export const useWidgetToolkit = () => {
         case SysCustomWidgetType.Cascader:
         case SysCustomWidgetType.CheckBox:
         case SysCustomWidgetType.Tree:
+        case SysCustomWidgetType.RadioButtonGroup:
         case SysCustomWidgetType.MobileRadioFilter:
         case SysCustomWidgetType.MobileCheckBoxFilter:
           disabled =

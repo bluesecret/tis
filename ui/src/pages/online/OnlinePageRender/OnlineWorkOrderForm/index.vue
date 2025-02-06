@@ -590,6 +590,7 @@ onMounted(() => {
 .online-workflow-order-form .query-filter-box {
   flex-grow: 0;
   flex-shrink: 0;
+  margin-bottom: 16px;
 }
 .online-query-form {
   display: flex;

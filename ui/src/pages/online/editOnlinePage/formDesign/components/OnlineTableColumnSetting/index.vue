@@ -58,7 +58,8 @@ const onEditTableColumn = (row: ANY_OBJECT | null = null) => {
   // 非查询页面只能从组件绑定的表中选择
   if (
     formConfig().form.formType !== SysOnlineFormType.QUERY &&
-    formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY
+    formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY &&
+    formConfig().form.formType !== SysOnlineFormType.GROUP_QUERY
   ) {
     tableList = (tableList || []).filter((table: ANY_OBJECT) => {
       return table.tableId === formConfig().currentWidget.bindData.tableId;

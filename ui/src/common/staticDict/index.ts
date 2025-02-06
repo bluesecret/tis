@@ -408,6 +408,11 @@ const SysCustomWidgetType = new DictionaryBase('组件类型', [
     symbol: 'RichEditor',
   },
   {
+    id: 33,
+    name: '单选按钮组',
+    symbol: 'RadioButtonGroup',
+  },
+  {
     id: 40,
     name: '分割线',
     symbol: 'Divider',
@@ -739,6 +744,11 @@ const SysOnlineFormType = new DictionaryBase('表单类型', [
     id: 3,
     name: '一对一查询',
     symbol: 'ONE_TO_ONE_QUERY',
+  },
+  {
+    id: 4,
+    name: '分组查询',
+    symbol: 'GROUP_QUERY',
   },
   {
     id: 5,

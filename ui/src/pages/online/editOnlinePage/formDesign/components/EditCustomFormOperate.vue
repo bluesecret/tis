@@ -791,7 +791,8 @@ const getValidOperationType = computed(() => {
     });
     if (
       dialogParams.value.formConfig.form.formType === SysOnlineFormType.QUERY ||
-      dialogParams.value.formConfig.form.formType === SysOnlineFormType.ADVANCE_QUERY
+      dialogParams.value.formConfig.form.formType === SysOnlineFormType.ADVANCE_QUERY ||
+      dialogParams.value.formConfig.form.formType === SysOnlineFormType.GROUP_QUERY
     ) {
       // 查询页面和左树右表页面，添加部分更新操作
       tempList.push({

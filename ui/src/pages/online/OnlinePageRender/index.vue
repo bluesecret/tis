@@ -15,6 +15,11 @@
       :height="mainContextHeight - 32 + 'px'"
       :formConfig="formConfig"
     />
+    <OnlineGroupQueryForm
+      v-if="isReady && formConfig && formConfig.formType === SysOnlineFormType.GROUP_QUERY"
+      :height="getMainContextHeight - 32 + 'px'"
+      :formConfig="formConfig"
+    />
     <OnlineOneToOneForm
       v-if="isReady && formConfig && formConfig.formType === SysOnlineFormType.ONE_TO_ONE_QUERY"
       :height="mainContextHeight - 32 + 'px'"
@@ -47,6 +52,7 @@ import { OnlineFormController } from '@/api/online';
 import { SysOnlineFormType } from '@/common/staticDict';
 import OnlineQueryForm from './OnlineQueryForm/index.vue';
 import OnlineAdvanceQueryForm from './OnlineAdvanceQueryForm/index.vue';
+import OnlineGroupQueryForm from './OnlineGroupQueryForm/index.vue';
 import OnlineOneToOneForm from './OnlineOneToOneForm/index.vue';
 import OnlineEditForm from './OnlineEditForm/index.vue';
 import OnlineWorkFlowForm from './OnlineWorkFlowForm/index.vue';
@@ -104,6 +110,7 @@ const loadOnlineFormConfig = () => {
         ),
         tableWidget: formConfigData.tableWidget,
         leftWidget: formConfigData.leftWidget,
+        groupWidget: formConfigData.groupWidget,
         customFieldList: formConfigData.customFieldList,
         formEventList: formConfigData.formEventList,
         maskFieldList: formConfigData.maskFieldList,

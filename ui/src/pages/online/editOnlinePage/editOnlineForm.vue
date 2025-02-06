@@ -157,7 +157,11 @@ const getValidFormType = computed(() => {
   return SysOnlineFormType.getList().filter(item => {
     if (item.id === SysOnlineFormType.FLOW) {
       return dialogParams.value.pageType === SysOnlinePageType.FLOW;
-    } else if (item.id === SysOnlineFormType.QUERY || item.id === SysOnlineFormType.ADVANCE_QUERY) {
+    } else if (
+      item.id === SysOnlineFormType.QUERY ||
+      item.id === SysOnlineFormType.ADVANCE_QUERY ||
+      item.id === SysOnlineFormType.GROUP_QUERY
+    ) {
       return dialogParams.value.pageType !== SysOnlinePageType.FLOW;
     } else if (item.id === SysOnlineFormType.WORK_ORDER) {
       return dialogParams.value.pageType === SysOnlinePageType.FLOW;
@@ -184,6 +188,7 @@ const getValidTableList = computed(() => {
       // 查询页面可以选择主表或者一对多从表
       case SysOnlineFormType.QUERY:
       case SysOnlineFormType.ADVANCE_QUERY:
+      case SysOnlineFormType.GROUP_QUERY:
         return item.relationType == null || item.relationType === SysOnlineRelationType.ONE_TO_MANY;
       case SysOnlineFormType.ONE_TO_ONE_QUERY:
         return item.relationType === SysOnlineRelationType.ONE_TO_ONE;

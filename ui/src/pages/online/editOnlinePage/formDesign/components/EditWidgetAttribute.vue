@@ -93,11 +93,11 @@ import PivotTableGroupSetting from '@/online/components/WidgetAttributeSetting/c
 import PivotTableTotalSetting from '@/online/components/WidgetAttributeSetting/components/PivotTableTotalSetting/index.vue';
 import OnlineTabPanelSetting from '@/online/components/WidgetAttributeSetting/components/OnlineTabPanelSetting/index.vue';
 import CustomWidgetDictSetting from '@/online/components/WidgetAttributeSetting/components/CustomWidgetDictSetting/index.vue';
-import OnlineTableColumnSetting from './OnlineTableColumnSetting/index.vue';
 import DateViewTablePagerSetting from '@/online/components/WidgetAttributeSetting/components/DateViewTablePagerSetting/index.vue';
 import OnlineImageUrlInput from '@/online/components/WidgetAttributeSetting/components/OnlineImageUrlInput.vue';
 import CustomWidgetRelativeTableSetting from '@/pages/online/editOnlinePage/formDesign/components/CustomWidgetRelativeTableSetting/index.vue';
 import OnlineCustomListOrderSetting from '@/online/components/WidgetAttributeSetting/components/OnlineCustomListOrderSetting/index.vue';
+import OnlineTableColumnSetting from './OnlineTableColumnSetting/index.vue';
 
 const components: ANY_OBJECT = {
   OnlineTableColumnSetting,
@@ -188,7 +188,6 @@ const loadDropdownData = () => {
       ? props.attributeItem.dropdownList
       : [];
   }
-  // TODO 最多只有一个值吗？
   if ((dropdownData.value || []).length === 1) onValueChange(dropdownData.value[0].id);
 };
 const getProps = () => {

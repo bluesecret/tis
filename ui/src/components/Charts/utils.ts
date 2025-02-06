@@ -166,7 +166,7 @@ export function getValueColumnName(calculateType: number, columnName: string) {
   return calculateName + nameTranslate(columnName, 1);
 }
 
-export const getRowDataByColumnName = (row: ANY_OBJECT, columnName: string) => {
+export const getRowDataByColumnName = (row: ANY_OBJECT, columnName: string, fixed?: number) => {
   if (row == null) return null;
   if (!Array.isArray(columnName)) {
     const dictName = columnName + '__DictMap';
@@ -181,12 +181,16 @@ export const getRowDataByColumnName = (row: ANY_OBJECT, columnName: string) => {
       }
       dataValue = dataValue[name];
     }
-    return dataValue;
+    if (dataValue != null && typeof dataValue === 'number') {
+      return fixedValue(dataValue, fixed);
+    } else {
+      return dataValue;
+    }
   }
 };
 
-export const fixedValue = (value: number, fix: number) => {
-  if (fix === undefined) return value;
+export const fixedValue = (value: number, fix?: number) => {
+  if (fix === undefined || value == null || value.toFixed == null) return value;
   return Number(value.toFixed(fix));
 };
 

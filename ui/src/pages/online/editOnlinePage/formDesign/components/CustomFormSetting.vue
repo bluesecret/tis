@@ -15,13 +15,15 @@
           style="margin-left: 8px"
           :title="
             formConfig().form.formType !== SysOnlineFormType.QUERY &&
-            formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY
+            formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY &&
+            formConfig().form.formType !== SysOnlineFormType.GROUP_QUERY
               ? '只允许接入查询表单'
               : '复制接入信息'
           "
           :disabled="
             formConfig().form.formType !== SysOnlineFormType.QUERY &&
-            formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY
+            formConfig().form.formType !== SysOnlineFormType.ADVANCE_QUERY &&
+            formConfig().form.formType !== SysOnlineFormType.GROUP_QUERY
           "
           :data-clipboard-text="shareInfo"
           @click="onShareForm"
@@ -68,7 +70,8 @@
       label="过滤组件宽度"
       v-if="
         formConfig().form.formType === SysOnlineFormType.QUERY ||
-        formConfig().form.formType === SysOnlineFormType.ADVANCE_QUERY
+        formConfig().form.formType === SysOnlineFormType.ADVANCE_QUERY ||
+        formConfig().form.formType === SysOnlineFormType.GROUP_QUERY
       "
     >
       <el-row type="flex" style="width: 100%">

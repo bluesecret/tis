@@ -33,12 +33,12 @@
 
 <script setup lang="ts">
 import { ElMessageBox } from 'element-plus';
-import EditCustomFormOperate from './EditCustomFormOperate.vue';
 import { ANY_OBJECT } from '@/types/generic';
 import MultiItemList from '@/components/MultiItemList/index.vue';
 import { Dialog } from '@/components/Dialog';
 import { SysCustomWidgetOperationType } from '@/common/staticDict';
 import { useLayoutStore } from '@/store';
+import EditCustomFormOperate from './EditCustomFormOperate.vue';
 
 const emit = defineEmits<{ 'update:value': [ANY_OBJECT] }>();
 

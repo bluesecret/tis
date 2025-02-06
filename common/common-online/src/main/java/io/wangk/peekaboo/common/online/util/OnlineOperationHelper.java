@@ -287,6 +287,8 @@ public class OnlineOperationHelper {
             return Long.valueOf(dataId);
         } else if ("Integer".equals(column.getObjectFieldType())) {
             return Integer.valueOf(dataId);
+        } else if ("Boolean".equals(column.getObjectFieldType())) {
+            return Boolean.valueOf(dataId);
         }
         return dataId;
     }

@@ -35,6 +35,7 @@ import calendarConfig from './calendar';
 import baseListConfig from './baseList';
 import imageCardConfig from './imageCard';
 import treeConfig from './tree';
+import radioButtonGroupConfig from './radioButtonGroup';
 import queryListConfig from './queryList';
 import { ANY_OBJECT } from '@/types/generic';
 import { SysCustomWidgetType, SysCustomWidgetBindDataType } from '@/common/staticDict/index';
@@ -212,6 +213,8 @@ function getDefaultVariableName(widgetType: number) {
       return 'tabs' + tempTime;
     case SysCustomWidgetType.Tree:
       return 'tree' + tempTime;
+    case SysCustomWidgetType.RadioButtonGroup:
+      return 'radioButtonGroup' + tempTime;
     case SysCustomWidgetType.TableContainer:
       return 'tableContainer' + tempTime;
     case SysCustomWidgetType.List:
@@ -291,6 +294,8 @@ function getWidgetAttribute(widgetType: number): ANY_OBJECT | null {
       return tabsConfig;
     case SysCustomWidgetType.Tree:
       return treeConfig;
+    case SysCustomWidgetType.RadioButtonGroup:
+      return radioButtonGroupConfig;
     case SysCustomWidgetType.TableContainer:
       return tableContainerConfig;
     case SysCustomWidgetType.QueryList:

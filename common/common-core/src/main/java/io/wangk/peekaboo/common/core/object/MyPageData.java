@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyPageData<T> {
+
     /**
      * 数据列表。
      */
@@ -25,6 +26,15 @@ public class MyPageData<T> {
      * 数据总数量。
      */
     private Long totalCount;
+    /**
+     * 附加数据。
+     */
+    private Object extra;
+
+    public MyPageData(List<T> dataList, Long totalCount) {
+        this.dataList = dataList;
+        this.totalCount = totalCount;
+    }
 
     /**
      * 为了保持前端的数据格式兼容性，在没有数据的时候，需要返回空分页对象。

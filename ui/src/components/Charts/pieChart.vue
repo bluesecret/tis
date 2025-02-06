@@ -6,7 +6,7 @@
 import * as echarts from 'echarts/core';
 import { PieChart } from 'echarts/charts';
 import { ANY_OBJECT } from '@/types/generic';
-import { getRowDataByColumnName } from '@/components/Charts/utils';
+import { getRowDataByColumnName, fixedValue } from '@/components/Charts/utils';
 import { pieChartData as defaultData } from './defaultData';
 import {
   getDefaultGrid,
@@ -107,7 +107,7 @@ const series = computed(() => {
     arr = props.valueColumnList.map(valueItem => {
       let serieData = categrayColumnData.value.map((name, index) => {
         return {
-          value: getRowDataByColumnName(props.data[index], valueItem.columnName),
+          value: getRowDataByColumnName(props.data[index], valueItem.columnName, valueItem.fixed),
           name: name,
         };
       });

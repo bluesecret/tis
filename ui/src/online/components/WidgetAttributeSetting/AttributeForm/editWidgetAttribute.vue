@@ -43,7 +43,11 @@
       @input="onValueChange"
       v-bind="attributeProps"
     />
-    <el-row v-if="inputWidgetType === SysCustomWidgetType.Switch" align="middle">
+    <el-row
+      v-if="inputWidgetType === SysCustomWidgetType.Switch"
+      align="middle"
+      style="width: 100%"
+    >
       <el-select
         style="width: 100%"
         v-model="valBool"

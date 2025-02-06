@@ -154,7 +154,6 @@ public class OnlineDictController {
      * @param pageParam           分页参数。
      * @return 应答结果对象，包含查询结果集。
      */
-    @SaCheckPermission("onlineDict.all")
     @PostMapping("/list")
     public ResponseResult<MyPageData<OnlineDictVo>> list(
             @MyRequestBody OnlineDictDto onlineDictDtoFilter,

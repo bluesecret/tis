@@ -325,6 +325,17 @@
             @tableClick="onWidgetClick"
             @widgetClick="onWidgetClick"
           />
+          <!-- 分组查询页面 -->
+          <OnlineGroupQueryForm
+            v-if="(currentForm || {}).formType === SysOnlineFormType.GROUP_QUERY"
+            height="100%"
+            :isEdit="true"
+            :mode="activeMode"
+            :formConfig="currentForm[activeMode]"
+            :currentWidget="currentWidget"
+            @tableClick="onWidgetClick"
+            @widgetClick="onWidgetClick"
+          />
           <!-- 一对一查询页面 -->
           <OnlineOneToOneQueryForm
             v-if="
@@ -435,7 +446,8 @@
                 v-if="
                   currentWidget != null &&
                   (currentForm || {}).formType !== SysOnlineFormType.QUERY &&
-                  (currentForm || {}).formType !== SysOnlineFormType.ADVANCE_QUERY
+                  (currentForm || {}).formType !== SysOnlineFormType.ADVANCE_QUERY &&
+                  (currentForm || {}).formType !== SysOnlineFormType.GROUP_QUERY
                 "
                 :formList="allFormList"
                 :tableList="getValidTableList"
@@ -447,7 +459,8 @@
                   currentForm != null &&
                   (currentWidget == null ||
                     currentForm.formType === SysOnlineFormType.QUERY ||
-                    currentForm.formType === SysOnlineFormType.ADVANCE_QUERY)
+                    currentForm.formType === SysOnlineFormType.ADVANCE_QUERY ||
+                    currentForm.formType === SysOnlineFormType.GROUP_QUERY)
                 "
                 :formList="allFormList"
                 :tableList="getValidTableList"
@@ -505,6 +518,7 @@ import OnlineQueryForm from '../../OnlinePageRender/OnlineQueryForm/index.vue';
 import OnlineOneToOneQueryForm from '../../OnlinePageRender/OnlineOneToOneForm/index.vue';
 import OnlineMobileQueryForm from '../../OnlinePageRender/OnlineMobileQueryForm/index.vue';
 import OnlineAdvanceQueryForm from '../../OnlinePageRender/OnlineAdvanceQueryForm/index.vue';
+import OnlineGroupQueryForm from '../../OnlinePageRender/OnlineGroupQueryForm/index.vue';
 import OnlineEditForm from '../../OnlinePageRender/OnlineEditForm/index.vue';
 import OnlineWorkFlowForm from '../../OnlinePageRender/OnlineWorkFlowForm/index.vue';
 import OnlineWorkOrderForm from '../../OnlinePageRender/OnlineWorkOrderForm/index.vue';
@@ -575,6 +589,7 @@ const formValidWidgetGroup = computed(() => {
     if (
       currentForm.value?.formType === SysOnlineFormType.QUERY ||
       currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY ||
+      currentForm.value?.formType === SysOnlineFormType.GROUP_QUERY ||
       currentForm.value?.formType === SysOnlineFormType.ONE_TO_ONE_QUERY ||
       currentForm.value?.formType === SysOnlineFormType.WORK_ORDER
     ) {
@@ -776,7 +791,7 @@ const getDictName = (dictId: string) => {
 
 // DESIGN
 const onActiveModeChange = (mode: string) => {
-  if (mode !== 'pc' && currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY) {
+  if (mode !== 'pc' && (currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY || currentForm.value?.formType === SysOnlineFormType.GROUP_QUERY)) {
     // 移动端不支持左树右表类型页面
     return;
   }
@@ -786,7 +801,7 @@ const onActiveModeChange = (mode: string) => {
 const refreshFormInfo = () => {
   currentWidget.value = null;
   if (currentForm.value) {
-    if (currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY) activeMode.value = 'pc';
+    if (currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY || currentForm.value?.formType === SysOnlineFormType.GROUP_QUERY) activeMode.value = 'pc';
     if (activeMode.value && Array.isArray(currentForm.value[activeMode.value].widgetList)) {
       if (currentForm.value[activeMode.value].tableWidget) {
         formatWidget(currentForm.value[activeMode.value].tableWidget);
@@ -794,6 +809,8 @@ const refreshFormInfo = () => {
       }
       if (currentForm.value[activeMode.value].leftWidget)
         formatWidget(currentForm.value[activeMode.value].leftWidget);
+      if (currentForm.value[activeMode.value].groupWidget)
+        formatWidget(currentForm.value[activeMode.value].groupWidget);
       currentForm.value[activeMode.value].widgetList.forEach((widget: ANY_OBJECT) => {
         formatWidget(widget);
       });
@@ -880,6 +897,7 @@ const getDesignBoxStyle = computed(() => {
       [
         SysOnlineFormType.ADVANCE_QUERY,
         SysOnlineFormType.QUERY,
+        SysOnlineFormType.GROUP_QUERY,
         SysOnlineFormType.ONE_TO_ONE_QUERY,
         SysOnlineFormType.WORK_ORDER,
       ].indexOf((currentForm.value || {}).formType) !== -1
@@ -888,6 +906,7 @@ const getDesignBoxStyle = computed(() => {
     background =
       [
         SysOnlineFormType.ADVANCE_QUERY,
+        SysOnlineFormType.GROUP_QUERY,
         SysOnlineFormType.QUERY,
         SysOnlineFormType.ONE_TO_ONE_QUERY,
         SysOnlineFormType.WORK_ORDER,
@@ -948,7 +967,8 @@ const getTableWidgetTableList = computed(() => {
     return getAllTableList.value.filter((table: ANY_OBJECT) => {
       if (
         currentForm.value?.formType === SysOnlineFormType.QUERY ||
-        currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY
+        currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY ||
+        currentForm.value?.formType === SysOnlineFormType.GROUP_QUERY
       ) {
         // 主表查询页面返回，主表以及一对一从表
         return (
@@ -965,7 +985,8 @@ const getTableWidgetTableList = computed(() => {
   } else if (
     currentForm.value?.formType === SysOnlineFormType.QUERY ||
     currentForm.value?.formType === SysOnlineFormType.ONE_TO_ONE_QUERY ||
-    currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY
+    currentForm.value?.formType === SysOnlineFormType.ADVANCE_QUERY ||
+    currentForm.value?.formType === SysOnlineFormType.GROUP_QUERY
   ) {
     return getAllTableList.value.filter((table: ANY_OBJECT) => {
       return table.id === getMasterTable.value?.id;

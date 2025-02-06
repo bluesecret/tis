@@ -123,7 +123,7 @@ const series = computed(() => {
   if (Array.isArray(props.valueColumnList) && Array.isArray(props.data)) {
     arr = props.valueColumnList.map((valueItem, index) => {
       let serieData = categrayColumnData.value.map((xValue, i) => {
-        let yValue = getRowDataByColumnName(props.data[i], valueItem.columnName);
+        let yValue = getRowDataByColumnName(props.data[i], valueItem.columnName, valueItem.fixed);
         let symbolSize = props.options?.series.itemSize;
         if (props.options?.series.symbolType === ScatterSymbolType.VALUE) {
           symbolSize = yValue;

@@ -313,13 +313,15 @@ const updateDictData = () => {
       })
       .then((res: ANY_OBJECT) => {
         let cachedMap: Map<ANY_OBJECT, ANY_OBJECT> | null = new Map();
-        if (Array.isArray(res.data.cachedResultList)) {
-          res.data.cachedResultList.forEach((item: ANY_OBJECT) => {
+        const cachedResultList = res.cachedResultList || res.data.cachedResultList || [];
+        const fullResultList = res.fullResultList || res.data.fullResultList || [];
+        if (Array.isArray(cachedResultList)) {
+          cachedResultList.forEach((item: ANY_OBJECT) => {
             cachedMap?.set(item.id, item);
           });
         }
-        if (Array.isArray(res.data.fullResultList)) {
-          res.data.fullResultList.forEach((item: ANY_OBJECT) => {
+        if (Array.isArray(fullResultList)) {
+          fullResultList.forEach((item: ANY_OBJECT) => {
             let cachedItem = cachedMap?.get(item.id);
             if (cachedItem == null || cachedItem.name !== item.name) {
               item.dirty = true;
@@ -329,9 +331,9 @@ const updateDictData = () => {
         }
         cachedMap = null;
         if (currentDict.value.treeFlag) {
-          currentDictDataList.value = treeDataTranslate(res.data.fullResultList, 'id', 'parentId');
+          currentDictDataList.value = treeDataTranslate(fullResultList, 'id', 'parentId');
         } else {
-          currentDictDataList.value = res.data.fullResultList.map((item: ANY_OBJECT) => {
+          currentDictDataList.value = fullResultList.map((item: ANY_OBJECT) => {
             return { ...item };
           });
         }
@@ -407,9 +409,7 @@ const loadGlobalDictList = () => {
 };
 const onDictTypeClick = (type: string) => {
   dictType.value = type;
-  setTimeout(() => {
-    onDictChange(currentDictList.value[0]);
-  }, 30);
+  onDictChange(currentDictList.value[0]);
 };
 
 // 编辑、新建编码字典

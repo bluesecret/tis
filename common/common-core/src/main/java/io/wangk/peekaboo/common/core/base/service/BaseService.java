@@ -844,7 +844,7 @@ public abstract class BaseService<M, K extends Serializable> extends ServiceImpl
 
     @Override
     public CallResult verifyUniqueFieldValue(M data, M originalData) {
-        if (CollUtil.isEmpty(uniqueVerifyFieldList)) {
+        if (data == null) {
             return CallResult.ok();
         }
         for (Field field : uniqueVerifyFieldList) {
