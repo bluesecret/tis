@@ -40,67 +40,13 @@
       :row-config="{isCurrent: false, isHover: true}"
       :seq-config="{startIndex: ((formTisPatResultTableWidgetCurrentPage - 1) * formTisPatResultTableWidgetPageSize)}"
       :sort-config="{remote: true}"
-      :hasExtend="true"
+      :hasExtend="false"
       @sort-change="formTisPatResultTableWidget.onSortChange"
       @refresh="formTisPatResultTableWidget.refreshTable()"
     >
-      <template #operator>
-        <el-button
-          type="primary"
-          :size="layoutStore.defaultFormItemSize"
-          @click="onAddTisPatResultClick()"
-          >
-          新建
-        </el-button>
-        <el-button
-          type="primary"
-          :size="layoutStore.defaultFormItemSize"
-          @click="onExportTisPatResultClick()"
-          >
-          导出
-        </el-button>
-        <el-upload
-          class="btn-import"
-          :auto-upload="false"
-          action=""
-          :show-file-list="false"
-          accept=".xls,.xlsx"
-          style="display: inline-block;"
-          :on-change="onImportTisPatResultClick"
-        >
-          <template #trigger>
-            <el-button
-              type="primary"
-              :size="layoutStore.defaultFormItemSize"
-            >
-              导入
-            </el-button>
-          </template>
-        </el-upload>
-      </template>
       <vxe-column title="序号" type="seq" :index="formTisPatResultTableWidget.getTableIndex" :width="80" />
       <vxe-column title="检测项目" field="projectName" />
       <vxe-column title="检测结果" field="result" />
-      <vxe-column title="操作" fixed="right">
-        <template v-slot="scope">
-          <el-button
-            link
-            type="primary"
-            :size="layoutStore.defaultFormItemSize"
-            @click.stop="onEditTisPatResultClick(scope.row)"
-          >
-            编辑
-          </el-button>
-          <el-button
-            link
-            type="primary"
-            :size="layoutStore.defaultFormItemSize"
-            @click.stop="onDeleteTisPatResultClick(scope.row)"
-          >
-            删除
-          </el-button>
-        </template>
-      </vxe-column>
       <template slot="empty">
         <div class="table-empty unified-font">
           <img src="@/assets/img/empty.png">
@@ -154,7 +100,6 @@ import { DictionaryController } from '@/api/system';
 import { treeDataTranslate, findItemFromList, findTreeNodePath, findTreeNode, stringCase } from '@/common/utils';
 import { TisPatResultData } from '@/api/generated/tisPatResultController';
 import { TisPatResultController } from '@/api/generated';
-import FormEditTisPatResult from '@/pages/generated/formEditTisPatResult.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -244,91 +189,6 @@ const loadFormTisPatResultTableVerify = () => {
   formFilterCopy.projectNameFilter = formFilter.projectNameFilter;
   formFilterCopy.resultFilter = formFilter.resultFilter;
   return true;
-};
-/**
- * 新建
- */
-const onAddTisPatResultClick = (row?: TisPatResultData) => {
-  let params: ANY_OBJECT = {
-  };
-
-  Dialog
-    .show('新建', FormEditTisPatResult, { area: '900px' }, { ...params, subPage: true })
-    .then(res => {
-      formTisPatResultTableWidget.refreshTable();
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-};
-/**
- * 编辑
- */
-const onEditTisPatResultClick = (row?: TisPatResultData) => {
-  let params: ANY_OBJECT = {
-    id: row?.id,
-  };
-
-  Dialog
-    .show('编辑', FormEditTisPatResult, { area: '900px' }, { ...params, subPage: true })
-    .then(res => {
-      formTisPatResultTableWidget.refreshTable();
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-};
-/**
- * 导出
- */
-const onExportTisPatResultClick = (row?: TisPatResultData) => {
-  let params: ANY_OBJECT = {
-  };
-
-  TisPatResultController.export(params, '表格组件.xlsx').then(res => {
-    ElMessage.success('导出成功');
-  }).catch(e => {
-    ElMessage.error(e.errorMessage);
-  });
-};
-/**
- * 导入
- */
-const onImportTisPatResultClick = (file) => {
-  let params: ANY_OBJECT = {
-    importFile: file.raw,
-    // 是否忽略表头
-    skipHeader: false
-  };
-
-  TisPatResultController.import(params).then(res => {
-    ElMessage.success('导入成功');
-    formTisPatResultTableWidget.refreshTable();
-  }).catch(e => {
-    // TODO: 异常处理
-    console.error(e);
-  });
-};
-/**
- * 删除
- */
-const onDeleteTisPatResultClick = (row?: TisPatResultData) => {
-  let params: ANY_OBJECT = {
-    id: row?.id,
-  };
-
-  ElMessageBox.confirm('是否删除此记录？').then(res => {
-    TisPatResultController.delete(params).then(res => {
-      ElMessage.success('删除成功');
-      formTisPatResultTableWidget.refreshTable(false, 1);
-    }).catch(e => {
-      // TODO: 异常处理
-      console.error(e);
-    });
-  }).catch(e => {
-    // TODO: 异常处理
-    console.error(e);
-  });
 };
 // 表格组件表格组件参数
 const formTisPatResultTableOptions: TableOptions<TisPatResultData> = {
