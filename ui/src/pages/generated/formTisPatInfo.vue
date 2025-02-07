@@ -208,7 +208,7 @@ const route = useRoute();
 const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
 const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } = useUpload();
-const { 
+const {
   Delete,
   Search,
   Edit,
@@ -323,7 +323,7 @@ const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   };
 
   Dialog
-    .show('检查结果', FormEditTisPatInfo, { area: ['900px', '1200px'] }, { ...params, subPage: true })
+    .show('检查结果', FormEditTisPatInfo, { area: ['900px', '900px'] }, { ...params, subPage: true })
     .then(res => {
       formTisPatInfoTableWidget.refreshTable();
     }).catch(e => {
