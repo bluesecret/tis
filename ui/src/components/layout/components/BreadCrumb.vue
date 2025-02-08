@@ -2,7 +2,7 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <el-breadcrumb-item :to="{ name: layoutStore.indexName }" :replace="true" @click="hadleClick">
       <div class="breadcrumb-home">
-        <img src="@/assets/img/s-home.png" alt="" /><span>首页</span>
+        <img src="@/assets/img/s-home.png" alt="" /><span>Home</span>
       </div>
     </el-breadcrumb-item>
     <el-breadcrumb-item v-for="item in layoutStore.currentMenuPath" :key="item.menuId">

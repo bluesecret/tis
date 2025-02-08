@@ -11,7 +11,7 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="用户头像">
+          <el-form-item label="User Avatar">
             <el-upload
               class="upload-image-item"
               name="uploadFile"

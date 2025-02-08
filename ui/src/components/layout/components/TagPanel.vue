@@ -11,7 +11,7 @@
         <TagItem
           ref="home"
           class="item"
-          title="主页"
+          title="Home"
           :active="layoutStore.currentMenuId == null"
           :supportClose="false"
           @click="onTagItemClick(null)"

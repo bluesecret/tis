@@ -344,9 +344,9 @@ const handleMessage = (command: string) => {
 const handleCommand = (command: string) => {
   switch (command) {
     case 'logout':
-      ElMessageBox.confirm('是否退出登录？', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      ElMessageBox.confirm('Sign Out？', '', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
         type: 'warning',
       })
         .then(() => {
@@ -354,7 +354,7 @@ const handleCommand = (command: string) => {
             .then(() => {
               ElMessage({
                 type: 'success',
-                message: '退出成功',
+                message: 'Sign Out Successfully！',
               });
               setToken(null);
               router.replace('/login');
@@ -368,16 +368,16 @@ const handleCommand = (command: string) => {
             });
         })
         .catch(() => {
-          console.log('取消退出');
+          console.log('Cancel');
         });
       break;
     case 'modifyPassword':
-      Dialog.show('修改密码', FormModifyPassword, { area: '500px' }, {}).catch(e => {
+      Dialog.show('Modify Password', FormModifyPassword, { area: '500px' }, {}).catch(e => {
         console.warn(e);
       });
       break;
     case 'modifyHeadImage':
-      Dialog.show('修改头像', FormModifyHeadImage, { area: '500px' }, {});
+      Dialog.show('Modify User Avatar', FormModifyHeadImage, { area: '500px' }, {});
       break;
     case 'bindDingTalk':
       Dialog.show(
