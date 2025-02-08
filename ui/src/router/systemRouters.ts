@@ -27,7 +27,7 @@ export const routers: Array<RouteRecordRaw> = [
       name: 'welcome',
     },
     meta: {
-      title: '主页',
+      title: 'Main',
       showOnly: true,
     },
     children: [
@@ -44,44 +44,44 @@ export const routers: Array<RouteRecordRaw> = [
             ? import('@/pages/upms/formSysMenu/formSysColumnMenu.vue')
             : import('@/pages/upms/formSysMenu/index.vue'),
         name: 'formSysMenu',
-        meta: { title: '菜单列表', keepalive: true },
+        meta: { title: 'Menu', keepalive: true },
       },
       {
         path: 'formSysUser',
         component: () => import('@/pages/upms/formSysUser/index.vue'),
         name: 'formSysUser',
-        meta: { title: '用户列表', keepalive: true },
+        meta: { title: 'User', keepalive: true },
       },
       {
         path: 'formSysDept',
         component: () => import('@/pages/upms/formSysDept/index.vue'),
         name: 'formSysDept',
-        meta: { title: '部门列表', keepalive: true },
+        meta: { title: 'Department', keepalive: true },
       },
       {
         path: 'formSysRole',
         component: () => import('@/pages/upms/formSysRole/index.vue'),
         name: 'formSysRole',
-        meta: { title: '角色管理', keepalive: true },
+        meta: { title: 'Role', keepalive: true },
       },
       {
         path: 'formSysDataPerm',
         component: () => import('@/pages/upms/formSysDataPerm/index.vue'),
         name: 'formSysDataPerm',
-        meta: { title: '数据权限管理', keepalive: true },
+        meta: { title: 'Data Permission', keepalive: true },
       },
       {
         path: 'formSysLoginUser',
         component: () => import('@/pages/upms/formSysLoginUser/index.vue'),
         name: 'formSysLoginUser',
-        meta: { title: '在线用户', keepalive: true },
+        meta: { title: 'Online User', keepalive: true },
       },
       // 岗位模块路由配置
       {
         path: 'formSysPost',
         component: () => import('@/pages/upms/formSysPost/index.vue'),
         name: 'formSysPost',
-        meta: { title: '岗位管理', keepalive: true },
+        meta: { title: 'Post', keepalive: true },
       },
       {
         path: 'formSysDeptPost',
@@ -94,13 +94,13 @@ export const routers: Array<RouteRecordRaw> = [
         path: 'formSysDict',
         component: () => import('@/pages/upms/formSysDict/index.vue'),
         name: 'formSysDict',
-        meta: { title: '字典管理', keepalive: true },
+        meta: { title: 'Dict', keepalive: true },
       },
       {
         path: 'formSysOperationLog',
         component: () => import('@/pages/upms/formSysOperationLog/index.vue'),
         name: 'formSysOperationLog',
-        meta: { title: '操作日志', keepalive: true },
+        meta: { title: 'Operation Log', keepalive: true },
       },
       // 404
       {
@@ -146,7 +146,7 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/workflow/formMessage/index.vue'),
         name: 'formMessage',
         props: getProps,
-        meta: { title: '催办消息', keepalive: true },
+        meta: { title: 'Reminding Message', keepalive: true },
       },
       {
         path: 'formFlowCategory',
@@ -269,14 +269,14 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/generated/formTisPatInfo.vue'),
         name: 'formTisPatInfo',
         props: getProps,
-        meta: {title: '患者管理', keepalive: true}
+        meta: {title: 'Patient Information', keepalive: true}
       },
       {
         path: 'formTisPatResult',
         component: () => import('@/pages/generated/formTisPatResult.vue'),
         name: 'formTisPatResult',
         props: getProps,
-        meta: {title: '检查结果管理', keepalive: true}
+        meta: {title: 'Check Result', keepalive: true}
       },
     ],
   },
