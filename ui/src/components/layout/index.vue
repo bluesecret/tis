@@ -31,7 +31,7 @@
               <template #dropdown>
                 <el-dropdown-menu style="min-width: 130px">
                   <el-dropdown-item class="user-dropdown-item" command="remindingMessage">
-                    催办消息
+                    Reminding Message
                     <el-badge
                       :value="messageCount.remindingMessageCount"
                       :hidden="
@@ -41,7 +41,7 @@
                     />
                   </el-dropdown-item>
                   <el-dropdown-item class="user-dropdown-item" command="copyMessage">
-                    抄送消息
+                    Copy Message
                     <el-badge
                       :value="messageCount.copyMessageCount"
                       :hidden="!messageCount.copyMessageCount || messageCount.copyMessageCount <= 0"
@@ -59,29 +59,15 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword"
-                    >修改密码</el-dropdown-item
-                  >
-                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage"
-                    >修改头像</el-dropdown-item
-                  >
-                  <el-dropdown-item class="user-dropdown-item" command="bindDingTalk">
-                    <span>{{ showOAuthItem('dingtalk') ? '绑定钉钉(已绑定)' : '绑定钉钉(未绑定)' }}</span>
+                  <el-dropdown-item class="user-dropdown-item" command="modifyPassword">
+                    Modify Password
                   </el-dropdown-item>
-                  <el-dropdown-item class="user-dropdown-item" command="bindWework">
-                    <span>{{ showOAuthItem('wework') ? '绑定企微(已绑定)' : '绑定企微(未绑定)' }}</span>
+                  <el-dropdown-item class="user-dropdown-item" command="modifyHeadImage">
+                    Modify Head Image
                   </el-dropdown-item>
-                  <el-dropdown-item class="user-dropdown-item" command="bindFeiShu">
-                    <span>{{ showOAuthItem('feishu') ? '绑定飞书(已绑定)' : '绑定飞书(未绑定)' }}</span>
+                  <el-dropdown-item class="user-dropdown-item" command="logout">
+                    Logout
                   </el-dropdown-item>
-                  <el-dropdown-item class="user-dropdown-item" command="bindWechat">
-                    <span>{{
-                      showOAuthItem('wechat') ? '绑定微信(已绑定)' : '绑定微信(未绑定)'
-                    }}</span>
-                  </el-dropdown-item>
-                  <el-dropdown-item class="user-dropdown-item" command="logout"
-                    >退出登录</el-dropdown-item
-                  >
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

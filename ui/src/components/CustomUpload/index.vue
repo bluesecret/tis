@@ -29,7 +29,7 @@
         >
           <el-row type="flex" align="middle">
             <span class="upload-btn">
-              上传文件
+              Upload File
               <div class="file-count" v-if="uploadWidget.fileList.length > 0">
                 {{ fileList.length }}
               </div>

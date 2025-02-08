@@ -8,7 +8,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormTisPatResult()" @reset="resetFormTisPatResult">
-        <el-form-item label="检测项目">
+        <el-form-item label="Check Project">
           <el-input
             class="filter-item"
             v-model="formFilter.projectNameFilter"
@@ -19,7 +19,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="检测结果">
+        <el-form-item label="Check Result">
           <el-input
             class="filter-item"
             v-model="formFilter.resultFilter"
@@ -50,7 +50,7 @@
       <template slot="empty">
         <div class="table-empty unified-font">
           <img src="@/assets/img/empty.png">
-          <span>暂无数据</span>
+          <span>No Data</span>
         </div>
       </template>
       <!-- 分页 -->
@@ -106,7 +106,7 @@ const route = useRoute();
 const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
 const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } = useUpload();
-const { 
+const {
   Delete,
   Search,
   Edit,

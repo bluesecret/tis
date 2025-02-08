@@ -11,8 +11,8 @@
       </div>
       <div class="login-input" v-if="thirdLogin.loginType === 'local'">
 <!--        <img src="@/assets/img/orange.png" style="width: 62px; margin-bottom: 9px" alt="" />-->
-        <span class="title">欢迎登录</span>
-        <span class="desc">TIS系统</span>
+        <span class="title">Welcome to Login</span>
+        <span class="desc">TIS System</span>
         <el-form
           :model="dataForm"
           :rules="dataRule"
@@ -22,7 +22,7 @@
         >
           <el-col :span="24">
             <el-form-item prop="mobilePhone" label="" style="margin-top: 48px; margin-bottom: 25px">
-              <el-input v-model="dataForm.mobilePhone" style="width: 100%" placeholder="请输入帐号">
+              <el-input v-model="dataForm.mobilePhone" style="width: 100%" placeholder="Enter your account">
                 <!-- <template #prefix>
                   <img src="@/assets/img/login_username.png" alt="" />
                 </template> -->
@@ -35,7 +35,7 @@
                 v-model="dataForm.password"
                 style="width: 100%"
                 type="password"
-                placeholder="请输入密码"
+                placeholder="Enter your password"
                 show-password
               >
               </el-input>
@@ -48,7 +48,7 @@
             @click="dataFormSubmit()"
             style="width: 100%; margin-top: 48px"
           >
-            登录
+            Login
           </el-button>
           <el-space
             direction="horizontal"
@@ -60,13 +60,13 @@
       <div class="login-input" v-else>
         <div class="login-back-local">
           <el-icon
-            title="返回账号密码登录"
+            title="Back to account password login"
             style="font-size: 18px"
             @click="onThirdLoginClick('local')"
           >
             <Back />
           </el-icon>
-          <span class="title">{{ thirdLoginTitle }}登录</span>
+          <span class="title">{{ thirdLoginTitle }} Login</span>
           <component
             :is="thirdLoginComponent"
             @success="handleOAuthSuccess"
@@ -124,8 +124,8 @@ const dataForm = reactive({
 });
 
 const dataRule = {
-  mobilePhone: [{ required: true, message: '帐号不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  mobilePhone: [{ required: true, message: 'Account cannot be empty', trigger: 'blur' }],
+  password: [{ required: true, message: 'Password cannot be empty', trigger: 'blur' }],
 };
 
 const thirdLogin = ref({
@@ -153,13 +153,13 @@ const thirdLoginComponent = computed(() => {
 const thirdLoginTitle = computed(() => {
   switch (thirdLogin.value.loginType) {
     case 'dingtalk':
-      return '钉钉';
+      return 'DingTalk';
     case 'feishu':
-      return '飞书';
+      return 'Feishu';
     case 'wework':
-      return '企业微信';
+      return 'WeWork';
     case 'wechat':
-      return '微信';
+      return 'WeChat';
     default:
       return '';
   }
@@ -170,7 +170,7 @@ const onThirdLoginClick = (type: string) => {
 };
 
 const handleOAuthSuccess = data => {
-  console.log('第三方登录成功', data);
+  console.log('Third-party login success', data);
   layoutStore.setMenuList(treeDataTranslate(data.data.menuList, 'menuId', 'parentId'));
   delete data.data.menuList;
 
@@ -181,7 +181,7 @@ const handleOAuthSuccess = data => {
 };
 
 const handleOAuthError = err => {
-  console.error('第三方登录失败', err);
+  console.error('Third-party login failed', err);
   if (err && err.errorCode === 'DATA_NOT_EXIST') {
     thirdLogin.value.thirdLoginToken = err.data.token;
     onThirdLoginClick('local');

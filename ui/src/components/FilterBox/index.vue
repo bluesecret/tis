@@ -3,10 +3,10 @@
     <slot />
     <div class="search-box" v-if="hasSearch" :style="{ 'min-width': minMenuWidth + 'px' }">
       <el-button class="search-btn" type="default" plain @click="search" :icon="ElIconSearch"
-        >查询</el-button
+        >Search</el-button
       >
       <el-button v-if="hasReset" type="default" plain @click="reset" style="width: 72px"
-        >重置</el-button
+        >Reset</el-button
       >
       <div style="float: right">
         <slot name="operation" />

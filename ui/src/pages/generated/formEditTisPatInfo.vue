@@ -12,7 +12,7 @@
       >
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="姓名" prop="TisPatInfo.patName">
+            <el-form-item label="Name" prop="TisPatInfo.patName">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.patName"
@@ -26,7 +26,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="批次号" prop="TisPatInfo.batchNo">
+            <el-form-item label="Batch No." prop="TisPatInfo.batchNo">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.batchNo"
@@ -40,7 +40,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="年龄" prop="TisPatInfo.age">
+            <el-form-item label="Age" prop="TisPatInfo.age">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.age"
@@ -54,7 +54,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="检测项目" prop="TisPatInfo.projectId">
+            <el-form-item label="Test Project" prop="TisPatInfo.projectId">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.projectId"
@@ -68,7 +68,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="性别" prop="TisPatInfo.sex">
+            <el-form-item label="Gender" prop="TisPatInfo.sex">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.sex"
@@ -82,7 +82,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="样本编号" prop="TisPatInfo.sampleNo">
+            <el-form-item label="Sample No." prop="TisPatInfo.sampleNo">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.sampleNo"
@@ -96,7 +96,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="患者编号" prop="TisPatInfo.patNo">
+            <el-form-item label="Patient No." prop="TisPatInfo.patNo">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.patNo"
@@ -110,7 +110,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="样本类型" prop="TisPatInfo.sampleType">
+            <el-form-item label="Sample Type" prop="TisPatInfo.sampleType">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.sampleType"
@@ -124,7 +124,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="操作人员" prop="TisPatInfo.operator">
+            <el-form-item label="Operator" prop="TisPatInfo.operator">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.operator"
@@ -138,7 +138,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="cotful值" prop="TisPatInfo.cutoffVal">
+            <el-form-item label="Cotful Value" prop="TisPatInfo.cutoffVal">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.cutoffVal"
@@ -152,7 +152,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="范围" prop="TisPatInfo.rangeVal">
+            <el-form-item label="Range" prop="TisPatInfo.rangeVal">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.rangeVal"
@@ -166,7 +166,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="患者卡条" prop="TisPatInfo.picPath">
+            <el-form-item label="Patient Card" prop="TisPatInfo.picPath">
               <custom-upload
                 v-model="picPathWidgetFileList"
                 name="uploadFile"
@@ -181,7 +181,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="检测时间" prop="TisPatInfo.testTime">
+            <el-form-item label="Test Time" prop="TisPatInfo.testTime">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.testTime"
@@ -195,7 +195,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="检测单位" prop="TisPatInfo.testUnit">
+            <el-form-item label="Test Unit" prop="TisPatInfo.testUnit">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.testUnit"
@@ -209,7 +209,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="检测状态" prop="TisPatInfo.testStat">
+            <el-form-item label="Test Status" prop="TisPatInfo.testStat">
               <el-input
                 class="input-item"
                 v-model="formData.TisPatInfo.testStat"
@@ -223,7 +223,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="附件" prop="TisPatInfo.filePath">
+            <el-form-item label="Attachments" prop="TisPatInfo.filePath">
               <custom-upload
                 v-model="filePathWidgetFileList"
                 name="uploadFile"
@@ -251,12 +251,12 @@
               @radio-select-change="onTisPatResultRadioSelectChange"
             >
               <vxe-column title="" type="radio" align="center" :width="80" />
-              <vxe-column title="检测项目" field="projectName" />
-              <vxe-column title="检测结果" field="result" />
+              <vxe-column title="Test Project" field="projectName" />
+              <vxe-column title="Test Result" field="result" />
               <template slot="empty">
                 <div class="table-empty unified-font">
                   <img src="@/assets/img/empty.png">
-                  <span>暂无数据</span>
+                  <span>No Data</span>
                 </div>
               </template>
             </table-box>
@@ -265,7 +265,7 @@
       </el-form>
     </el-scrollbar>
     <el-row class="footer-box" type="flex" justify="end" align="middle">
-      <el-button :size="layoutStore.defaultFormItemSize" @click="onCancel()">取消</el-button>
+      <el-button :size="layoutStore.defaultFormItemSize" @click="onCancel()">Cancel</el-button>
     </el-row>
   </div>
 </template>
@@ -304,7 +304,7 @@ const route = useRoute();
 const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
 const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } = useUpload();
-const { 
+const {
   Delete,
   Search,
   Edit,
@@ -602,6 +602,10 @@ const formInit = () => {
     // TODO: 异常处理
     console.error(e);
   });
+};
+
+const download = (file) => {
+  downloadFile(file.url, file.name);
 };
 
 onMounted(() => {

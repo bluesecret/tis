@@ -21,7 +21,7 @@ useWindowResize();
 </script>
 
 <template>
-  <el-config-provider :locale="zhCn">
+  <el-config-provider :locale="en">
     <router-view></router-view>
   </el-config-provider>
 </template>

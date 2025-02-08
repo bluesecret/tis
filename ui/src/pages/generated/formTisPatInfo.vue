@@ -8,7 +8,7 @@
       @submit.prevent
     >
       <filter-box :item-width="350" @search="refreshFormTisPatInfo()" @reset="resetFormTisPatInfo">
-        <el-form-item label="姓名">
+        <el-form-item label="Name">
           <el-input
             class="filter-item"
             v-model="formFilter.patNameFilter"
@@ -19,7 +19,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="检测项目">
+        <el-form-item label="Test Project">
           <el-input
             class="filter-item"
             v-model="formFilter.projectIdFilter"
@@ -30,7 +30,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="样本编号">
+        <el-form-item label="Sample No.">
           <el-input
             class="filter-item"
             v-model="formFilter.sampleNoFilter"
@@ -41,7 +41,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="患者编号">
+        <el-form-item label="Patient No.">
           <el-input
             class="filter-item"
             v-model="formFilter.patNoFilter"
@@ -52,7 +52,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="操作人员">
+        <el-form-item label="Operator">
           <el-input
             class="filter-item"
             v-model="formFilter.operatorFilter"
@@ -63,7 +63,7 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="检测状态">
+        <el-form-item label="Test Status">
           <el-input
             class="filter-item"
             v-model="formFilter.testStatFilter"
@@ -88,15 +88,15 @@
       @sort-change="formTisPatInfoTableWidget.onSortChange"
       @refresh="formTisPatInfoTableWidget.refreshTable()"
     >
-      <vxe-column title="序号" type="seq" :index="formTisPatInfoTableWidget.getTableIndex" :width="80" />
-      <vxe-column title="姓名" field="patName" />
-      <vxe-column title="年龄" field="age" />
-      <vxe-column title="检测项目" field="projectId" />
-      <vxe-column title="性别" field="sex" />
-      <vxe-column title="患者编号" field="patNo" />
-      <vxe-column title="操作人员" field="operator" />
-      <vxe-column title="cotful值" field="cutoffVal" />
-      <vxe-column title="患者卡条">
+      <vxe-column title="No." type="seq" :index="formTisPatInfoTableWidget.getTableIndex" :width="80" />
+      <vxe-column title="Name" field="patName" />
+      <vxe-column title="Age" field="age" />
+      <vxe-column title="Test Project" field="projectId" />
+      <vxe-column title="Gender" field="sex" />
+      <vxe-column title="Patient No." field="patNo" />
+      <vxe-column title="Operator" field="operator" />
+      <vxe-column title="Cotful Value" field="cutoffVal" />
+      <vxe-column title="Patient Card">
         <template v-slot="scope">
           <upload-file-list
             :file-list="
@@ -112,13 +112,13 @@
           />
         </template>
       </vxe-column>
-      <vxe-column title="检测时间" field="testTime" />
-      <vxe-column title="检测状态" field="testStat">
+      <vxe-column title="Test Time" field="testTime" />
+      <vxe-column title="Test Status" field="testStat">
         <template v-slot="scope">
           <el-tag size="default" type="primary">{{ scope.row.testStat }}</el-tag>
         </template>
       </vxe-column>
-      <vxe-column title="附件">
+      <vxe-column title="Attachments">
         <template v-slot="scope">
           <upload-file-list
             :file-list="
@@ -134,7 +134,7 @@
           />
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right">
+      <vxe-column title="Actions" fixed="right">
         <template v-slot="scope">
           <el-button
             link
@@ -143,14 +143,14 @@
             @click.stop="onEditTisPatInfoClick(scope.row)"
             :disabled="!checkPermCodeExist('formTisPatInfo:formTisPatInfo:editTisPatInfo')"
           >
-            检查结果
+            Check Result
           </el-button>
         </template>
       </vxe-column>
       <template slot="empty">
         <div class="table-empty unified-font">
           <img src="@/assets/img/empty.png">
-          <span>暂无数据</span>
+          <span>No Data</span>
         </div>
       </template>
       <!-- 分页 -->
@@ -323,7 +323,7 @@ const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
   };
 
   Dialog
-    .show('检查结果', FormEditTisPatInfo, { area: ['900px', '900px'] }, { ...params, subPage: true })
+    .show('Check Result', FormEditTisPatInfo, { area: ['900px', '90%'] }, { ...params, subPage: true })
     .then(res => {
       formTisPatInfoTableWidget.refreshTable();
     }).catch(e => {

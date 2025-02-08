@@ -1,7 +1,7 @@
 <template>
   <div class="tab-dialog-box" style="position: relative">
     <el-tabs v-model="activeFragmentId">
-      <el-tab-pane label="催办消息" name="remindingMessage" style="width: 100%">
+      <el-tab-pane label="Reminding Message" name="remindingMessage" style="width: 100%">
         <div class="tab-content-box" :style="'min-height:' + (mainContextHeight - 76) + 'px'">
           <table-box
             class="page-table"
@@ -16,24 +16,24 @@
             }"
           >
             <vxe-column
-              title="序号"
+              title="Serial Number"
               type="seq"
               width="70px"
               :index="remindingMessageWidget.getTableIndex"
             />
-            <vxe-column title="流程名称" field="processDefinitionName" />
-            <vxe-column title="任务名称" field="taskName" />
-            <vxe-column title="催办人" field="createUsername" />
-            <vxe-column title="任务创建时间" field="taskStartTime" />
-            <vxe-column title="催办时间" field="createTime" />
-            <vxe-column title="操作" width="100px">
+            <vxe-column title="Process Name" field="processDefinitionName" />
+            <vxe-column title="Task Name" field="taskName" />
+            <vxe-column title="Reminding Person" field="createUsername" />
+            <vxe-column title="Task Creation Time" field="taskStartTime" />
+            <vxe-column title="Reminding Time" field="createTime" />
+            <vxe-column title="Action" width="100px">
               <template v-slot="scope">
                 <el-button
                   link
                   type="primary"
                   :size="layoutStore.defaultFormItemSize"
                   @click="onSubmit(scope.row)"
-                  >办理</el-button
+                  >Handle</el-button
                 >
               </template>
             </vxe-column>
@@ -54,7 +54,7 @@
           </table-box>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="抄送消息" name="copyMessage" style="width: 100%">
+      <el-tab-pane label="Copy Message" name="copyMessage" style="width: 100%">
         <div class="tab-content-box" :style="'min-height:' + (mainContextHeight - 76) + 'px'">
           <table-box
             class="page-table"
@@ -73,29 +73,29 @@
                 v-model="messageStatus"
                 @change="refreshCopyMessage(true)"
               >
-                <el-radio-button :value="1">已读消息</el-radio-button>
-                <el-radio-button :value="0">未读消息</el-radio-button>
+                <el-radio-button :value="1">Read Messages</el-radio-button>
+                <el-radio-button :value="0">Unread Messages</el-radio-button>
               </el-radio-group>
             </template>
             <vxe-column
-              title="序号"
+              title="Serial Number"
               type="seq"
               width="70px"
               :index="copyMessageWidget.getTableIndex"
             />
-            <vxe-column title="流程名称" field="processDefinitionName" />
-            <vxe-column title="任务名称" field="taskName" />
-            <vxe-column title="抄送人" field="createUsername" />
-            <vxe-column title="任务创建时间" field="taskStartTime" />
-            <vxe-column title="抄送时间" field="createTime" />
-            <vxe-column title="操作" width="100px">
+            <vxe-column title="Process Name" field="processDefinitionName" />
+            <vxe-column title="Task Name" field="taskName" />
+            <vxe-column title="Copy Person" field="createUsername" />
+            <vxe-column title="Task Creation Time" field="taskStartTime" />
+            <vxe-column title="Copy Time" field="createTime" />
+            <vxe-column title="Action" width="100px">
               <template v-slot="scope">
                 <el-button
                   link
                   type="primary"
                   :size="layoutStore.defaultFormItemSize"
                   @click="onSubmit(scope.row, scope.row.messageId)"
-                  >详情</el-button
+                  >Details</el-button
                 >
               </template>
             </vxe-column>

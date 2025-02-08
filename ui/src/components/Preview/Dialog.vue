@@ -52,7 +52,7 @@
                       "
                     >
                       <img :src="fileErrorImg" alt="error" />
-                      <span>加载失败</span>
+                      <span>Load Failed</span>
                     </div>
                   </template>
                   <template v-else>
@@ -76,7 +76,7 @@
                             "
                           >
                             <img :src="fileErrorImg" alt="error" />
-                            <span>加载失败</span>
+                            <span>Load Failed</span>
                           </div>
                         </template>
                       </el-image>
@@ -102,7 +102,7 @@
                         "
                       >
                         <img :src="fileErrorImg" alt="error" />
-                        <span>暂不支持预览</span>
+                        <span>Preview Not Supported</span>
                       </div>
                     </div>
                   </template>

@@ -27,7 +27,7 @@
           <div v-else class="card-item-text">
             <el-icon style="font-size: 24px"><Document /></el-icon>
           </div>
-          <div v-if="supportPreview" class="priview-btn">预览</div>
+          <div v-if="supportPreview" class="priview-btn">Preview</div>
           <el-icon v-if="!readonly" class="close-btn" @click.stop="onRemoveFile(file, fileList)">
             <CircleCloseFilled />
           </el-icon>
