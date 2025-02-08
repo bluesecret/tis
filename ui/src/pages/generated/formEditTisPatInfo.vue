@@ -222,21 +222,6 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="Attachments" prop="TisPatInfo.filePath">
-              <custom-upload
-                v-model="filePathWidgetFileList"
-                name="uploadFile"
-                :size="layoutStore.defaultFormItemSize"
-                type="dropdown"
-                :headers="getUploadHeaders"
-                :action="getUploadActionUrl('/admin/app/tisPatInfo/upload')"
-                :data="{fieldName: 'filePath', asImage: false}"
-                :limit="filePathWidgetMaxCount"
-                @change="onFilePathChange"
-              />
-            </el-form-item>
-          </el-col>
           <el-col :span="24">
             <table-box
               ref="tisPatResult"

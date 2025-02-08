@@ -126,7 +126,7 @@
                   style="width: 80px"
                   @click="onDownloadFile(file)"
                 >
-                  下载
+                  Download
                 </el-button>
               </div>
             </div>
