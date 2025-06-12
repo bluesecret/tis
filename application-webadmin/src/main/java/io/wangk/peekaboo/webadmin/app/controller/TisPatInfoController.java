@@ -184,9 +184,9 @@ public class TisPatInfoController {
             Set<String> userDiviceIdSet=new HashSet<>();
             if (CollUtil.isNotEmpty(tisUserDeviceList)) {
                 userDiviceIdSet = tisUserDeviceList.stream().map(TisUserDevice::getDeviceNo).collect(Collectors.toSet());
+                tisPatInfoList =
+                        tisPatInfoService.getTisPatInfoListByDeviceIdsWithRelation(tisPatInfoFilter, tisPatResultFilter,userDiviceIdSet, orderBy);
             }
-            tisPatInfoList =
-                    tisPatInfoService.getTisPatInfoListByDeviceIdsWithRelation(tisPatInfoFilter, tisPatResultFilter,userDiviceIdSet, orderBy);
         }
         else{
             tisPatInfoList =
