@@ -3,6 +3,7 @@ package io.wangk.peekaboo.webadmin.app.dao;
 import io.wangk.peekaboo.common.core.base.dao.BaseDaoMapper;
 import io.wangk.peekaboo.webadmin.app.model.TisPatInfo;
 import io.wangk.peekaboo.webadmin.app.model.TisPatResult;
+import io.wangk.peekaboo.webadmin.upms.model.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.*;
@@ -43,5 +44,20 @@ public interface TisPatInfoMapper extends BaseDaoMapper<TisPatInfo> {
     List<TisPatInfo> getTisPatInfoListEx(
             @Param("tisPatInfoFilter") TisPatInfo tisPatInfoFilter,
             @Param("tisPatResultFilter") TisPatResult tisPatResultFilter,
+            @Param("orderBy") String orderBy);
+
+    /**
+     * 根据设备集合，获取去重后的用户Id列表。
+     *
+     * @param tisPatInfoFilter 主表过滤对象。
+     * @param tisPatResultFilter 一对多从表过滤对象。
+     * @param deviceIds       关联的角色Id集合。
+     * @param orderBy       order by从句的参数。
+     * @return 和角色Id集合关联的去重后的用户Id列表。
+     */
+    List<TisPatInfo> getTisPatInfoListByDeviceEx(
+            @Param("tisPatInfoFilter") TisPatInfo tisPatInfoFilter,
+            @Param("tisPatResultFilter") TisPatResult tisPatResultFilter,
+            @Param("deviceIds") Set<String> deviceIds,
             @Param("orderBy") String orderBy);
 }

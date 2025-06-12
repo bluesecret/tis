@@ -19,6 +19,8 @@
         <result column="test_unit" jdbcType="VARCHAR" property="testUnit"/>
         <result column="test_stat" jdbcType="VARCHAR" property="testStat"/>
         <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="ser_no" jdbcType="VARCHAR" property="serNo"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
         <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
         <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
@@ -47,6 +49,8 @@
             test_unit,
             test_stat,
             file_path,
+            ser_no,
+            address,
             remark1,
             remark2,
             remark3,
@@ -73,6 +77,8 @@
             #{item.testUnit},
             #{item.testStat},
             #{item.filePath},
+            #{item.serNo},
+            #{item.address},
             #{item.remark1},
             #{item.remark2},
             #{item.remark3},
@@ -103,6 +109,10 @@
             <if test="tisPatInfoFilter.sampleNo != null and tisPatInfoFilter.sampleNo != ''">
                 <bind name = "safeTisPatInfoSampleNo" value = "'%' + tisPatInfoFilter.sampleNo + '%'" />
                 AND tis_pat_info.sample_no LIKE #{safeTisPatInfoSampleNo}
+            </if>
+            <if test="tisPatInfoFilter.serNo != null and tisPatInfoFilter.serNo != ''">
+                <bind name = "safeTisPatInfoSerNo" value = "'%' + tisPatInfoFilter.serNo + '%'" />
+                AND tis_pat_info.ser_no LIKE #{safeTisPatInfoSerNo}
             </if>
             <if test="tisPatInfoFilter.patNo != null and tisPatInfoFilter.patNo != ''">
                 <bind name = "safeTisPatInfoPatNo" value = "'%' + tisPatInfoFilter.patNo + '%'" />
@@ -137,6 +147,31 @@
             tis_pat_info
         <where>
             <include refid="filterRef"/>
+            <if test="tisPatResultFilter != null">
+                AND EXISTS (SELECT * FROM tis_pat_result
+                <where>
+                    tis_pat_info.id = tis_pat_result.pat_id
+                    <include refid="io.wangk.peekaboo.webadmin.app.dao.TisPatResultMapper.filterRef"/>
+                </where>)
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <!-- 支持基于一对一或者一对多从表字段过滤的SQL_ID -->
+    <select id="getTisPatInfoListByDeviceEx" resultMap="BaseResultMap" >
+        SELECT
+        tis_pat_info.*
+        FROM
+        tis_pat_info
+        <where>
+            <include refid="filterRef"/>
+            AND tis_pat_info.ser_no IN
+            <foreach collection="deviceIds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
             <if test="tisPatResultFilter != null">
                 AND EXISTS (SELECT * FROM tis_pat_result
                 <where>

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box" style="position: relative;">
+  <div class="page-box" style="position: relative">
     <el-form
       ref="formTisPatInfoRef"
       :size="layoutStore.defaultFormItemSize"
@@ -63,10 +63,11 @@
             maxlength=""
           />
         </el-form-item>
-        <el-form-item label="Test Status">
+
+        <el-form-item label="Device No.">
           <el-input
             class="filter-item"
-            v-model="formFilter.testStatFilter"
+            v-model="formFilter.serNo"
             type="text"
             placeholder=""
             :clearable="true"
@@ -81,14 +82,21 @@
       class="page-table"
       :data="formTisPatInfoTableWidgetDataList"
       :size="layoutStore.defaultFormItemSize"
-      :row-config="{isCurrent: false, isHover: true}"
-      :seq-config="{startIndex: ((formTisPatInfoTableWidgetCurrentPage - 1) * formTisPatInfoTableWidgetPageSize)}"
-      :sort-config="{remote: true}"
+      :row-config="{ isCurrent: false, isHover: true }"
+      :seq-config="{
+        startIndex: (formTisPatInfoTableWidgetCurrentPage - 1) * formTisPatInfoTableWidgetPageSize,
+      }"
+      :sort-config="{ remote: true }"
       :hasExtend="false"
       @sort-change="formTisPatInfoTableWidget.onSortChange"
       @refresh="formTisPatInfoTableWidget.refreshTable()"
     >
-      <vxe-column title="No." type="seq" :index="formTisPatInfoTableWidget.getTableIndex" :width="80" />
+      <vxe-column
+        title="No."
+        type="seq"
+        :index="formTisPatInfoTableWidget.getTableIndex"
+        :width="80"
+      />
       <vxe-column title="Name" field="patName" />
       <vxe-column title="Age" field="age" />
       <vxe-column title="Test Project" field="projectId" />
@@ -103,7 +111,7 @@
               parseUploadData(scope.row.picPath, {
                 id: scope.row.id,
                 fieldName: 'picPath',
-                asImage: true
+                asImage: true,
               })
             "
             type="card"
@@ -120,18 +128,22 @@
       </vxe-column>
       <vxe-column title="Attachments">
         <template v-slot="scope">
-          <upload-file-list
+          <!-- <upload-file-list
             :file-list="
               parseUploadData(scope.row.filePath, {
                 id: scope.row.id,
                 fieldName: 'filePath',
-                asImage: false
+                asImage: false,
               })
             "
             type="text"
             direction="horizontal"
             :readonly="true"
-          />
+          /> -->
+
+          <span style="cursor: pointer; color: #409eff" @click="onDownloadAtt(scope.row)">{{
+            scope.row.filePathParse[0].name
+          }}</span>
         </template>
       </vxe-column>
       <vxe-column title="Actions" fixed="right">
@@ -149,13 +161,13 @@
       </vxe-column>
       <template slot="empty">
         <div class="table-empty unified-font">
-          <img src="@/assets/img/empty.png">
+          <img src="@/assets/img/empty.png" />
           <span>No Data</span>
         </div>
       </template>
       <!-- 分页 -->
       <template #pagination>
-        <el-row type="flex" justify="end" style="margin-top: 10px;">
+        <el-row type="flex" justify="end" style="margin-top: 10px">
           <el-pagination
             :total="formTisPatInfoTableWidgetTotalCount"
             :current-page="formTisPatInfoTableWidgetCurrentPage"
@@ -163,13 +175,14 @@
             :page-sizes="[10, 20, 50, 100]"
             layout="total, prev, pager, next, sizes"
             @current-change="formTisPatInfoTableWidget.onCurrentPageChange"
-            @size-change="formTisPatInfoTableWidget.onPageSizeChange">
+            @size-change="formTisPatInfoTableWidget.onPageSizeChange"
+          >
           </el-pagination>
         </el-row>
       </template>
     </table-box>
     <label v-if="subPage" class="page-close-box" @click="onCancel()">
-      <img src="@/assets/img/back2.png" alt="">
+      <img src="@/assets/img/back2.png" alt="" />
     </label>
   </div>
 </template>
@@ -197,7 +210,13 @@ import { TableOptions } from '@/common/types/pagination';
 import { useUpload } from '@/common/hooks/useUpload';
 import { useUploadWidget } from '@/common/hooks/useUploadWidget';
 import { DictionaryController } from '@/api/system';
-import { treeDataTranslate, findItemFromList, findTreeNodePath, findTreeNode, stringCase } from '@/common/utils';
+import {
+  treeDataTranslate,
+  findItemFromList,
+  findTreeNodePath,
+  findTreeNode,
+  stringCase,
+} from '@/common/utils';
 import { TisPatInfoData } from '@/api/generated/tisPatInfoController';
 import { TisPatResultData } from '@/api/generated/tisPatResultController';
 import { TisPatInfoController, TisPatResultController } from '@/api/generated';
@@ -207,7 +226,8 @@ const router = useRouter();
 const route = useRoute();
 const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
-const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } = useUpload();
+const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } =
+  useUpload();
 const {
   Delete,
   Search,
@@ -249,6 +269,7 @@ const formFilter = reactive({
   operatorFilter: undefined,
   // 检测状态
   testStatFilter: undefined,
+  serNo: undefined,
 });
 const formFilterCopy = reactive({
   // 姓名
@@ -263,6 +284,7 @@ const formFilterCopy = reactive({
   operatorFilter: undefined,
   // 检测状态
   testStatFilter: undefined,
+  serNo: undefined,
 });
 
 const onCancel = () => {
@@ -289,17 +311,23 @@ const loadFormTisPatInfoTableWidgetData = (params: ANY_OBJECT) => {
       patNo: formFilter.patNoFilter,
       operator: formFilter.operatorFilter,
       testStat: formFilter.testStatFilter,
-    }
+      serNo: formFilter.serNo,
+    },
   };
   return new Promise((resolve, reject) => {
-    TisPatInfoController.list(params).then(res => {
-      resolve({
-        dataList: res.data.dataList,
-        totalCount: res.data.totalCount
+    TisPatInfoController.list(params)
+      .then(res => {
+        res.data.dataList.forEach((i: any) => {
+          i.filePathParse = JSON.parse(i.filePath);
+        });
+        resolve({
+          dataList: res.data.dataList,
+          totalCount: res.data.totalCount,
+        });
+      })
+      .catch(e => {
+        reject(e);
       });
-    }).catch(e => {
-      reject(e);
-    });
   });
 };
 /**
@@ -314,6 +342,17 @@ const loadFormTisPatInfoTableVerify = () => {
   formFilterCopy.testStatFilter = formFilter.testStatFilter;
   return true;
 };
+
+const onDownloadAtt = (row: any) => {
+  let file: any = parseUploadData(row.filePath, {
+    id: row.id,
+    fieldName: 'filePath',
+    asImage: false,
+  });
+  console.log(file);
+
+  downloadFile(file[0].url, file[0].name);
+};
 /**
  * 检查结果
  */
@@ -322,11 +361,16 @@ const onEditTisPatInfoClick = (row?: TisPatInfoData) => {
     id: row?.id,
   };
 
-  Dialog
-    .show('Check Result', FormEditTisPatInfo, { area: ['900px', '90%'] }, { ...params, subPage: true })
+  Dialog.show(
+    'Check Result',
+    FormEditTisPatInfo,
+    { area: ['900px', '90%'] },
+    { ...params, subPage: true },
+  )
     .then(res => {
       formTisPatInfoTableWidget.refreshTable();
-    }).catch(e => {
+    })
+    .catch(e => {
       // TODO: 异常处理
       console.error(e);
     });
@@ -358,7 +402,9 @@ const refreshFormTisPatInfo = () => {
  */
 const resetFormTisPatInfo = () => {
   formFilter.patNameFilter = undefined;
+  formFilter.serNo = undefined;
   formFilterCopy.patNameFilter = undefined;
+  formFilterCopy.serNo = undefined;
   formFilter.projectIdFilter = undefined;
   formFilterCopy.projectIdFilter = undefined;
   formFilter.sampleNoFilter = undefined;

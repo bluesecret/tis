@@ -132,6 +132,17 @@ public class TisPatInfoServiceImpl extends BaseService<TisPatInfo, Long> impleme
         return resultList;
     }
 
+    @Override
+    public List<TisPatInfo> getTisPatInfoListByDeviceIdsWithRelation(TisPatInfo filter, TisPatResult tisPatResultFilter, Set<String> deiviceList, String orderBy) {
+        List<TisPatInfo> resultList =
+                tisPatInfoMapper.getTisPatInfoListByDeviceEx(filter, tisPatResultFilter,deiviceList, orderBy);
+        // 在缺省生成的代码中，如果查询结果resultList不是Page对象，说明没有分页，那么就很可能是数据导出接口调用了当前方法。
+        // 为了避免一次性的大量数据关联，规避因此而造成的系统运行性能冲击，这里手动进行了分批次读取，开发者可按需修改该值。
+        int batchSize = resultList instanceof Page ? 0 : 1000;
+        this.buildRelationForDataList(resultList, MyRelationParam.normal(), batchSize);
+        return resultList;
+    }
+
     private TisPatInfo buildDefaultValue(TisPatInfo tisPatInfo) {
         if (tisPatInfo.getId() == null) {
             tisPatInfo.setId(idGenerator.nextLongId());

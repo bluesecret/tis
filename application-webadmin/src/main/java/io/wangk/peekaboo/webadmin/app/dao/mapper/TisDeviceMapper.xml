@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wangk.peekaboo.webadmin.app.dao.TisDeviceMapper">
+    <resultMap id="BaseResultMap" type="io.wangk.peekaboo.webadmin.app.model.TisDeviceInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="ser_no" jdbcType="VARCHAR" property="serNo"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="remark1" jdbcType="VARCHAR" property="remark1"/>
+        <result column="remark2" jdbcType="VARCHAR" property="remark2"/>
+        <result column="remark3" jdbcType="VARCHAR" property="remark3"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="created_user_id" jdbcType="BIGINT" property="createdUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+    </resultMap>
+
+    <!-- 这里仅包含调用接口输入的主表过滤条件 -->
+    <sql id="inputFilterRef">
+        <if test="tisDeviceInfoFilter != null">
+            <if test="tisDeviceInfoFilter.serNo != null and tisDeviceInfoFilter.serNo != ''">
+                <bind name = "safeTisPatInfoPatName" value = "'%' + tisPatInfoFilter.patName + '%'" />
+                AND tis_pat_info.pat_name LIKE #{safeTisPatInfoPatName}
+            </if>
+        </if>
+    </sql>
+</mapper>

@@ -116,6 +116,17 @@
           >
             重置密码
           </el-button>
+          <el-button
+            type="primary"
+            link
+            :size="layoutStore.defaultFormItemSize"
+            @click="onBindRow(scope.row)"
+            :disabled="
+              isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:update')
+            "
+          >
+            绑定设备
+          </el-button>
         </template>
       </vxe-column>
       <template v-slot:pagination>
@@ -168,6 +179,7 @@ import { DropdownOptions, ListData } from '@/common/types/list';
 import { useDate } from '@/common/hooks/useDate';
 import { useLayoutStore } from '@/store';
 import EditUserForm from '../formEditSysUser/index.vue';
+import EditUserDevice from '../formEditUserDevice/index.vue';
 const layoutStore = useLayoutStore();
 
 const Dialog = useDialog();
@@ -377,6 +389,36 @@ const onDeptIdVisibleChange = (show: boolean) => {
   formSysUser.deptId.impl.onVisibleChange(show).catch(e => {
     console.warn(e);
   });
+};
+
+const onBindRow = (row: any) => {
+  console.log(row);
+  var params = {
+    userId: row.userId,
+  };
+
+  SystemUserController.getUser(params)
+    .then(res => {
+      Dialog.show(
+        '绑定设备',
+        EditUserDevice,
+        {
+          area: '600px',
+        },
+        {
+          rowData: res.data,
+        },
+      )
+        .then(() => {
+          refreshFormSysUser();
+        })
+        .catch(e => {
+          console.warn(e);
+        });
+    })
+    .catch(e => {
+      console.warn(e);
+    });
 };
 
 const onDeptIdValueChange = (value: CascaderValue) => {

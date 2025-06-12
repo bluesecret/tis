@@ -17,6 +17,8 @@ interface TisPatInfo {
   sampleNo?: string | undefined;
   // 患者编号
   patNo?: string | undefined;
+  serNo?: string | undefined;
+  address?: string | undefined;
   // 样本类型
   sampleType?: string | undefined;
   // 操作人员
