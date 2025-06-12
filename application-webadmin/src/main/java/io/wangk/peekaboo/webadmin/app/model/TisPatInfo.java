@@ -123,6 +123,18 @@ public class TisPatInfo {
     private String filePath;
 
     /**
+     * 设备所在地址。
+     */
+    @TableField(value = "address")
+    private String address;
+
+    /**
+     * 设备ID
+     */
+    @TableField(value = "ser_no")
+    private String serNo;
+
+    /**
      * 备用字段1。
      */
     @TableField(value = "remark1")

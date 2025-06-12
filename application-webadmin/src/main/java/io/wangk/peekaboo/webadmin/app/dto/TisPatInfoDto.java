@@ -127,6 +127,18 @@ public class TisPatInfoDto {
     private String filePath;
 
     /**
+     * 设备编码。
+     */
+    @Schema(description = "设备编码。")
+    private String serNo;
+
+    /**
+     * 检测地址。
+     */
+    @Schema(description = "检测地址。")
+    private String address;
+
+    /**
      * 备用字段1。
      */
     @Schema(description = "备用字段1。")

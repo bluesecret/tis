@@ -119,6 +119,19 @@ public class TisPatInfoVo {
     @Schema(description = "txt文件路径")
     private String filePath;
 
+
+    /**
+     * 设备编码。
+     */
+    @Schema(description = "设备编码")
+    private String serNo;
+
+    /**
+     * 检测地址。
+     */
+    @Schema(description = "检测地址")
+    private String address;
+
     /**
      * 备用字段1。
      */

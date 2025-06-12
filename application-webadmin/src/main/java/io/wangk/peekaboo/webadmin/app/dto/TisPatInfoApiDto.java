@@ -22,6 +22,8 @@ public class TisPatInfoApiDto {
     private String testtime;
     private String testunit;
     private String teststat;
+    private String address;
+    private String serno;
     private List<TisPatResultInfoApiDto> result;
 
 }

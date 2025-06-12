@@ -86,4 +86,6 @@ public interface TisPatInfoService extends IBaseService<TisPatInfo, Long> {
      * @return 查询结果集。
      */
     List<TisPatInfo> getTisPatInfoListWithRelation(TisPatInfo filter, TisPatResult tisPatResultFilter, String orderBy);
+
+    List<TisPatInfo> getTisPatInfoListByDeviceIdsWithRelation(TisPatInfo filter, TisPatResult tisPatResultFilter, Set<String> deiviceList, String orderBy);
 }

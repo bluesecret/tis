@@ -8,27 +8,27 @@ spring:
     druid:
       # 数据库链接 [主数据源]
       main:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3307/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         password: root123
       # 默认生成的操作日志数据源配置。
       operation-log:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3307/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         password: root123
       # 默认生成的全局编码字典数据源配置。
       global-dict:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3307/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         password: root123
       # 默认生成的工作流及在线表单数据源配置。
       common-flow-online:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://127.0.0.1:3307/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         password: root123
       # 默认生成的统计打印模块的数据源配置。
       common-report:
-        url: jdbc:mysql://localhost:3306/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://localhost:3307/tis?characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         password: root123
       driverClassName: com.mysql.cj.jdbc.Driver
@@ -194,10 +194,10 @@ common-social:
 
 minio:
   enabled: true
-  endpoint: http://localhost:19000
-  accessKey: admin
-  secretKey: admin123456
-  bucketName: application
+  endpoint: http://34.228.152.214:9000
+  accessKey: 28cIbUtfDxdXIzf4biz8
+  secretKey: 3KxFIG3x3bIlIQhAIfEJL6nG687KYh23qgQVB4T8
+  bucketName: savefile
 
 sa-token:
   # token 名称（同时也是 cookie 名称）

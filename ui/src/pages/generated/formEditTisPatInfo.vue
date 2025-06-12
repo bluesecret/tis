@@ -174,7 +174,7 @@
                 type="expand"
                 :headers="getUploadHeaders"
                 :action="getUploadActionUrl('/admin/app/tisPatInfo/upload')"
-                :data="{fieldName: 'picPath', asImage: true}"
+                :data="{ fieldName: 'picPath', asImage: true }"
                 :limit="picPathWidgetMaxCount"
                 @change="onPicPathChange"
               />
@@ -222,15 +222,45 @@
               />
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="Device No." prop="TisPatInfo.serNo">
+              <el-input
+                class="input-item"
+                v-model="formData.TisPatInfo.serNo"
+                type="text"
+                placeholder=""
+                :clearable="true"
+                :show-word-limit="false"
+                maxlength=""
+                :readonly="true"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="Address" prop="TisPatInfo.address">
+              <el-input
+                class="input-item"
+                v-model="formData.TisPatInfo.address"
+                type="text"
+                placeholder=""
+                :clearable="true"
+                :show-word-limit="false"
+                maxlength=""
+                :readonly="true"
+              />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <table-box
               ref="tisPatResult"
               :data="tisPatResultWidgetDataList"
               style="height: 300px"
               :size="layoutStore.defaultFormItemSize"
-              :row-config="{isCurrent: true, isHover: true}"
-              :seq-config="{startIndex: ((tisPatResultWidgetCurrentPage - 1) * tisPatResultWidgetPageSize)}"
-              :sort-config="{remote: false}"
+              :row-config="{ isCurrent: true, isHover: true }"
+              :seq-config="{
+                startIndex: (tisPatResultWidgetCurrentPage - 1) * tisPatResultWidgetPageSize,
+              }"
+              :sort-config="{ remote: false }"
               :hasExtend="false"
               @refresh="tisPatResultWidget.refreshTable()"
               @radio-select-change="onTisPatResultRadioSelectChange"
@@ -240,7 +270,7 @@
               <vxe-column title="Test Result" field="result" />
               <template slot="empty">
                 <div class="table-empty unified-font">
-                  <img src="@/assets/img/empty.png">
+                  <img src="@/assets/img/empty.png" />
                   <span>No Data</span>
                 </div>
               </template>
@@ -279,7 +309,13 @@ import { TableOptions } from '@/common/types/pagination';
 import { useUpload } from '@/common/hooks/useUpload';
 import { useUploadWidget } from '@/common/hooks/useUploadWidget';
 import { DictionaryController } from '@/api/system';
-import { treeDataTranslate, findItemFromList, findTreeNodePath, findTreeNode, stringCase } from '@/common/utils';
+import {
+  treeDataTranslate,
+  findItemFromList,
+  findTreeNodePath,
+  findTreeNode,
+  stringCase,
+} from '@/common/utils';
 import { TisPatInfoData } from '@/api/generated/tisPatInfoController';
 import { TisPatResultData } from '@/api/generated/tisPatResultController';
 import { TisPatInfoController, TisPatResultController } from '@/api/generated';
@@ -288,7 +324,8 @@ const router = useRouter();
 const route = useRoute();
 const layoutStore = useLayoutStore();
 const { downloadFile } = useDownload();
-const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } = useUpload();
+const { getUploadHeaders, getUploadActionUrl, fileListToJson, parseUploadData, getPictureList } =
+  useUpload();
 const {
   Delete,
   Search,
@@ -360,6 +397,8 @@ const formData = reactive<FormEditTisPatInfoData>({
     rangeVal: undefined,
     // 患者卡条图片路径
     picPath: undefined,
+    serNo: undefined,
+    address: undefined,
     // 检测时间
     testTime: undefined,
     // 检测单位
@@ -385,42 +424,25 @@ const formData = reactive<FormEditTisPatInfoData>({
     // 检查结果数据
     tisPatResultList: [],
   },
-},
-);
+});
 // 表单验证规则
 const rules = reactive({
-  'TisPatInfo.rangeVal': [
-  ],
-  'TisPatInfo.projectId': [
-  ],
-  'TisPatInfo.testStat': [
-  ],
-  'TisPatInfo.age': [
-  ],
-  'TisPatInfo.testUnit': [
-  ],
-  'TisPatInfo.batchNo': [
-  ],
-  'TisPatInfo.testTime': [
-  ],
-  'TisPatInfo.patName': [
-  ],
-  'TisPatInfo.picPath': [
-  ],
-  'TisPatInfo.sampleType': [
-  ],
-  'TisPatInfo.patNo': [
-  ],
-  'TisPatInfo.sampleNo': [
-  ],
-  'TisPatInfo.sex': [
-  ],
-  'TisPatInfo.filePath': [
-  ],
-  'TisPatInfo.cutoffVal': [
-  ],
-  'TisPatInfo.operator': [
-  ],
+  'TisPatInfo.rangeVal': [],
+  'TisPatInfo.projectId': [],
+  'TisPatInfo.testStat': [],
+  'TisPatInfo.age': [],
+  'TisPatInfo.testUnit': [],
+  'TisPatInfo.batchNo': [],
+  'TisPatInfo.testTime': [],
+  'TisPatInfo.patName': [],
+  'TisPatInfo.picPath': [],
+  'TisPatInfo.sampleType': [],
+  'TisPatInfo.patNo': [],
+  'TisPatInfo.sampleNo': [],
+  'TisPatInfo.sex': [],
+  'TisPatInfo.filePath': [],
+  'TisPatInfo.cutoffVal': [],
+  'TisPatInfo.operator': [],
 });
 
 const onCancel = () => {
@@ -446,15 +468,17 @@ const loadTisPatInfoData = () => {
       return;
     }
     let params: ANY_OBJECT = {
-      id: props.id
+      id: props.id,
     };
-    TisPatInfoController.view(params).then(res => {
-      formData.TisPatInfo = { ...res.data };
-      tisPatResultWidget.refreshTable();
-      resolve();
-    }).catch(e => {
-      reject(e);
-    });
+    TisPatInfoController.view(params)
+      .then(res => {
+        formData.TisPatInfo = { ...res.data };
+        tisPatResultWidget.refreshTable();
+        resolve();
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 };
 /**
@@ -483,35 +507,41 @@ const loadTisPatResultWidgetData = (params: ANY_OBJECT) => {
   params = {
     ...params,
     tisPatResultDtoFilter: {
-      patId: props.id ||formData.TisPatInfo.id
-    }
+      patId: props.id || formData.TisPatInfo.id,
+    },
   };
   return new Promise((resolve, reject) => {
-    TisPatResultController.list(params).then(res => {
-      // 级联更新设置临时唯一id
-      let tempTime = new Date().getTime();
-      nextTick(() => {
-        formData.TisPatInfo.tisPatResultList = tisPatResultWidgetDataList.value;
-      });
-      resolve({
-        dataList: res.data.dataList.map((item, index) => {
-          return {
-            __cascade_add_temp_id__: tempTime + index,
-            ...item
-          }
-        }),
-        totalCount: res.data.totalCount
-      });
-      // 恢复当选择行
-      if (tisPatResultSelectRow.value != null) {
+    TisPatResultController.list(params)
+      .then(res => {
+        // 级联更新设置临时唯一id
+        let tempTime = new Date().getTime();
         nextTick(() => {
-          let currentRow = findItemFromList(tisPatResultWidgetDataList.value, tisPatResultSelectRow.value.id, 'id');
-          tisPatResult.value.getTableImpl().setRadioRow(currentRow);
+          formData.TisPatInfo.tisPatResultList = tisPatResultWidgetDataList.value;
         });
-      }
-    }).catch(e => {
-      reject(e);
-    });
+        resolve({
+          dataList: res.data.dataList.map((item, index) => {
+            return {
+              __cascade_add_temp_id__: tempTime + index,
+              ...item,
+            };
+          }),
+          totalCount: res.data.totalCount,
+        });
+        // 恢复当选择行
+        if (tisPatResultSelectRow.value != null) {
+          nextTick(() => {
+            let currentRow = findItemFromList(
+              tisPatResultWidgetDataList.value,
+              tisPatResultSelectRow.value.id,
+              'id',
+            );
+            tisPatResult.value.getTableImpl().setRadioRow(currentRow);
+          });
+        }
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 };
 /**
@@ -569,27 +599,35 @@ const resetFilter = () => {
   resetFormEditTisPatInfo();
 };
 const formInit = () => {
-  loadTisPatInfoData().then(res => {
-    let picPathDownloadParams = {
-      id: formData.TisPatInfo.id,
-      fieldName: 'picPath',
-      asImage: true
-    };
-    picPathWidgetFileList.value = parseUploadData(formData.TisPatInfo.picPath, picPathDownloadParams);
-    let filePathDownloadParams = {
-      id: formData.TisPatInfo.id,
-      fieldName: 'filePath',
-      asImage: false
-    };
-    filePathWidgetFileList.value = parseUploadData(formData.TisPatInfo.filePath, filePathDownloadParams);
-    if (isEdit.value) refreshFormEditTisPatInfo();
-  }).catch(e => {
-    // TODO: 异常处理
-    console.error(e);
-  });
+  loadTisPatInfoData()
+    .then(res => {
+      let picPathDownloadParams = {
+        id: formData.TisPatInfo.id,
+        fieldName: 'picPath',
+        asImage: true,
+      };
+      picPathWidgetFileList.value = parseUploadData(
+        formData.TisPatInfo.picPath,
+        picPathDownloadParams,
+      );
+      let filePathDownloadParams = {
+        id: formData.TisPatInfo.id,
+        fieldName: 'filePath',
+        asImage: false,
+      };
+      filePathWidgetFileList.value = parseUploadData(
+        formData.TisPatInfo.filePath,
+        filePathDownloadParams,
+      );
+      if (isEdit.value) refreshFormEditTisPatInfo();
+    })
+    .catch(e => {
+      // TODO: 异常处理
+      console.error(e);
+    });
 };
 
-const download = (file) => {
+const download = file => {
   downloadFile(file.url, file.name);
 };
 

@@ -1,6 +1,7 @@
 package io.wangk.peekaboo.webadmin.app.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import cn.hutool.core.util.ReflectUtil;
@@ -23,6 +24,8 @@ import io.wangk.peekaboo.common.redis.cache.SessionCacheHelper;
 import io.wangk.peekaboo.webadmin.config.ApplicationConfig;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.wangk.peekaboo.webadmin.upms.model.SysUser;
+import io.wangk.peekaboo.webadmin.upms.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 患者操作控制器类。
@@ -53,6 +57,8 @@ public class TisPatInfoController {
     private UpDownloaderFactory upDownloaderFactory;
     @Autowired
     private TisPatInfoService tisPatInfoService;
+    @Autowired
+    private TisDeviceInfoService tisDeviceInfoService;
 
     /**
      * 新增患者数据，及其关联的从表数据。
@@ -166,11 +172,26 @@ public class TisPatInfoController {
         if (pageParam != null) {
             PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize(), pageParam.getCount());
         }
+        TokenData tokenData = TokenData.takeFromRequest();
         TisPatInfo tisPatInfoFilter = MyModelUtil.copyTo(tisPatInfoDtoFilter, TisPatInfo.class);
         TisPatResult tisPatResultFilter = MyModelUtil.copyTo(tisPatResultDtoFilter, TisPatResult.class);
         String orderBy = MyOrderParam.buildOrderBy(orderParam, TisPatInfo.class);
-        List<TisPatInfo> tisPatInfoList =
-                tisPatInfoService.getTisPatInfoListWithRelation(tisPatInfoFilter, tisPatResultFilter, orderBy);
+        List<TisPatInfo> tisPatInfoList =new ArrayList<>();
+
+        //普通用户仅能看到自己绑定设备的数据
+        if("1889937853798944768".equals(tokenData.getRoleIds())){
+            List<TisUserDevice> tisUserDeviceList = tisDeviceInfoService.getTisUserDeviceListByUserId(tokenData.getUserId());
+            Set<String> userDiviceIdSet=new HashSet<>();
+            if (CollUtil.isNotEmpty(tisUserDeviceList)) {
+                userDiviceIdSet = tisUserDeviceList.stream().map(TisUserDevice::getDeviceNo).collect(Collectors.toSet());
+            }
+            tisPatInfoList =
+                    tisPatInfoService.getTisPatInfoListByDeviceIdsWithRelation(tisPatInfoFilter, tisPatResultFilter,userDiviceIdSet, orderBy);
+        }
+        else{
+            tisPatInfoList =
+                    tisPatInfoService.getTisPatInfoListWithRelation(tisPatInfoFilter, tisPatResultFilter, orderBy);
+        }
         return ResponseResult.success(MyPageUtil.makeResponseData(tisPatInfoList, TisPatInfoVo.class));
     }
 
@@ -214,6 +235,8 @@ public class TisPatInfoController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
+
+
         // 使用try来捕获异常，是为了保证一旦出现异常可以返回500的错误状态，便于调试。
         // 否则有可能给前端返回的是200的错误码。
         try {

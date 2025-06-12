@@ -92,6 +92,12 @@ public class SysUserVo extends BaseVo {
     private List<Map<String, Object>> sysUserRoleList;
 
     /**
+     * 多对多用户设备数据集合。
+     */
+    @Schema(description = "多对多用户设备数据集合")
+    private List<Map<String, Object>> tisUserDeviceList;
+
+    /**
      * 多对多用户数据权限数据集合。
      */
     @Schema(description = "多对多用户数据权限数据集合")

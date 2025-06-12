@@ -1,6 +1,7 @@
 package io.wangk.peekaboo.webadmin.upms.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.wangk.peekaboo.webadmin.app.model.TisUserDevice;
 import io.wangk.peekaboo.webadmin.upms.model.constant.SysUserType;
 import io.wangk.peekaboo.webadmin.upms.model.constant.SysUserStatus;
 import io.wangk.peekaboo.common.core.upload.UploadStoreTypeEnum;
@@ -126,6 +127,15 @@ public class SysUser extends BaseModel {
             relationModelClass = SysUserRole.class)
     @TableField(exist = false)
     private List<SysUserRole> sysUserRoleList;
+
+    /**
+     * 多对多用户设备数据集合。
+     */
+    @RelationManyToMany(
+            relationMasterIdField = "userId",
+            relationModelClass = TisUserDevice.class)
+    @TableField(exist = false)
+    private List<TisUserDevice> tisUserDeviceList;
 
     /**
      * 多对多用户数据权限数据集合。

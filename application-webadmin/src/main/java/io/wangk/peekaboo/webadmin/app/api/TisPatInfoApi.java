@@ -62,6 +62,9 @@ public class TisPatInfoApi {
         tisPatInfo.setTestTime(tisPatInfoApiDto.getTesttime());
         tisPatInfo.setTestUnit(tisPatInfoApiDto.getTestunit());
         tisPatInfo.setTestStat(tisPatInfoApiDto.getTeststat());
+        tisPatInfo.setAddress(tisPatInfoApiDto.getAddress());
+        tisPatInfo.setSerNo(tisPatInfoApiDto.getSerno());
+
         tisPatInfo.setCreateTime(new Date());
         tisPatInfoService.save(tisPatInfo);
 

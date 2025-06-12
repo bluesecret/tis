@@ -167,7 +167,7 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/workflow/formFlowDblink/index.vue'),
         name: 'formFlowDblink',
         props: getProps,
-        meta: { title: '流程数据库链接', keepalive: true},
+        meta: { title: '流程数据库链接', keepalive: true },
       },
       {
         path: 'formAllInstance',
@@ -224,7 +224,7 @@ export const routers: Array<RouteRecordRaw> = [
         props: {
           entryType: 0,
         },
-        meta: { title: '轮播图配置配置', keepalive: true},
+        meta: { title: '轮播图配置配置', keepalive: true },
       },
       // 报表路由
       {
@@ -250,13 +250,13 @@ export const routers: Array<RouteRecordRaw> = [
         path: 'formReportDict',
         component: () => import('@/pages/report/formReportDict/index.vue'),
         name: 'formReportDict',
-        meta: { title: '报表字典', keepalive: true},
+        meta: { title: '报表字典', keepalive: true },
       },
       {
         path: 'formReportPage',
         component: () => import('@/pages/report/formReportPage/index.vue'),
         name: 'formReportPage',
-        meta: { title: '报表页面', keepalive: true},
+        meta: { title: '报表页面', keepalive: true },
       },
       {
         path: 'formPrintManage',
@@ -269,14 +269,21 @@ export const routers: Array<RouteRecordRaw> = [
         component: () => import('@/pages/generated/formTisPatInfo.vue'),
         name: 'formTisPatInfo',
         props: getProps,
-        meta: {title: 'Patient Information', keepalive: true}
+        meta: { title: 'Patient Information', keepalive: true }
       },
       {
         path: 'formTisPatResult',
         component: () => import('@/pages/generated/formTisPatResult.vue'),
         name: 'formTisPatResult',
         props: getProps,
-        meta: {title: 'Check Result', keepalive: true}
+        meta: { title: 'Check Result', keepalive: true }
+      },
+      {
+        path: 'equipmentManagement',
+        component: () => import('@/pages/generated/equipmentManagement.vue'),
+        name: 'equipmentManagement',
+        props: getProps,
+        meta: { title: 'Equipment Management', keepalive: true }
       },
     ],
   },

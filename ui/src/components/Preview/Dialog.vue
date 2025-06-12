@@ -120,14 +120,14 @@
                 </el-button>
                 -->
                 <slot />
-                <el-button
+                <!-- <el-button
                   type="primary"
                   size="default"
                   style="width: 80px"
                   @click="onDownloadFile(file)"
                 >
                   Download
-                </el-button>
+                </el-button> -->
               </div>
             </div>
           </el-carousel-item>
