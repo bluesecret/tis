@@ -4,18 +4,18 @@
       :inline="true"
       :model="formSysUser"
       ref="form"
-      label-width="75px"
+      label-width="85px"
       label-position="right"
       :size="layoutStore.defaultFormItemSize"
       @submit.prevent
     >
-      <filter-box :item-width="350" @search="refreshFormSysUser(true)" @reset="onReset">
-        <el-form-item label="所属部门" prop="formFilter.deptId">
+      <filter-box :item-width="350" :minMenuWidth="150" @search="refreshFormSysUser(true)" @reset="onReset">
+        <el-form-item label="deptId" prop="formFilter.deptId">
           <el-cascader
             class="filter-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="所属部门"
+            placeholder="deptId"
             :loading="formSysUser.deptId.impl.loading"
             :props="deptOptions"
             @visible-change="onDeptIdVisibleChange"
@@ -24,20 +24,20 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="登录名称" prop="formFilter.sysUserLoginName">
+        <el-form-item label="loginName" prop="formFilter.sysUserLoginName">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.sysUserLoginName"
             :clearable="true"
-            placeholder="登录名称"
+            placeholder="userLoginName"
           />
         </el-form-item>
-        <el-form-item label="用户昵称" prop="formFilter.showName">
+        <el-form-item label="showName" prop="formFilter.showName">
           <el-input
             class="filter-item"
             v-model="formSysUser.formFilter.showName"
             :clearable="true"
-            placeholder="用户昵称"
+            placeholder="showName"
           />
         </el-form-item>
       </filter-box>
@@ -59,15 +59,15 @@
           :icon="Plus"
           :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:add')"
           @click="onAddRow()"
-          >新建</el-button
+          >add</el-button
         >
       </template>
-      <vxe-column title="序号" type="seq" width="50px" />
-      <vxe-column title="用户名" field="loginName" sortable> </vxe-column>
-      <vxe-column title="昵称" field="showName"> </vxe-column>
-      <vxe-column title="账号类型" field="userTypeDictMap.name" />
-      <vxe-column title="所属部门" field="deptIdDictMap.name" />
-      <vxe-column title="状态">
+      <vxe-column title="seq" type="seq" width="50px" />
+      <vxe-column title="loginName" field="loginName" sortable> </vxe-column>
+      <vxe-column title="showName" field="showName"> </vxe-column>
+      <vxe-column title="userType" field="userTypeDictMap.name" />
+      <vxe-column title="department" field="deptIdDictMap.name" />
+      <vxe-column title="userStatus">
         <template v-slot="scope">
           <el-tag
             :type="getUserStatusType(scope.row.userStatus)"
@@ -76,14 +76,14 @@
           >
         </template>
       </vxe-column>
-      <vxe-column title="创建时间">
+      <vxe-column title="createTime">
         <template v-slot="scope">
           <span class="vxe-cell--label">{{
             formatDateByStatsType(scope.row.createTime, 'day')
           }}</span>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="250px">
+      <vxe-column title="operate" fixed="right" width="250px">
         <template v-slot="scope">
           <el-button
             type="primary"
@@ -94,7 +94,7 @@
               isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:update')
             "
           >
-            编辑
+            edit
           </el-button>
           <el-button
             link
@@ -105,7 +105,7 @@
               isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:delete')
             "
           >
-            删除
+            delete
           </el-button>
           <el-button
             link
@@ -114,7 +114,7 @@
             @click="onResetPassword(scope.row)"
             :disabled="!checkPermCodeExist('formSysUser:fragmentSysUser:resetPassword')"
           >
-            重置密码
+            reset password
           </el-button>
           <el-button
             type="primary"
@@ -125,7 +125,7 @@
               isAdmin(scope.row) || !checkPermCodeExist('formSysUser:fragmentSysUser:update')
             "
           >
-            绑定设备
+            device binding
           </el-button>
         </template>
       </vxe-column>
@@ -305,7 +305,7 @@ const getUserStatusType = (status: number) => {
 };
 
 const onAddRow = () => {
-  Dialog.show('新建用户', EditUserForm, {
+  Dialog.show('Add user', EditUserForm, {
     area: '600px',
   })
     .then(() => {
@@ -324,7 +324,7 @@ const onEditRow = (row: User) => {
   SystemUserController.getUser(params)
     .then(res => {
       Dialog.show(
-        '编辑用户',
+        'Edit user',
         EditUserForm,
         {
           area: '600px',
@@ -349,9 +349,9 @@ const onDeleteRow = (row: User) => {
   let params = {
     userId: row.userId,
   };
-  ElMessageBox.confirm(`是否删除用户【${row.showName || row.loginName}】？`, '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`Is sure delete【${row.showName || row.loginName}】？`, '', {
+    confirmButtonText: 'YES',
+    cancelButtonText: 'CANCEL',
     type: 'warning',
   })
     .then(() => {
@@ -369,16 +369,16 @@ const onDeleteRow = (row: User) => {
 };
 
 const onResetPassword = (row: User) => {
-  ElMessageBox.confirm('是否重置用户密码？', '', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Is sure reset the password？', '', {
+    confirmButtonText: 'YES',
+    cancelButtonText: 'CANCEL',
     type: 'warning',
   })
     .then(() => {
       return SystemUserController.resetUserPassword({ userId: row.userId });
     })
     .then(() => {
-      ElMessage.success('重置密码成功');
+      ElMessage.success('Password reset successfully.');
     })
     .catch(e => {
       console.warn(e);
@@ -400,7 +400,7 @@ const onBindRow = (row: any) => {
   SystemUserController.getUser(params)
     .then(res => {
       Dialog.show(
-        '绑定设备',
+        'Device binding',
         EditUserDevice,
         {
           area: '600px',

@@ -3,44 +3,44 @@
     ref="form"
     :model="formData"
     :rules="rules"
-    label-width="80px"
+    label-width="110px"
     :size="formItemSize"
     label-position="right"
     @submit.prevent
   >
     <el-row :gutter="20" class="full-width-input">
       <el-col :span="24">
-        <el-form-item label="登录名称" prop="loginName">
+        <el-form-item label="loginName" prop="loginName">
           <el-input
             v-model="formData.loginName"
-            placeholder="用户登录名称"
+            placeholder="loginName"
             clearable
             :disabled="isEdit"
             maxlength="30"
           />
         </el-form-item>
-        <el-form-item label="登录密码" v-if="!isEdit" prop="password">
+        <el-form-item label="password" v-if="!isEdit" prop="password">
           <el-input
             v-model="formData.password"
             type="password"
-            placeholder="用户登录密码"
+            placeholder="password"
             clearable
             maxlength="64"
           />
         </el-form-item>
-        <el-form-item label="确认密码" v-if="!isEdit" prop="passwordRepeat">
+        <el-form-item label="passwordRepeat" v-if="!isEdit" prop="passwordRepeat">
           <el-input
             v-model="formData.passwordRepeat"
             type="password"
-            placeholder="再次输入用户密码"
+            placeholder="passwordRepeat"
             clearable
             maxlength="64"
           />
         </el-form-item>
-        <el-form-item label="用户昵称" prop="showName">
-          <el-input v-model="formData.showName" placeholder="用户昵称" clearable maxlength="30" />
+        <el-form-item label="showName" prop="showName">
+          <el-input v-model="formData.showName" placeholder="showName" clearable maxlength="30" />
         </el-form-item>
-        <el-form-item label="账号类型" prop="userType">
+        <el-form-item label="userType" prop="userType">
           <el-select v-model="formData.userType">
             <el-option
               v-for="item in SysUserType.getList()"
@@ -50,19 +50,19 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户状态" prop="userStatus" v-if="isEdit">
+        <el-form-item label="userStatus" prop="userStatus" v-if="isEdit">
           <el-radio-group v-model="formData.userStatus">
             <el-radio v-for="item in SysUserStatus.getList()" :key="item.id" :value="item.id">{{
               item.name
             }}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="所属部门" prop="deptId">
+        <el-form-item label="deptId" prop="deptId">
           <el-cascader
             class="input-item"
             v-model="deptIdPath"
             :clearable="true"
-            placeholder="所属部门"
+            placeholder="deptId"
             :loading="deptId.impl.loading"
             :props="{ value: 'deptId', label: 'deptName', checkStrictly: true }"
             @visible-change="onDeptIdVisibleChange"
@@ -71,8 +71,8 @@
           >
           </el-cascader>
         </el-form-item>
-        <el-form-item label="用户岗位" prop="deptPostIdList">
-          <el-select v-model="formData.deptPostIdList" multiple placeholder="用户岗位">
+        <el-form-item label="deptPostId" prop="deptPostIdList">
+          <el-select v-model="formData.deptPostIdList" multiple placeholder="deptPostId">
             <el-option
               v-for="deptPost in deptPostList"
               :key="deptPost.deptPostId"
@@ -81,8 +81,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用户角色" prop="roleIdList">
-          <el-select v-model="formData.roleIdList" multiple placeholder="用户角色">
+        <el-form-item label="roleId" prop="roleIdList">
+          <el-select v-model="formData.roleIdList" multiple placeholder="roleId">
             <el-option
               v-for="role in roleList"
               :key="role.roleId"
@@ -91,8 +91,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="数据权限" prop="dataPermIdList">
-          <el-select v-model="formData.dataPermIdList" multiple placeholder="数据权限">
+        <el-form-item label="dataPermId" prop="dataPermIdList">
+          <el-select v-model="formData.dataPermIdList" multiple placeholder="dataPermId">
             <el-option
               v-for="dataPerm in dataPermList"
               :key="dataPerm.dataPermId"
@@ -105,7 +105,7 @@
     </el-row>
     <!-- 弹窗下发按钮栏，必须设置class为dialog-btn-layer -->
     <el-row type="flex" justify="end" class="dialog-btn-layer">
-      <el-button :plain="true" @click="onCancel">取消</el-button>
+      <el-button :plain="true" @click="onCancel">CANCEL</el-button>
       <el-button
         type="primary"
         @click="onSubmit"
@@ -116,7 +116,7 @@
           )
         "
       >
-        确定
+        YES
       </el-button>
     </el-row>
   </el-form>
@@ -168,26 +168,26 @@ const validatePasswordRepeat = (
 ) => {
   //console.log(rule, value, callback);
   if (!value) {
-    callback(new Error('重输密码不能为空'));
+    callback(new Error('The retyped password cannot be empty!'));
   } else if (value != formData.value.password) {
-    callback(new Error('两次密码输入不一致，请重新输入'));
+    callback(new Error('The two passwords entered do not match. Please enter them again!'));
   } else {
     callback();
   }
 };
 const rules = ref({
-  loginName: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
-  password: [{ required: true, message: '用户密码不能为空', trigger: 'blur' }],
+  loginName: [{ required: true, message: 'Username cannot be empty', trigger: 'blur' }],
+  password: [{ required: true, message: 'Password cannot be empty', trigger: 'blur' }],
   passwordRepeat: [
     {
       validator: validatePasswordRepeat,
       trigger: 'blur',
     },
   ],
-  showName: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
-  dataPermIdList: [{ required: true, message: '数据权限不能为空', trigger: 'change' }],
-  deptPostIdList: [{ required: true, message: '用户岗位不能为空', trigger: 'change' }],
-  roleIdList: [{ required: true, message: '用户角色不能为空', trigger: 'change' }],
+  showName: [{ required: true, message: 'ShowName cannot be empty', trigger: 'blur' }],
+  dataPermIdList: [{ required: true, message: 'DataPermId cannot be empty', trigger: 'change' }],
+  deptPostIdList: [{ required: true, message: 'DeptPostId cannot be empty', trigger: 'change' }],
+  roleIdList: [{ required: true, message: 'RoleId cannot be empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);
 const dataPermList = ref<ANY_OBJECT>([]);

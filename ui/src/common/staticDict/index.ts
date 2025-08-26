@@ -1276,12 +1276,12 @@ const CustomQueryFilterValueType = new DictionaryBase('自定义查询过滤值�
 const SysUserStatus = new DictionaryBase('用户状态', [
   {
     id: 0,
-    name: '正常状态',
+    name: 'NORMAL',
     symbol: 'NORMAL'
   },
   {
     id: 1,
-    name: '锁定状态',
+    name: 'LOCKED',
     symbol: 'LOCKED'
   }
 ]);
@@ -1289,17 +1289,17 @@ const SysUserStatus = new DictionaryBase('用户状态', [
 const SysUserType = new DictionaryBase('用户类型', [
   {
     id: 0,
-    name: '管理员',
+    name: 'ADMIN',
     symbol: 'ADMIN'
   },
   {
     id: 1,
-    name: '系统操作员',
+    name: 'SYSTEM',
     symbol: 'SYSTEM'
   },
   {
     id: 2,
-    name: '普通操作员',
+    name: 'OPERATOR',
     symbol: 'OPERATOR'
   }
 ]);

@@ -22,8 +22,8 @@ public final class SysUserStatus {
 
     private static final Map<Object, String> DICT_MAP = new HashMap<>(2);
     static {
-        DICT_MAP.put(STATUS_NORMAL, "正常状态");
-        DICT_MAP.put(STATUS_LOCKED, "锁定状态");
+        DICT_MAP.put(STATUS_NORMAL, "Normal");
+        DICT_MAP.put(STATUS_LOCKED, "Locked");
     }
 
     /**
