@@ -26,9 +26,9 @@ public final class SysUserType {
 
     private static final Map<Object, String> DICT_MAP = new HashMap<>(3);
     static {
-        DICT_MAP.put(TYPE_ADMIN, "管理员");
-        DICT_MAP.put(TYPE_SYSTEM, "系统操作员");
-        DICT_MAP.put(TYPE_OPERATOR, "普通操作员");
+        DICT_MAP.put(TYPE_ADMIN, "ADMIN");
+        DICT_MAP.put(TYPE_SYSTEM, "SYSTEM");
+        DICT_MAP.put(TYPE_OPERATOR, "OPERATOR");
     }
 
     /**

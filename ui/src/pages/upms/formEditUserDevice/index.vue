@@ -22,11 +22,11 @@
         <el-card shadow="never">
           <template v-slot:header>
             <div class="card-header">
-              <span>设备编号</span>
+              <span>deviceId</span>
               <el-input
                 :size="formItemSize"
                 v-model="menuNameFilter"
-                placeholder="输入设备编号过滤"
+                placeholder="Input deviceId filtering"
                 style="width: 250px"
                 clearable
                 :suffix-icon="Search"
