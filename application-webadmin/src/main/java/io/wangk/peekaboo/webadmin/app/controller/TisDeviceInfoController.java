@@ -222,6 +222,9 @@ public class TisDeviceInfoController {
 
         List<TisUserDevice> userDeviceList = new LinkedList<>();
         for (String serNo : devicelist) {
+            if(StringUtils.isBlank(serNo)){
+                continue;
+            }
             TisUserDevice userDevice = new TisUserDevice();
             userDevice.setUserId(sysUserDto.getUserId());
             userDevice.setDeviceNo(serNo);

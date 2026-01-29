@@ -66,7 +66,7 @@
           >Add</el-button
         >
         <el-button type="primary" :size="layoutStore.defaultFormItemSize" @click="onUploadRow()"
-          >Upload</el-button
+          >Import</el-button
         >
       </template>
       <vxe-column title="Device No." field="serNo" />
@@ -343,7 +343,7 @@ const onDeleteRow = (row: any) => {
 };
 
 const onUploadRow = () => {
-  Dialog.show('File Upload', UploadDeviceForm, {
+  Dialog.show('File Import', UploadDeviceForm, {
     area: '600px',
   })
     .then(() => {

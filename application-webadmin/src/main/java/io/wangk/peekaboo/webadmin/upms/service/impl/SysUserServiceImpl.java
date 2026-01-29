@@ -355,15 +355,15 @@ public class SysUserServiceImpl extends BaseService<SysUser, Long> implements Sy
     public CallResult verifyRelatedData(
             SysUser sysUser, SysUser originalSysUser, String roleIds, String deptPostIds, String dataPermIds) {
         JSONObject jsonObject = new JSONObject();
-        if (StrUtil.isBlank(deptPostIds)) {
-            return CallResult.error("数据验证失败，用户的部门岗位数据不能为空！");
-        }
-        Set<Long> deptPostIdSet =
-                Arrays.stream(deptPostIds.split(",")).map(Long::valueOf).collect(Collectors.toSet());
-        if (!sysPostService.existAllPrimaryKeys(deptPostIdSet, sysUser.getDeptId())) {
-            return CallResult.error("数据验证失败，存在不合法的用户岗位，请刷新后重试！");
-        }
-        jsonObject.put("deptPostIdSet", deptPostIdSet);
+//        if (StrUtil.isBlank(deptPostIds)) {
+//            return CallResult.error("数据验证失败，用户的部门岗位数据不能为空！");
+//        }
+//        Set<Long> deptPostIdSet =
+//                Arrays.stream(deptPostIds.split(",")).map(Long::valueOf).collect(Collectors.toSet());
+//        if (!sysPostService.existAllPrimaryKeys(deptPostIdSet, sysUser.getDeptId())) {
+//            return CallResult.error("数据验证失败，存在不合法的用户岗位，请刷新后重试！");
+//        }
+//        jsonObject.put("deptPostIdSet", deptPostIdSet);
         if (StrUtil.isBlank(roleIds)) {
             return CallResult.error("数据验证失败，用户的角色数据不能为空！");
         }
