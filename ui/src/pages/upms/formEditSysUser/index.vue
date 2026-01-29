@@ -71,6 +71,7 @@
           >
           </el-cascader>
         </el-form-item>
+        <!--
         <el-form-item label="deptPostId" prop="deptPostIdList">
           <el-select v-model="formData.deptPostIdList" multiple placeholder="deptPostId">
             <el-option
@@ -81,6 +82,7 @@
             />
           </el-select>
         </el-form-item>
+        -->
         <el-form-item label="roleId" prop="roleIdList">
           <el-select v-model="formData.roleIdList" multiple placeholder="roleId">
             <el-option
@@ -180,13 +182,18 @@ const rules = ref({
   password: [{ required: true, message: 'Password cannot be empty', trigger: 'blur' }],
   passwordRepeat: [
     {
+      required: true,
       validator: validatePasswordRepeat,
       trigger: 'blur',
     },
   ],
   showName: [{ required: true, message: 'ShowName cannot be empty', trigger: 'blur' }],
+  userType: [{ required: true, message: 'UserType cannot be empty', trigger: 'change' }],
+  deptId: [{ required: true, message: 'DeptId cannot be empty', trigger: 'change' }],
   dataPermIdList: [{ required: true, message: 'DataPermId cannot be empty', trigger: 'change' }],
+  /*
   deptPostIdList: [{ required: true, message: 'DeptPostId cannot be empty', trigger: 'change' }],
+  */
   roleIdList: [{ required: true, message: 'RoleId cannot be empty', trigger: 'change' }],
 });
 const deptIdPath = ref<CascaderValue | undefined>([]);

@@ -49,6 +49,7 @@
           >
             编辑
           </el-button>
+          <!--
           <el-button
             @click="onEditSysDeptPostClick(scope.row)"
             type="primary"
@@ -63,6 +64,7 @@
           >
             岗位
           </el-button>
+          -->
           <el-button
             @click="onDeleteClick(scope.row)"
             link

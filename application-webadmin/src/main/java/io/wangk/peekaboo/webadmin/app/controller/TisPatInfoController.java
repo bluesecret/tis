@@ -169,9 +169,6 @@ public class TisPatInfoController {
             @MyRequestBody TisPatResultDto tisPatResultDtoFilter,
             @MyRequestBody MyOrderParam orderParam,
             @MyRequestBody MyPageParam pageParam) {
-        if (pageParam != null) {
-            PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize(), pageParam.getCount());
-        }
         TokenData tokenData = TokenData.takeFromRequest();
         TisPatInfo tisPatInfoFilter = MyModelUtil.copyTo(tisPatInfoDtoFilter, TisPatInfo.class);
         TisPatResult tisPatResultFilter = MyModelUtil.copyTo(tisPatResultDtoFilter, TisPatResult.class);
@@ -179,18 +176,29 @@ public class TisPatInfoController {
         List<TisPatInfo> tisPatInfoList =new ArrayList<>();
 
         //普通用户仅能看到自己绑定设备的数据
-        if("1889937853798944768".equals(tokenData.getRoleIds())){
+        if(Boolean.FALSE.equals(tokenData.getIsAdmin())){
             List<TisUserDevice> tisUserDeviceList = tisDeviceInfoService.getTisUserDeviceListByUserId(tokenData.getUserId());
-            Set<String> userDiviceIdSet=new HashSet<>();
+            Set<String> userDiviceIdSet = new HashSet<>();
             if (CollUtil.isNotEmpty(tisUserDeviceList)) {
                 userDiviceIdSet = tisUserDeviceList.stream().map(TisUserDevice::getDeviceNo).collect(Collectors.toSet());
+                if (pageParam != null) {
+                    PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize(), pageParam.getCount());
+                }
                 tisPatInfoList =
                         tisPatInfoService.getTisPatInfoListByDeviceIdsWithRelation(tisPatInfoFilter, tisPatResultFilter,userDiviceIdSet, orderBy);
             }
         }
         else{
-            tisPatInfoList =
-                    tisPatInfoService.getTisPatInfoListWithRelation(tisPatInfoFilter, tisPatResultFilter, orderBy);
+            List<TisDeviceInfo> tisDeviceInfos = tisDeviceInfoService.getAllList();
+            Set<String> diviceIdSet = new HashSet<>();
+            if (CollUtil.isNotEmpty(tisDeviceInfos)) {
+                diviceIdSet = tisDeviceInfos.stream().map(TisDeviceInfo::getSerNo).collect(Collectors.toSet());
+                if (pageParam != null) {
+                    PageMethod.startPage(pageParam.getPageNum(), pageParam.getPageSize(), pageParam.getCount());
+                }
+                tisPatInfoList =
+                        tisPatInfoService.getTisPatInfoListByDeviceIdsWithRelation(tisPatInfoFilter, tisPatResultFilter, diviceIdSet, orderBy);
+            }
         }
         return ResponseResult.success(MyPageUtil.makeResponseData(tisPatInfoList, TisPatInfoVo.class));
     }

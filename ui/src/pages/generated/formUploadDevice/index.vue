@@ -11,7 +11,7 @@
     >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="上传文件">
+          <el-form-item label="Import file">
             <el-upload
               class="upload-demo"
               name="uploadFile"
@@ -27,7 +27,7 @@
               <el-icon class="el-icon--upload"><upload-filled /></el-icon>
               <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
               <template #tip>
-                <div class="el-upload__tip">请上传.xls,.xlsx类型文件</div>
+                <div class="el-upload__tip">Please import .xls or .xlsx files</div>
               </template>
             </el-upload>
           </el-form-item>
@@ -40,7 +40,7 @@
               <div>
                 <span>{{ item.name }}</span>
                 <span style="color: #f56c6c; cursor: pointer; margin-left: 10px" @click="toDelRow"
-                  >删除</span
+                  >delete</span
                 >
               </div>
             </div>
@@ -48,13 +48,13 @@
         </el-col>
       </el-row>
       <el-row type="flex" justify="end" class="dialog-btn-layer">
-        <el-button :plain="true" @click="onCancel">取消</el-button>
-        <el-button type="primary" @click="onSubmit"> 确定 </el-button>
+        <el-button :plain="true" @click="onCancel">Cancel</el-button>
+        <el-button type="primary" @click="onSubmit">OK</el-button>
       </el-row>
     </el-form>
   </div>
 </template>
-  
+
   <script setup lang="ts">
 import { ElMessage, UploadFile } from 'element-plus';
 import { ANY_OBJECT } from '@/types/generic';
@@ -90,7 +90,7 @@ const beforeUoload = (file: any) => {
   console.log(isFile);
 
   if (!isFile) {
-    ElMessage.warning('文件上传格式错误');
+    ElMessage.warning('File format error');
     return false;
   }
   fileList.push(file);
@@ -106,7 +106,7 @@ const onCancel = () => {
 
 const onSubmit = () => {
   if (fileList.length == 0) {
-    ElMessage.warning('请先上传文件');
+    ElMessage.warning('Please choose a file first');
     return;
   }
   let params = {
@@ -115,10 +115,10 @@ const onSubmit = () => {
     fieldName: '',
   };
   let operation: Promise<ANY_OBJECT>;
-  operation = TisDeviceInfoController.changeHeadImageUrl(params);
+  operation = TisDeviceInfoController.uploadFile(params);
   operation
     .then(res => {
-      ElMessage.success('上传成功');
+      ElMessage.success('Import success!');
       props.dialog.submit(res);
     })
     .catch(e => {
@@ -136,6 +136,5 @@ const headImageUploadUrl = computed(() => {
   return '';
 });
 </script>
-  
+
   <style></style>
-  
