@@ -174,6 +174,7 @@ const loadSysDataPermData = (params: ANY_OBJECT): Promise<TableData<PermData>> =
   return new Promise((resolve, reject) => {
     SysDataPermController.list(params)
       .then(res => {
+
         res.data.dataList.forEach(item => {
           item.bannerCount = (item.dataPermMobileEntryList || []).filter((entry: ANY_OBJECT) => {
             return entry.entryType === MobileEntryType.BANNER;

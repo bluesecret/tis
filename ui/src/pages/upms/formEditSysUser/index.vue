@@ -43,7 +43,7 @@
         <el-form-item label="userType" prop="userType">
           <el-select v-model="formData.userType">
             <el-option
-              v-for="item in SysUserType.getList()"
+              v-for="item in SysUserType_pri.getList()"
               :key="item.id"
               :label="item.name"
               :value="item.id"
@@ -127,7 +127,7 @@
 <script setup lang="ts">
 import { Ref, computed, inject, onMounted, reactive, ref } from 'vue';
 import { CascaderValue, ElCascader, ElMessage } from 'element-plus';
-import { SysUserStatus, SysUserType } from '@/common/staticDict/index';
+import { SysUserStatus, SysUserType, SysUserType_pri } from '@/common/staticDict/index';
 import { findTreeNodePath } from '@/common/utils';
 import { DialogProp } from '@/components/Dialog/types';
 import { usePermissions } from '@/common/hooks/usePermission';

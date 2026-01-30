@@ -1304,6 +1304,19 @@ const SysUserType = new DictionaryBase('用户类型', [
   }
 ]);
 
+const SysUserType_pri = new DictionaryBase('用户类型', [
+  {
+    id: 1,
+    name: 'SYSTEM',
+    symbol: 'SYSTEM'
+  },
+  {
+    id: 2,
+    name: 'OPERATOR',
+    symbol: 'OPERATOR'
+  }
+]);
+
 export {
   SysDataPermType,
   SysOperationType,
@@ -1331,4 +1344,5 @@ export {
   CustomQueryFilterValueType,
   SysUserStatus,
   SysUserType,
+  SysUserType_pri,
 };
