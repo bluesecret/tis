@@ -312,30 +312,7 @@ const loadMenuList = () => {
 const loadMobileEntryData = () => {
   bannerTree.value = [];
   sudokuTree.value = [];
-  MobileEntryController.list({})
-    .then(res => {
-      let bannerList: ANY_OBJECT[] = [];
-      let sudokuList: ANY_OBJECT[] = [];
-      res.data.dataList.forEach(item => {
-        if (item.entryType === MobileEntryType.BANNER) {
-          bannerList.push(item);
-        } else {
-          sudokuList.push(item);
-        }
-      });
-      sudokuTree.value = treeDataTranslate(sudokuList, 'entryId');
-      bannerTree.value = bannerList;
-      if (Array.isArray(formData.SysDataPerm.dataPermMobileEntryList)) {
-        let checkedKeys = formData.SysDataPerm.dataPermMobileEntryList.map(item => {
-          return item.entryId;
-        });
-        sudokuTreeNode.value.setCheckedKeys(checkedKeys);
-        bannerTreeNode.value.setCheckedKeys(checkedKeys);
-      }
-    })
-    .catch(e => {
-      console.warn(e);
-    });
+
 };
 /**
  * 编辑
